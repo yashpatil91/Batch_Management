@@ -334,7 +334,7 @@
 <span class="material-symbols-outlined text-outline text-xl">lock</span>
 </div>
 <input class="w-full pl-12 pr-12 py-4 bg-surface rounded-xl ghost-border focus:ring-0 focus:border-primary-container text-on-surface placeholder:text-outline/50 transition-all" id="password" name="password" placeholder="••••••••••••" required="" type="password"/>
-<button class="absolute inset-y-0 right-0 pr-4 flex items-center text-outline hover:text-on-surface-variant transition-colors" type="button">
+<button id="togglePassword" class="absolute inset-y-0 right-0 pr-4 flex items-center text-outline hover:text-on-surface-variant transition-colors" type="button">
 <span class="material-symbols-outlined text-xl">visibility</span>
 </button>
 </div>
@@ -409,5 +409,16 @@ function loginUser(event) {
         console.error(error);
     });
 }
+
+const toggleBtn = document.getElementById("togglePassword");
+const passwordInput = document.getElementById("password");
+
+toggleBtn.addEventListener("click", function () {
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+    } else {
+        passwordInput.type = "password";
+    }
+});
 </script>
 </body></html>
