@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#c9e9ea",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#930019",
+                        "surface-container-highest": "#e0e3e5",
+                        "on-secondary-container": "#4c696b",
+                        "on-error-container": "#93000a",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-container": "#c9e9ea",
+                        "surface-variant": "#e0e3e5",
+                        "tertiary-fixed": "#ffdad8",
+                        "on-primary-fixed": "#002021",
+                        "inverse-primary": "#81d4d8",
+                        "primary": "#00595c",
+                        "surface-container": "#eceef0",
+                        "primary-fixed": "#9df0f4",
+                        "on-secondary-fixed-variant": "#2f4c4d",
+                        "secondary-fixed-dim": "#adccce",
+                        "surface-container-high": "#e6e8ea",
+                        "outline-variant": "#bec9c9",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#eff1f3",
+                        "background": "#f8f9fb",
+                        "tertiary": "#a4001d",
+                        "outline": "#6e7979",
+                        "on-primary": "#ffffff",
+                        "on-surface-variant": "#3e4949",
+                        "on-tertiary-container": "#ffe1df",
+                        "on-background": "#191c1e",
+                        "inverse-surface": "#2d3133",
+                        "on-tertiary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#a2f5f9",
+                        "tertiary-container": "#ca1f2f",
+                        "on-tertiary-fixed": "#410006",
+                        "on-surface": "#191c1e",
+                        "surface": "#f8f9fb",
+                        "on-secondary-fixed": "#002021",
+                        "surface-bright": "#f8f9fb",
+                        "on-primary-fixed-variant": "#004f52",
+                        "tertiary-fixed-dim": "#ffb3af",
+                        "surface-tint": "#00696d",
+                        "primary-fixed-dim": "#81d4d8",
+                        "primary-container": "#0d7377",
+                        "error-container": "#ffdad6",
+                        "secondary": "#466365",
+                        "surface-dim": "#d8dadc",
+                        "surface-container-low": "#f2f4f6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background font-body text-on-surface antialiased">
+<!-- Navigation Drawer -->
+<aside class="fixed left-0 top-0 bottom-0 z-40 flex flex-col docked left-0 h-screen w-64 bg-[#2d3133] shadow-xl shadow-black/10 transition-all duration-200 ease-in-out">
+<div class="p-8">
+<div class="flex items-center gap-4 mb-10">
+<div class="w-10 h-10 rounded-lg bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">precision_manufacturing</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline font-extrabold tracking-tighter text-white">PRECISION</span>
+<span class="text-[10px] uppercase tracking-[0.2em] text-primary-fixed font-bold">Ledger</span>
+</div>
+</div>
+<!-- Profile Header Section -->
+<div class="flex items-center gap-3 mb-8">
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Professional headshot of a senior administrator in a minimalist office setting, soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAj4xrYSCAix5-WqDWvGFH1JlVBK0Qag8UKb2u42DqC04vxwC0HDwtcgSEd5Xjvs-0Aou-NSI7CyJnUquwT3HBJ3l1ABsUt0eXZeEcdW_50cOIDbek7qH8CKyse64jhlC_qsu0oEKOXA4SAh2jWXJlsx7Z-hOBl8cYymELgpm_OHL8wQSqzBmiSfYWZkV_Gyo5nK-DDHYTtnTh24lT92VCK86r6ol5JH-z6URzzRopMwnjRK9o2Is0ohkWFOL4ZYPUr-HSslAeovXoC"/>
+</div>
+<div>
+<p class="font-headline text-sm font-bold text-[#9df0f4]">Lead Administrator</p>
+<p class="text-[11px] text-outline-variant font-medium uppercase tracking-wider">System Controller</p>
+</div>
+</div>
+<nav class="space-y-1">
+<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 font-['Inter'] text-sm font-medium hover:bg-[#3f484a] hover:text-white transition-all"
+ href="/dashboard.html">
+<span class="material-symbols-outlined text-lg">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 font-['Inter'] text-sm font-medium hover:bg-[#3f484a] hover:text-white transition-all" 
+href="/BatchDetailPage.html">
+<span class="material-symbols-outlined text-lg">layers</span>
+<span>Batch Management</span>
+</a>
+<!-- Active Tab: Trainer Directory -->
+<a class="border-l-4 border-[#9df0f4] bg-[#3f484a] text-[#9df0f4] py-3 px-6 flex items-center gap-3 font-['Inter'] text-sm font-medium transition-all" 
+href="/TrainerManagmentpage.html">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">groups</span>
+<span>Trainer Directory</span>
+</a>
+<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 font-['Inter'] text-sm font-medium hover:bg-[#3f484a] hover:text-white transition-all"
+ href="#">
+<span class="material-symbols-outlined text-lg">analytics</span>
+<span>Reports</span>
+</a>
+</nav>
+</div>
+<div class="mt-auto p-8">
+<div class="bg-[#3f484a] rounded-xl p-4">
+<p class="text-[11px] uppercase tracking-widest text-[#9df0f4] font-bold mb-2">System Health</p>
+<div class="w-full bg-inverse-surface h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary-fixed h-full w-[88%]"></div>
+</div>
+<p class="text-[10px] text-outline-variant mt-2">All Nodes Operational</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 min-h-screen">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-8 py-4 bg-[#f8f9fb] docked full-width top-0 sticky z-30">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#0d7377]">menu</span>
+<h1 class="font-['Manrope'] text-sm tracking-wide uppercase font-bold text-[#0d7377]">Precision Ledger</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-sm text-outline">search</span>
+<input class="bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 text-xs w-64 focus:ring-1 focus:ring-primary-container" placeholder="Search system logs..." type="text"/>
+</div>
+<button class="font-['Manrope'] text-sm tracking-wide uppercase font-bold text-[#191c1e] hover:bg-[#c9e9ea] transition-colors px-4 py-2 rounded-lg">Logout</button>
+</div>
+</header>
+<!-- Page Content -->
+<div class="px-10 py-8 bg-surface-container-low min-h-[calc(100vh-72px)]">
+<div class="flex justify-between items-end mb-10">
+<div>
+<h2 class="font-headline text-3xl font-extrabold tracking-tight text-on-surface mb-2">Trainer Directory</h2>
+<p class="text-on-surface-variant font-medium">Manage and audit institutional educator accounts.</p>
+</div>
+<button class="bg-primary hover:bg-primary-container text-white px-6 py-3 rounded-full flex items-center gap-2 font-bold transition-all transform active:scale-95 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">add</span>
+<span>Register New Trainer</span>
+</button>
+</div>
+<!-- Bento Grid for Stats -->
+<div class="grid grid-cols-4 gap-6 mb-10">
+<div class="col-span-1 bg-surface-container-lowest p-6 rounded-xl shadow-sm">
+<p class="font-label text-[10px] uppercase tracking-widest text-outline mb-2">Total Trainers</p>
+<p class="font-headline text-4xl font-extrabold text-on-surface">142</p>
+<div class="flex items-center gap-1 mt-2 text-primary text-xs font-bold">
+<span class="material-symbols-outlined text-xs">trending_up</span>
+<span>+12% from last month</span>
+</div>
+</div>
+<div class="col-span-1 bg-surface-container-lowest p-6 rounded-xl shadow-sm">
+<p class="font-label text-[10px] uppercase tracking-widest text-outline mb-2">Active Sessions</p>
+<p class="font-headline text-4xl font-extrabold text-on-surface">84</p>
+<div class="flex items-center gap-1 mt-2 text-primary text-xs font-bold">
+<span class="material-symbols-outlined text-xs">sync</span>
+<span>Live across 4 regions</span>
+</div>
+</div>
+<div class="col-span-2 bg-gradient-to-br from-primary to-primary-container p-6 rounded-xl shadow-lg relative overflow-hidden">
+<div class="relative z-10">
+<p class="font-label text-[10px] uppercase tracking-widest text-primary-fixed mb-2">System Capacity</p>
+<p class="font-headline text-4xl font-extrabold text-white">92.4%</p>
+<div class="w-full bg-white/20 h-2 rounded-full mt-4">
+<div class="bg-primary-fixed h-full rounded-full w-[92.4%]"></div>
+</div>
+</div>
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-white/10 text-9xl">speed</span>
+</div>
+</div>
+<!-- CRUD Table Area -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden border border-outline-variant/10">
+<div class="p-6 border-b border-surface-container flex justify-between items-center bg-surface-bright">
+<div class="relative flex-1 max-w-md">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline">filter_list</span>
+<input class="w-full bg-surface-container-low border-none rounded-lg py-3 pl-12 text-sm focus:ring-1 focus:ring-primary-container transition-all" placeholder="Filter by Name, Email or Specialization..." type="text"/>
+</div>
+<div class="flex items-center gap-3">
+<button class="p-2.5 rounded-lg border border-outline-variant/20 hover:bg-surface-container-low text-on-surface-variant transition-all">
+<span class="material-symbols-outlined">download</span>
+</button>
+<button class="p-2.5 rounded-lg border border-outline-variant/20 hover:bg-surface-container-low text-on-surface-variant transition-all">
+<span class="material-symbols-outlined">sort_by_alpha</span>
+</button>
+</div>
+</div>
+<table class="w-full border-collapse">
+<thead>
+<tr class="bg-surface-container-low/50">
+<th class="text-left py-4 px-8 font-label text-[10px] uppercase tracking-widest text-outline">Trainer Profile</th>
+<th class="text-left py-4 px-8 font-label text-[10px] uppercase tracking-widest text-outline">Contact Credentials</th>
+<th class="text-left py-4 px-8 font-label text-[10px] uppercase tracking-widest text-outline">Primary Expertise</th>
+<th class="text-left py-4 px-8 font-label text-[10px] uppercase tracking-widest text-outline">Batch Status</th>
+<th class="text-right py-4 px-8 font-label text-[10px] uppercase tracking-widest text-outline">Administrative Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container">
+<!-- Row 1 -->
+<tr class="hover:bg-secondary-container transition-all group">
+<td class="py-5 px-8">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg overflow-hidden bg-primary-fixed">
+<img class="w-full h-full object-cover" data-alt="Portrait of a middle-aged male trainer with glasses and a friendly professional expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzKoxjYRZP_K6u8qOsM6l-p421HFFA8Wic3DTKwmbtxVrA7t91UB2vGMRYqP2EoqVk6793LCYWSO7yHFNNd-OY_6A6DfL_v76xK63mz9tWjQkdGZIf0m3Z7xgxBuw3LDK8nuPSQRhHbzupgZv-0Cz5JEwR8J6eDx-xX7xtdFyUg1Fc3lcSF7P8hpWrQieyqPR7YICwkF3LPVQ6YMgLY71p-ilyFmOa-P1U90b3ZOyoJsRnUxA_q-lZ4sccO-y5Zhy4X9UxOe22-Xl7"/>
+</div>
+<div>
+<p class="font-bold text-on-surface">Dr. Elias Vance</p>
+<p class="text-[11px] text-outline font-medium">ID: TR-88219</p>
+</div>
+</div>
+</td>
+<td class="py-5 px-8">
+<p class="text-sm font-medium text-on-surface">elias.vance@ledger.edu</p>
+<p class="text-[11px] text-outline">+1 (555) 902-1142</p>
+</td>
+<td class="py-5 px-8">
+<span class="bg-primary/10 text-primary text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Cloud Infrastructure</span>
+</td>
+<td class="py-5 px-8">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+<span class="text-sm font-semibold text-on-surface">Active</span>
+</div>
+</td>
+<td class="py-5 px-8 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-primary-container hover:text-white transition-all text-primary">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-error-container hover:text-error transition-all text-outline">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-secondary-container transition-all group">
+<td class="py-5 px-8">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg overflow-hidden bg-primary-fixed">
+<img class="w-full h-full object-cover" data-alt="Portrait of a focused professional woman in a modern architectural space" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2M87jvXXsx2UpvoBgFcPelvbmMU5WVec-e362-cm2qFoq7OYmRe81S6BdvPNVAZsqtFly4isrX1gk5UZSvoxt4j5ClpYYVqsfok15PBN2ji-Rl2mZTr-lrtUUl1uOkdmo7jl6H1jRwdWPWm0NfzCEeV_Zccfm9bNhQK2wTf3Yq51f1mXPmNFbECruBMllmYNNPII853UKfSVSipqxhFf6wFWZEDnEiqSAwLMQixYRF1-Bsd-N2Kr36S_u6D0oLOkpif_AoNMdl0QT"/>
+</div>
+<div>
+<p class="font-bold text-on-surface">Sarah Connor</p>
+<p class="text-[11px] text-outline font-medium">ID: TR-99031</p>
+</div>
+</div>
+</td>
+<td class="py-5 px-8">
+<p class="text-sm font-medium text-on-surface">s.connor@ledger.edu</p>
+<p class="text-[11px] text-outline">+1 (555) 341-9008</p>
+</td>
+<td class="py-5 px-8">
+<span class="bg-primary/10 text-primary text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Cybersecurity</span>
+</td>
+<td class="py-5 px-8">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+<span class="text-sm font-semibold text-on-surface">Active</span>
+</div>
+</td>
+<td class="py-5 px-8 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-primary-container hover:text-white transition-all text-primary">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-error-container hover:text-error transition-all text-outline">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-secondary-container transition-all group">
+<td class="py-5 px-8">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg overflow-hidden bg-primary-fixed">
+<img class="w-full h-full object-cover" data-alt="Portrait of a young male professional in a creative studio setting, warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpiRoM8Nx4NmXLhPVpzb103YQN3Q2gOPB3_uXrV-7LaZKI-JLFy5UVNBgwoa0NJlpSSihZa34nLIwg2os5Eyi2u-ZO04hZ70z3tQLN0bfg-lWpFhHPQG60ZIHyu2ogLoZ5bG7bW6UTbGVI-TPdFzsZAiVmfeJvHkXkeIquGjsVJsVcT44s-KZYx1vUT8Sn4q0pEmQdyWXowC1Qx1l78EqTfZCo-jk_3qWDRGlur-IGMlKFWR8z_hbSqi_gB07ecbBI0fOm2FxF5NB8"/>
+</div>
+<div>
+<p class="font-bold text-on-surface">Marcus Holloway</p>
+<p class="text-[11px] text-outline font-medium">ID: TR-77412</p>
+</div>
+</div>
+</td>
+<td class="py-5 px-8">
+<p class="text-sm font-medium text-on-surface">m.holloway@ledger.edu</p>
+<p class="text-[11px] text-outline">+1 (555) 112-4450</p>
+</td>
+<td class="py-5 px-8">
+<span class="bg-primary/10 text-primary text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Ethical Hacking</span>
+</td>
+<td class="py-5 px-8">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-amber-500"></div>
+<span class="text-sm font-semibold text-on-surface">On Leave</span>
+</div>
+</td>
+<td class="py-5 px-8 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-primary-container hover:text-white transition-all text-primary">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-error-container hover:text-error transition-all text-outline">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="p-6 bg-surface-container-low/30 border-t border-surface-container flex justify-between items-center">
+<p class="text-xs text-on-surface-variant font-medium">Showing <span class="font-bold text-on-surface">1-3</span> of 142 registered accounts</p>
+<div class="flex items-center gap-2">
+<button class="px-4 py-2 text-sm font-bold text-outline hover:text-on-surface transition-all">Previous</button>
+<div class="flex items-center">
+<button class="w-8 h-8 rounded-lg bg-primary text-white font-bold text-xs">1</button>
+<button class="w-8 h-8 rounded-lg text-outline hover:bg-surface-container-high text-xs font-bold transition-all">2</button>
+<button class="w-8 h-8 rounded-lg text-outline hover:bg-surface-container-high text-xs font-bold transition-all">3</button>
+</div>
+<button class="px-4 py-2 text-sm font-bold text-primary hover:text-primary-container transition-all">Next</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Modal Form (Hidden by default, shown here for structure) -->
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-on-surface/40 backdrop-blur-[4px] opacity-0 pointer-events-none transition-opacity">
+<div class="bg-surface-container-lowest w-full max-w-xl rounded-xl shadow-2xl overflow-hidden transform scale-95 transition-transform border border-outline-variant/10">
+<div class="p-8 border-b border-surface-container flex justify-between items-center bg-surface-bright">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">person_add</span>
+</div>
+<div>
+<h3 class="font-headline text-xl font-extrabold text-on-surface">Register Trainer</h3>
+<p class="text-xs text-outline font-medium uppercase tracking-wider">New System Entity Creation</p>
+</div>
+</div>
+<button class="text-outline hover:text-on-surface transition-all">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="p-8 space-y-6">
+<div class="grid grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="block text-[11px] font-bold uppercase tracking-widest text-outline">Full Name</label>
+<input class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container" placeholder="e.g. Alan Turing" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="block text-[11px] font-bold uppercase tracking-widest text-outline">Internal ID</label>
+<input class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container" placeholder="TR-XXXXX" type="text"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="block text-[11px] font-bold uppercase tracking-widest text-outline">Educational Email</label>
+<input class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container" placeholder="name@ledger.edu" type="email"/>
+</div>
+<div class="space-y-2">
+<label class="block text-[11px] font-bold uppercase tracking-widest text-outline">Core Expertise</label>
+<select class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container">
+<option>Artificial Intelligence</option>
+<option>Cybersecurity</option>
+<option>Data Science</option>
+<option>Software Architecture</option>
+</select>
+</div>
+</div>
+<div class="p-8 bg-surface-container-low flex justify-end gap-4">
+<button class="px-6 py-2.5 text-sm font-bold text-on-surface-variant hover:text-on-surface transition-all">Cancel</button>
+<button class="bg-primary text-white px-8 py-2.5 rounded-full text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary-container transition-all">Establish Account</button>
+</div>
+</div>
+</div>
+</body></html>

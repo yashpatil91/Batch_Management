@@ -234,12 +234,12 @@
 				Dashboard
 			</a>
 			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
-				href="#">
+				href="/BatchDetailPage.html">
 				<span class="material-symbols-outlined" data-icon="Layers">layers</span>
 				Batch Management
 			</a>
 			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
-				href="#">
+				href="/TrainerManagmentpage.html">
 				<span class="material-symbols-outlined" data-icon="groups">groups</span>
 				Trainer Directory
 			</a>
@@ -375,91 +375,10 @@
 							</thead>
 							<tbody id="batchTableBody" class="divide-y-0">
 							</tbody>
-								<tr class="group hover:bg-secondary-container transition-all cursor-pointer">
-									<td class="px-8 py-5">
-										<div class="font-bold text-on-surface">B-2024-ALPHA</div>
-										<div class="text-xs text-on-surface-variant">Data Engineering</div>
-									</td>
-									<td class="px-6 py-5">
-										<div class="flex items-center gap-2">
-											<div
-												class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary text-[10px] font-bold">
-												AS</div>
-											<span class="text-sm font-medium">Alan Sterling</span>
-										</div>
-									</td>
-									<td class="px-6 py-5 text-sm text-on-surface-variant font-medium">Oct 12, 2023</td>
-									<td class="px-6 py-5">
-										<span
-											class="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold uppercase tracking-tighter">In-Progress</span>
-									</td>
-									<td class="px-6 py-5 w-48">
-										<div class="flex items-center gap-3">
-											<div
-												class="flex-1 h-2 bg-surface-container-high rounded-full overflow-hidden">
-												<div class="h-full primary-gradient w-[72%]"></div>
-											</div>
-											<span class="text-xs font-bold text-on-surface">72%</span>
-										</div>
-									</td>
-								</tr>
-								<tr class="group hover:bg-secondary-container transition-all cursor-pointer">
-									<td class="px-8 py-5">
-										<div class="font-bold text-on-surface">B-2024-GAMMA</div>
-										<div class="text-xs text-on-surface-variant">Cloud Architecture</div>
-									</td>
-									<td class="px-6 py-5">
-										<div class="flex items-center gap-2">
-											<div
-												class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed-variant text-[10px] font-bold">
-												MR</div>
-											<span class="text-sm font-medium">Maria Rodriguez</span>
-										</div>
-									</td>
-									<td class="px-6 py-5 text-sm text-on-surface-variant font-medium">Nov 01, 2023</td>
-									<td class="px-6 py-5">
-										<span
-											class="px-3 py-1 bg-tertiary/10 text-tertiary rounded-full text-xs font-bold uppercase tracking-tighter">Delayed</span>
-									</td>
-									<td class="px-6 py-5">
-										<div class="flex items-center gap-3">
-											<div
-												class="flex-1 h-2 bg-surface-container-high rounded-full overflow-hidden">
-												<div class="h-full bg-tertiary w-[35%]"></div>
-											</div>
-											<span class="text-xs font-bold text-on-surface">35%</span>
-										</div>
-									</td>
-								</tr>
-								<tr class="group hover:bg-secondary-container transition-all cursor-pointer">
-									<td class="px-8 py-5">
-										<div class="font-bold text-on-surface">B-2023-ZETA</div>
-										<div class="text-xs text-on-surface-variant">Systems Security</div>
-									</td>
-									<td class="px-6 py-5">
-										<div class="flex items-center gap-2">
-											<div
-												class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary text-[10px] font-bold">
-												JH</div>
-											<span class="text-sm font-medium">James Holt</span>
-										</div>
-									</td>
-									<td class="px-6 py-5 text-sm text-on-surface-variant font-medium">Aug 15, 2023</td>
-									<td class="px-6 py-5">
-										<span
-											class="px-3 py-1 bg-secondary-fixed text-on-secondary-fixed-variant rounded-full text-xs font-bold uppercase tracking-tighter">Stabilized</span>
-									</td>
-									<td class="px-6 py-5">
-										<div class="flex items-center gap-3">
-											<div
-												class="flex-1 h-2 bg-surface-container-high rounded-full overflow-hidden">
-												<div class="h-full primary-gradient w-[94%]"></div>
-											</div>
-											<span class="text-xs font-bold text-on-surface">94%</span>
-										</div>
-									</td>
-								</tr>
-							</tbody>
+							
+
+
+
 						</table>
 					</div>
 				</div>
@@ -535,7 +454,7 @@
 							<th class="px-6 py-4 text-right font-semibold">Management</th>
 						</tr>
 					</thead>
-					<tbody id="batchTableBody" class="divide-y-0">
+					<tbody class="divide-y-0">
 						<tr class="hover:bg-secondary-container transition-all">
 							<td class="px-8 py-5">
 								<div class="font-bold text-on-surface">Alan Sterling</div>
@@ -645,65 +564,65 @@
 		</div>
 	</div>
 	<script>
-	//  Check login
-	const token = localStorage.getItem("token");
+		//  Check login
+		const token = localStorage.getItem("token");
 
-	if (!token) {
-	    alert("Please login first ❌");
-	    window.location.href = "index.html";
-	}
+		if (!token) {
+			alert("Please login first ❌");
+			window.location.href = "index.html";
+		}
 
-	//  Logout function
-	function logout() {
-	    localStorage.removeItem("token");
-	    localStorage.removeItem("role");
+		//  Logout function
+		function logout() {
+			localStorage.removeItem("token");
+			localStorage.removeItem("role");
 
-	    alert("Logged out successfully 👋");
-	    window.location.href = "index.html";
-	}
+			alert("Logged out successfully 👋");
+			window.location.href = "index.html";
+		}
 
-	//  Load Dashboard Stats
-	fetch("http://localhost:8080/api/admin/dashboard", {
-	    headers: {
-	        "Authorization": "Bearer " + token
-	    }
-	})
-	.then(res => {
-	    if (!res.ok) throw new Error("Failed to load dashboard");
-	    return res.json();
-	})
-	.then(data => {
-	    document.getElementById("totalBatches").innerText = data.totalBatches;
-	    document.getElementById("activeBatches").innerText = data.activeBatches;
-	    document.getElementById("totalTrainers").innerText = data.totalTrainers;
-	    document.getElementById("completedBatches").innerText = data.completedBatches;
-	})
-	.catch(err => {
-	    console.error("Dashboard Error:", err);
-	});
+		//  Load Dashboard Stats
+		fetch("http://localhost:8080/api/admin/dashboard", {
+			headers: {
+				"Authorization": "Bearer " + token
+			}
+		})
+			.then(res => {
+				if (!res.ok) throw new Error("Failed to load dashboard");
+				return res.json();
+			})
+			.then(data => {
+				document.getElementById("totalBatches").innerText = data.totalBatches;
+				document.getElementById("activeBatches").innerText = data.activeBatches;
+				document.getElementById("totalTrainers").innerText = data.totalTrainers;
+				document.getElementById("completedBatches").innerText = data.completedBatches;
+			})
+			.catch(err => {
+				console.error("Dashboard Error:", err);
+			});
 
-	// 🔥 Load Batch Table
-	fetch("http://localhost:8080/api/admin/batches", {
-	    headers: {
-	        "Authorization": "Bearer " + token
-	    }
-	})
-	.then(res => {
-	    if (!res.ok) throw new Error("Failed to load batches");
-	    return res.json();
-	})
-	.then(data => {
-	    const tableBody = document.getElementById("batchTableBody");
+		// 🔥 Load Batch Table
+		fetch("http://localhost:8080/api/admin/batches", {
+			headers: {
+				"Authorization": "Bearer " + token
+			}
+		})
+			.then(res => {
+				if (!res.ok) throw new Error("Failed to load batches");
+				return res.json();
+			})
+			.then(data => {
+				const tableBody = document.getElementById("batchTableBody");
 
-	    if (!tableBody) {
-	        console.error("❌ batchTableBody not found in HTML");
-	        return;
-	    }
+				if (!tableBody) {
+					console.error("❌ batchTableBody not found in HTML");
+					return;
+				}
 
-	    tableBody.innerHTML = "";
+				tableBody.innerHTML = "";
 
-	    data.forEach(batch => {
-	        const row = `
+				data.forEach(batch => {
+					const row = `
 	        <tr>
 	            <td>${batch.name}</td>
 	            <td>${batch.trainerName || "N/A"}</td>
@@ -712,12 +631,12 @@
 	            <td>${batch.progress || "0"}%</td>
 	        </tr>
 	        `;
-	        tableBody.innerHTML += row;
-	    });
-	})
-	.catch(err => {
-	    console.error("Batch Error:", err);
-	});
+					tableBody.innerHTML += row;
+				});
+			})
+			.catch(err => {
+				console.error("Batch Error:", err);
+			});
 	</script>
 </body>
 
