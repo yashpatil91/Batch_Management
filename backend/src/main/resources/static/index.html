@@ -101,6 +101,173 @@
     body {
       min-height: max(884px, 100dvh);
     }
+	/* ===== Smooth Page Fade In ===== */
+	body {
+	  animation: fadeIn 0.8s ease-in-out;
+	}
+
+	@keyframes fadeIn {
+	  from {
+	    opacity: 0;
+	    transform: translateY(10px);
+	  }
+	  to {
+	    opacity: 1;
+	    transform: translateY(0);
+	  }
+	}
+
+	/* ===== Card Border + Glow ===== */
+	main {
+	  border: 1px solid rgba(190, 201, 201, 0.3);
+	  transition: all 0.3s ease;
+	}
+
+	main:hover {
+	  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+	}
+
+	/* ===== Input Field Animation ===== */
+	input {
+	  transition: all 0.3s ease;
+	}
+
+	input:focus {
+	  border: 1px solid #0d7377 !important;
+	  box-shadow: 0 0 0 3px rgba(13, 115, 119, 0.15);
+	  transform: scale(1.02);
+	}
+
+	/* ===== Button Hover Animation ===== */
+	button[type="submit"] {
+	  position: relative;
+	  overflow: hidden;
+	}
+
+	button[type="submit"]::after {
+	  content: "";
+	  position: absolute;
+	  width: 300%;
+	  height: 300%;
+	  top: -100%;
+	  left: -100%;
+	  background: rgba(255, 255, 255, 0.08);
+	  transform: rotate(25deg);
+	  transition: all 0.5s ease;
+	}
+
+	button[type="submit"]:hover::after {
+	  top: 0;
+	  left: 0;
+	}
+
+	/* ===== Left Panel Floating Effect ===== */
+	.md\:col-span-5 {
+	  border-right: 1px solid rgba(255, 255, 255, 0.08);
+	  animation: floatPanel 6s ease-in-out infinite;
+	}
+
+	@keyframes floatPanel {
+	  0%, 100% {
+	    transform: translateY(0px);
+	  }
+	  50% {
+	    transform: translateY(-8px);
+	  }
+	}
+
+	/* ===== Avatar Card Glow ===== */
+	.ghost-border {
+	  transition: all 0.3s ease;
+	}
+
+	.ghost-border:hover {
+	  border: 1px solid rgba(255, 255, 255, 0.2);
+	  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+	}
+
+	/* ===== Links Hover Effect ===== */
+	a {
+	  position: relative;
+	}
+
+	a::after {
+	  content: "";
+	  position: absolute;
+	  width: 0%;
+	  height: 2px;
+	  bottom: -2px;
+	  left: 0;
+	  background: #0d7377;
+	  transition: 0.3s ease;
+	}
+
+	a:hover::after {
+	  width: 100%;
+	}
+
+	/* ===== Checkbox Styling ===== */
+	input[type="checkbox"] {
+	  cursor: pointer;
+	  transition: 0.2s ease;
+	}
+
+	input[type="checkbox"]:hover {
+	  transform: scale(1.1);
+	}
+
+	/* ===== Subtle Background Animation ===== */
+	body::before {
+	  content: "";
+	  position: fixed;
+	  top: -50%;
+	  left: -50%;
+	  width: 200%;
+	  height: 200%;
+	  background: radial-gradient(circle, rgba(13,115,119,0.05) 0%, transparent 60%);
+	  animation: moveBg 12s linear infinite;
+	  z-index: -1;
+	}
+
+	@keyframes moveBg {
+	  0% {
+	    transform: rotate(0deg);
+	  }
+	  100% {
+	    transform: rotate(360deg);
+	  }
+	}
+	/*master*/
+	/* ===== Heading Animation (Always Visible) ===== */
+	h1 {
+	  animation: softSlide 1s ease-out;
+	}
+
+	/* Smooth slight movement (no hiding) */
+	@keyframes softSlide {
+	  0% {
+	    transform: translateY(20px);
+	  }
+	  100% {
+	    transform: translateY(0);
+	  }
+	}
+
+	/* Highlight word animation (batches) */
+	h1 span {
+	  display: inline-block;
+	  animation: glowPulse 2s ease-in-out infinite alternate;
+	}
+
+	/* Glow effect */
+	@keyframes glowPulse {
+	  from {
+	    text-shadow: 0 0 4px rgba(157, 240, 244, 0.3);
+	  }
+	  to {
+	    text-shadow: 0 0 12px rgba(157, 240, 244, 0.9);
+	  }
+	}
   </style>
   </head>
 <body class="bg-surface font-body text-on-surface min-h-screen flex items-center justify-center p-6">

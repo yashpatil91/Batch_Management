@@ -105,6 +105,118 @@
 		body {
 			min-height: max(884px, 100dvh);
 		}
+		/* ===== Card Border (All Cards) ===== */
+		.bg-surface-container-lowest {
+		  border: 1px solid #0d7377;
+		  transition: all 0.3s ease;
+		}
+
+		/* ===== Card Hover Animation ===== */
+		.bg-surface-container-lowest:hover {
+		  transform: translateY(-6px) scale(1.01);
+		  box-shadow: 0 15px 35px rgba(13, 115, 119, 0.2);
+		}
+
+		/* ===== Smooth Fade + Slide Entry ===== */
+		.bg-surface-container-lowest {
+		  animation: cardFadeUp 0.8s ease forwards;
+		}
+
+		@keyframes cardFadeUp {
+		  0% {
+		    transform: translateY(30px);
+		    opacity: 0.9;
+		  }
+		  100% {
+		    transform: translateY(0);
+		    opacity: 1;
+		  }
+		}
+
+		/* ===== KPI Numbers Animation ===== */
+		#totalBatches,
+		#activeBatches,
+		#totalTrainers,
+		#completedBatches {
+		  font-size: 28px;
+		  font-weight: bold;
+		  color: #0d7377;
+		  animation: popNumber 0.6s ease;
+		}
+
+		@keyframes popNumber {
+		  0% {
+		    transform: scale(0.7);
+		    opacity: 0.5;
+		  }
+		  100% {
+		    transform: scale(1);
+		    opacity: 1;
+		  }
+		}
+
+		/* ===== Table Row Hover Effect ===== */
+		tbody tr {
+		  transition: all 0.3s ease;
+		}
+
+		tbody tr:hover {
+		  background-color: rgba(13, 115, 119, 0.08);
+		  transform: scale(1.01);
+		}
+
+		/* ===== Progress Bar Animation ===== */
+		.primary-gradient {
+		  animation: progressFill 1.5s ease-in-out;
+		}
+
+		@keyframes progressFill {
+		  from {
+		    width: 0%;
+		  }
+		}
+
+		/* ===== Button Animation ===== */
+		button {
+		  transition: all 0.3s ease;
+		}
+
+		button:hover {
+		  transform: translateY(-2px);
+		  box-shadow: 0 10px 25px rgba(13, 115, 119, 0.25);
+		}
+
+		/* ===== Sidebar Links Animation ===== */
+		aside a {
+		  position: relative;
+		  overflow: hidden;
+		}
+
+		aside a::before {
+		  content: "";
+		  position: absolute;
+		  left: 0;
+		  top: 0;
+		  height: 100%;
+		  width: 0%;
+		  background: rgba(157, 240, 244, 0.1);
+		  transition: 0.3s;
+		}
+
+		aside a:hover::before {
+		  width: 100%;
+		}
+
+		/* ===== Header Sticky Smooth Effect ===== */
+		header {
+		  transition: all 0.3s ease;
+		}
+
+		header:hover {
+		  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+		}
+		/**/
+		
 	</style>
 </head>
 
