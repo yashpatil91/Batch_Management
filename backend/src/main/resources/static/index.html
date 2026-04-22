@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login | Precision Ledger</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed": "#c9e9ea",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#930019",
+                      "surface-container-highest": "#e0e3e5",
+                      "on-secondary-container": "#4c696b",
+                      "on-error-container": "#93000a",
+                      "surface-container-lowest": "#ffffff",
+                      "secondary-container": "#c9e9ea",
+                      "surface-variant": "#e0e3e5",
+                      "tertiary-fixed": "#ffdad8",
+                      "on-primary-fixed": "#002021",
+                      "inverse-primary": "#81d4d8",
+                      "primary": "#00595c",
+                      "surface-container": "#eceef0",
+                      "primary-fixed": "#9df0f4",
+                      "on-secondary-fixed-variant": "#2f4c4d",
+                      "secondary-fixed-dim": "#adccce",
+                      "surface-container-high": "#e6e8ea",
+                      "outline-variant": "#bec9c9",
+                      "on-error": "#ffffff",
+                      "inverse-on-surface": "#eff1f3",
+                      "background": "#f8f9fb",
+                      "tertiary": "#a4001d",
+                      "outline": "#6e7979",
+                      "on-primary": "#ffffff",
+                      "on-surface-variant": "#3e4949",
+                      "on-tertiary-container": "#ffe1df",
+                      "on-background": "#191c1e",
+                      "inverse-surface": "#2d3133",
+                      "on-tertiary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "on-primary-container": "#a2f5f9",
+                      "tertiary-container": "#ca1f2f",
+                      "on-tertiary-fixed": "#410006",
+                      "on-surface": "#191c1e",
+                      "surface": "#f8f9fb",
+                      "on-secondary-fixed": "#002021",
+                      "surface-bright": "#f8f9fb",
+                      "on-primary-fixed-variant": "#004f52",
+                      "tertiary-fixed-dim": "#ffb3af",
+                      "surface-tint": "#00696d",
+                      "primary-fixed-dim": "#81d4d8",
+                      "primary-container": "#0d7377",
+                      "error-container": "#ffdad6",
+                      "secondary": "#466365",
+                      "surface-dim": "#d8dadc",
+                      "surface-container-low": "#f2f4f6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "fontFamily": {
+                      "headline": ["Manrope"],
+                      "body": ["Inter"],
+                      "label": ["Inter"]
+              }
+            },
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .shadow-ambient {
+            box-shadow: 0 12px 32px rgba(25, 28, 30, 0.06);
+        }
+        .btn-gradient {
+            background: linear-gradient(135deg, #00595c 0%, #0d7377 100%);
+        }
+        .ghost-border {
+            border: 1px solid rgba(190, 201, 201, 0.2);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body text-on-surface min-h-screen flex items-center justify-center p-6">
+<!-- Login Container -->
+<main class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-12 bg-surface-container-low overflow-hidden rounded-full shadow-ambient min-h-[640px]">
+<!-- Left Column: Narrative & Branding -->
+<div class="md:col-span-5 bg-inverse-surface p-12 flex flex-col justify-between relative overflow-hidden">
+<!-- Background Graphic (Subtle Industrial) -->
+<div class="absolute inset-0 opacity-10 pointer-events-none">
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary rounded-full blur-[100px]"></div>
+<div class="absolute bottom-0 left-0 w-48 h-48 bg-primary-container rounded-full blur-[80px]"></div>
+</div>
+<div class="relative z-10">
+<div class="flex items-center gap-3 mb-12">
+<div class="w-10 h-10 bg-primary-fixed rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-fixed" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+</div>
+<span class="font-headline text-lg font-bold tracking-tighter text-surface-container-lowest">Precision Ledger</span>
+</div>
+<h1 class="font-headline text-4xl font-extrabold text-white leading-tight mb-6">
+                    Master your production <span class="text-primary-fixed">batches</span> with surgical accuracy.
+                </h1>
+<p class="text-surface-variant text-base leading-relaxed opacity-80 max-w-sm">
+                    Access the industry-leading ledger for real-time tracking, trainer oversight, and analytical reporting.
+                </p>
+</div>
+<div class="relative z-10">
+<div class="flex items-center gap-4 p-4 bg-white/5 rounded-xl ghost-border backdrop-blur-sm">
+<img alt="System Administrator Avatar" class="w-12 h-12 rounded-lg object-cover" data-alt="professional portrait of a confident middle-aged male administrator in a clean office setting, soft corporate lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBETlYTxQt3v0DBpo-ppDVP4kYSdgYo3NGsTNxS9rzsISWOEItu3C5MXase3pyP5SpwiGZPq6WECgiJrIoFGEBAPH02eBivEwHjDtZlbndBAayh04lSAX3ZbIO1058_i-UqxwvMBr_H43Qn8etlPwGugVvXNlHYW0veJt8OJ-nWnohmBlnHzXV8Ko232ZWFJt6pap4ZvHS9ADt91kiWOLuKgO3o_AjA_E52y2zOWoJdJ1Rydb6Pkan38cnDKSz16mmIsSLTbv_QmhaL"/>
+<div>
+<p class="text-white font-medium text-sm">Lead Administrator</p>
+<p class="text-surface-variant text-xs">System Controller</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Login Form -->
+<div class="md:col-span-7 bg-surface-container-lowest p-8 md:p-16 flex flex-col justify-center">
+<div class="max-w-md w-full mx-auto">
+<div class="mb-10">
+<h2 class="font-headline text-3xl font-bold text-on-surface mb-2">Welcome Back</h2>
+<p class="text-on-surface-variant text-sm">Please enter your credentials to access the ledger.</p>
+</div>
+<!--changed form-->
+<form class="space-y-6" onsubmit="loginUser(event)">
+<!-- Email Input --> 
+<div class="space-y-2">
+<label class="block text-xs font-bold uppercase tracking-widest text-outline" for="email">Email Address</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline text-xl">mail</span>
+</div>
+<input class="w-full pl-12 pr-4 py-4 bg-surface rounded-xl ghost-border focus:ring-0 focus:border-primary-container text-on-surface placeholder:text-outline/50 transition-all" id="email" name="email" placeholder="name@precisionledger.com" required="" type="email"/>
+</div>
+</div>
+<!-- Password Input -->
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<label class="block text-xs font-bold uppercase tracking-widest text-outline" for="password">Password</label>
+<a class="text-xs font-semibold text-primary hover:text-primary-container transition-colors" href="#">Forgot Password?</a>
+</div>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline text-xl">lock</span>
+</div>
+<input class="w-full pl-12 pr-12 py-4 bg-surface rounded-xl ghost-border focus:ring-0 focus:border-primary-container text-on-surface placeholder:text-outline/50 transition-all" id="password" name="password" placeholder="••••••••••••" required="" type="password"/>
+<button class="absolute inset-y-0 right-0 pr-4 flex items-center text-outline hover:text-on-surface-variant transition-colors" type="button">
+<span class="material-symbols-outlined text-xl">visibility</span>
+</button>
+</div>
+</div>
+<!-- Stay Logged In -->
+<div class="flex items-center gap-3">
+<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary/20" id="remember" type="checkbox"/>
+<label class="text-sm text-on-surface-variant font-medium cursor-pointer" for="remember">Keep me logged in for 30 days</label>
+</div>
+<!-- Submit Button -->
+<div class="pt-4">
+<button class="w-full btn-gradient text-white font-headline font-bold py-4 rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.01] active:scale-95 transition-all flex items-center justify-center gap-2" type="submit">
+<span>Sign into Dashboard</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</form>
+<!-- Footer Links -->
+<div class="mt-12 pt-8 border-t border-surface-container flex flex-col sm:flex-row justify-between items-center gap-4">
+<p class="text-xs text-outline">© 2024 Precision Ledger. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="text-xs font-medium text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="text-xs font-medium text-on-surface-variant hover:text-primary transition-colors" href="#">Security</a>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Decorative Bottom Gradient -->
+<div class="fixed bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-primary-fixed to-secondary"></div>
+<!--JavaScript Code -->
+
+<script>
+function loginUser(event) {
+    event.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    fetch("http://localhost:8080/api/auth/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            email: email,
+            password: password
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Login Failed");
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data);
+
+        // ✅ Save token
+        localStorage.setItem("token", data.token);
+
+        // ✅ Save role
+        localStorage.setItem("role", data.role);
+
+        alert("Login Successful ✅");
+
+        // ✅ Redirect
+        window.location.href = "dashboard.html";
+    })
+    .catch(error => {
+        alert("Invalid Email or Password ❌");
+        console.error(error);
+    });
+}
+</script>
+</body></html>

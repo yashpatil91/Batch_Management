@@ -25,15 +25,29 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    protected void doFilterInternal(HttpServletRequest request,
+                                   HttpServletResponse response,
+                                   FilterChain filterChain)
             throws ServletException, IOException {
-        // Skip JWT parsing for authentication endpoints.
-        if (request.getRequestURI().startsWith("/api/auth/")) {
+
+        String path = request.getRequestURI();
+
+        // ✅ Skip JWT filter for frontend & public routes
+        if (path.equals("/") ||
+            path.equals("/index.html") ||
+            path.equals("/dashboard.html") ||
+            path.startsWith("/css") ||
+            path.startsWith("/js") ||
+            path.startsWith("/images") ||
+            path.startsWith("/api/auth/")) {
+
             filterChain.doFilter(request, response);
             return;
         }
 
         final String authHeader = request.getHeader("Authorization");
+
+        // ✅ If no token → continue without authentication
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -43,21 +57,35 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             String jwt = authHeader.substring(7);
             String userEmail = jwtService.extractUsername(jwt);
 
-            if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
+            if (userEmail != null &&
+                SecurityContextHolder.getContext().getAuthentication() == null) {
+
+                UserDetails userDetails =
+                        userDetailsService.loadUserByUsername(userEmail);
+
                 if (jwtService.isTokenValid(jwt, userDetails.getUsername())) {
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            null,
-                            userDetails.getAuthorities()
+
+                    UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(
+                                    userDetails,
+                                    null,
+                                    userDetails.getAuthorities()
+                            );
+
+                    authToken.setDetails(
+                            new WebAuthenticationDetailsSource()
+                                    .buildDetails(request)
                     );
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
+
+                    SecurityContextHolder.getContext()
+                            .setAuthentication(authToken);
                 }
             }
+
         } catch (Exception ignored) {
-            // Ignore malformed/expired tokens and continue as unauthenticated.
+            // ignore invalid token
         }
+
         filterChain.doFilter(request, response);
     }
 }

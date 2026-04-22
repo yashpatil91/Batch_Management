@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+	<title>Precision Ledger | Batch Management</title>
+	<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap"
+		rel="stylesheet" />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+		rel="stylesheet" />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+		rel="stylesheet" />
+	<script id="tailwind-config">
+		tailwind.config = {
+			darkMode: "class",
+			theme: {
+				extend: {
+					"colors": {
+						"secondary-fixed": "#c9e9ea",
+						"on-secondary": "#ffffff",
+						"on-tertiary-fixed-variant": "#930019",
+						"surface-container-highest": "#e0e3e5",
+						"on-secondary-container": "#4c696b",
+						"on-error-container": "#93000a",
+						"surface-container-lowest": "#ffffff",
+						"secondary-container": "#c9e9ea",
+						"surface-variant": "#e0e3e5",
+						"tertiary-fixed": "#ffdad8",
+						"on-primary-fixed": "#002021",
+						"inverse-primary": "#81d4d8",
+						"primary": "#00595c",
+						"surface-container": "#eceef0",
+						"primary-fixed": "#9df0f4",
+						"on-secondary-fixed-variant": "#2f4c4d",
+						"secondary-fixed-dim": "#adccce",
+						"surface-container-high": "#e6e8ea",
+						"outline-variant": "#bec9c9",
+						"on-error": "#ffffff",
+						"inverse-on-surface": "#eff1f3",
+						"background": "#f8f9fb",
+						"tertiary": "#a4001d",
+						"outline": "#6e7979",
+						"on-primary": "#ffffff",
+						"on-surface-variant": "#3e4949",
+						"on-tertiary-container": "#ffe1df",
+						"on-background": "#191c1e",
+						"inverse-surface": "#2d3133",
+						"on-tertiary": "#ffffff",
+						"error": "#ba1a1a",
+						"on-primary-container": "#a2f5f9",
+						"tertiary-container": "#ca1f2f",
+						"on-tertiary-fixed": "#410006",
+						"on-surface": "#191c1e",
+						"surface": "#f8f9fb",
+						"on-secondary-fixed": "#002021",
+						"surface-bright": "#f8f9fb",
+						"on-primary-fixed-variant": "#004f52",
+						"tertiary-fixed-dim": "#ffb3af",
+						"surface-tint": "#00696d",
+						"primary-fixed-dim": "#81d4d8",
+						"primary-container": "#0d7377",
+						"error-container": "#ffdad6",
+						"secondary": "#466365",
+						"surface-dim": "#d8dadc",
+						"surface-container-low": "#f2f4f6"
+					},
+					"borderRadius": {
+						"DEFAULT": "0.125rem",
+						"lg": "0.25rem",
+						"xl": "0.5rem",
+						"full": "0.75rem"
+					},
+					"fontFamily": {
+						"headline": ["Manrope"],
+						"body": ["Inter"],
+						"label": ["Inter"]
+					}
+				},
+			}
+		}
+	</script>
+	<style>
+		.material-symbols-outlined {
+			font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+			vertical-align: middle;
+		}
+
+		.glass-panel {
+			background: rgba(255, 255, 255, 0.8);
+			backdrop-filter: blur(24px);
+			border: 1px solid rgba(110, 121, 121, 0.1);
+		}
+
+		.primary-gradient {
+			background: linear-gradient(135deg, #00595c 0%, #0d7377 100%);
+		}
+	</style>
+	<style>
+		body {
+			min-height: max(884px, 100dvh);
+		}
+	</style>
+</head>
+
+<body class="bg-surface font-body text-on-surface">
+	<!-- Navigation Drawer (SideNav) -->
+	<aside
+		class="fixed left-0 top-0 bottom-0 z-40 flex flex-col h-screen w-64 bg-[#2d3133] shadow-xl shadow-black/10 font-['Inter'] text-sm font-medium">
+		<div class="p-8">
+			<h1 class="text-lg font-bold tracking-tighter text-[#f8f9fb]">Precision Ledger</h1>
+		</div>
+		<nav class="flex-1 px-0">
+			<a class="border-l-4 border-[#9df0f4] bg-[#3f484a] text-[#9df0f4] py-3 px-6 flex items-center gap-3 transition-all"
+				href="#">
+				<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+				Dashboard
+			</a>
+			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
+				href="#">
+				<span class="material-symbols-outlined" data-icon="Layers">layers</span>
+				Batch Management
+			</a>
+			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
+				href="#">
+				<span class="material-symbols-outlined" data-icon="groups">groups</span>
+				Trainer Directory
+			</a>
+			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
+				href="#">
+				<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+				Reports
+			</a>
+		</nav>
+		<div class="p-6 mt-auto bg-[#3f484a]/20">
+			<div class="flex items-center gap-3">
+				<img alt="Admin User Avatar" class="w-10 h-10 rounded-full object-cover"
+					data-alt="Professional portrait of a male administrator in a modern office setting with soft background lighting"
+					src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpmhAnvMerJrMPWPd8DCzd0yvcNpBt9GhKK92qTMcmQcXyAJ-vClCObmCFDCA4trCZLYuHsOFYLA0pn_D3_jQO-JYy5DD6TGUGwXf1sod6zy67yils_sAqt74fDEdfZd-yfxtCdWjXwq9ccZItEvEzViceUIlQXZ3s_t_x6GwQFjMaULs33j7_dj_mCfZoFPrLUtYWval97nQI-Bv94K9g85e7LuQLBz9zEy2ZpRss7ePXW4Gy2YL9IKWfPJr45MAODBkUZyXzjIQQ" />
+				<div class="overflow-hidden">
+					<p class="text-[#9df0f4] truncate font-semibold">Lead Administrator</p>
+					<p class="text-[#bfc8cb] text-xs truncate">System Controller</p>
+				</div>
+			</div>
+		</div>
+	</aside>
+	<!-- Main Content Area -->
+	<main class="ml-64 min-h-screen">
+		<!-- TopAppBar -->
+		<header
+			class="flex justify-between items-center w-full px-8 py-4 sticky top-0 z-30 bg-[#f8f9fb] font-['Manrope'] text-sm tracking-wide uppercase">
+			<div class="flex items-center gap-4">
+				<span class="material-symbols-outlined text-[#0d7377]" data-icon="menu">menu</span>
+				<span class="text-lg font-bold tracking-tighter text-[#191c1e] lowercase">Overview</span>
+			</div>
+			<div class="flex items-center gap-6">
+				<div class="relative group">
+					<span class="material-symbols-outlined text-outline cursor-pointer"
+						data-icon="notifications">notifications</span>
+					<span class="absolute top-0 right-0 w-2 h-2 bg-tertiary rounded-full"></span>
+				</div>
+				<button onclick="logout()"
+					class="text-[#0d7377] font-bold hover:bg-[#c9e9ea] px-4 py-2 rounded transition-colors uppercase">Logout</button>
+			</div>
+		</header>
+		<div class="p-8 space-y-8 bg-surface-container-low">
+			<!-- Page Header & Action -->
+			<div class="flex justify-between items-end">
+				<div>
+					<h2 class="font-headline text-3xl font-bold text-on-surface tracking-tight">Executive Dashboard</h2>
+					<p class="text-on-surface-variant font-body">Operational metrics and batch oversight for Q3
+						Lifecycle.</p>
+				</div>
+				<button
+					class="primary-gradient text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-primary/20 scale-100 hover:scale-[1.02] active:scale-95 transition-all">
+					<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+					Assign New Batch
+				</button>
+			</div>
+			<!-- KPI Cards Bento Grid -->
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+				<!-- Total Batches -->
+				<div class="bg-surface-container-lowest p-6 rounded-xl space-y-2">
+					<div class="flex justify-between items-start">
+						<span class="material-symbols-outlined text-primary p-2 bg-primary-fixed rounded-lg"
+							data-icon="inventory_2">inventory_2</span>
+						<span class="text-xs font-bold text-primary px-2 py-1 bg-secondary-fixed rounded">+12%</span>
+					</div>
+					<div>
+						<p class="font-label text-xs uppercase tracking-widest text-outline">Total Batches</p>
+						<h3 id="totalBatches">0</h3>
+					</div>
+				</div>
+				<!-- Active Batches -->
+				<div class="bg-surface-container-lowest p-6 rounded-xl space-y-2 border-l-4 border-primary">
+					<div class="flex justify-between items-start">
+						<span class="material-symbols-outlined text-primary p-2 bg-primary-fixed rounded-lg"
+							data-icon="rocket_launch">rocket_launch</span>
+						<span class="text-xs font-bold text-primary px-2 py-1 bg-secondary-fixed rounded">LIVE</span>
+					</div>
+					<div>
+						<p class="font-label text-xs uppercase tracking-widest text-outline">Active Batches</p>
+						<h3 id="activeBatches">0</h3>
+
+					</div>
+				</div>
+				<!-- Total Trainers -->
+				<div class="bg-surface-container-lowest p-6 rounded-xl space-y-2">
+					<div class="flex justify-between items-start">
+						<span class="material-symbols-outlined text-primary p-2 bg-primary-fixed rounded-lg"
+							data-icon="school">school</span>
+					</div>
+					<div>
+						<p class="font-label text-xs uppercase tracking-widest text-outline">Total Trainers</p>
+						<h3 id="totalTrainers">0</h3>
+					</div>
+				</div>
+				<!-- Completed Batches -->
+				<div class="bg-surface-container-lowest p-6 rounded-xl space-y-2">f
+					<div class="flex justify-between items-start">
+						<span class="material-symbols-outlined text-tertiary p-2 bg-tertiary-fixed rounded-lg"
+							data-icon="verified">verified</span>
+						<span class="text-xs font-bold text-on-surface-variant">98.2% Rate</span>
+					</div>
+					<div>
+						<p class="font-label text-xs uppercase tracking-widest text-outline">Completed</p>
+
+						<h3 id="completedBatches">0</h3>
+					</div>
+				</div>
+			</div>
+			<!-- Main Data Section: Asymmetric Layout -->
+			<div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+				<!-- Batch Progress Table (Lg Column) -->
+				<div class="xl:col-span-2 bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm">
+					<div class="px-8 py-6 flex justify-between items-center border-b border-surface-container-low">
+						<h3 class="font-headline text-xl font-bold text-on-surface">Active Batch Trajectory</h3>
+						<div class="flex gap-2">
+							<span
+								class="material-symbols-outlined text-outline cursor-pointer hover:text-primary transition-colors"
+								data-icon="filter_list">filter_list</span>
+							<span
+								class="material-symbols-outlined text-outline cursor-pointer hover:text-primary transition-colors"
+								data-icon="download">download</span>
+						</div>
+					</div>
+					<div class="overflow-x-auto">
+						<table class="w-full text-left">
+							<thead>
+								<tr
+									class="font-label text-[10px] uppercase tracking-[0.1em] text-outline bg-surface-container-low/50">
+									<th class="px-8 py-4 font-semibold">Batch Identity</th>
+									<th class="px-6 py-4 font-semibold">Trainer</th>
+									<th class="px-6 py-4 font-semibold">Start Date</th>
+									<th class="px-6 py-4 font-semibold">Status</th>
+									<th class="px-6 py-4 font-semibold">Progress</th>
+								</tr>
+							</thead>
+							<tbody id="batchTableBody" class="divide-y-0">
+							</tbody>
+								<tr class="group hover:bg-secondary-container transition-all cursor-pointer">
+									<td class="px-8 py-5">
+										<div class="font-bold text-on-surface">B-2024-ALPHA</div>
+										<div class="text-xs text-on-surface-variant">Data Engineering</div>
+									</td>
+									<td class="px-6 py-5">
+										<div class="flex items-center gap-2">
+											<div
+												class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary text-[10px] font-bold">
+												AS</div>
+											<span class="text-sm font-medium">Alan Sterling</span>
+										</div>
+									</td>
+									<td class="px-6 py-5 text-sm text-on-surface-variant font-medium">Oct 12, 2023</td>
+									<td class="px-6 py-5">
+										<span
+											class="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold uppercase tracking-tighter">In-Progress</span>
+									</td>
+									<td class="px-6 py-5 w-48">
+										<div class="flex items-center gap-3">
+											<div
+												class="flex-1 h-2 bg-surface-container-high rounded-full overflow-hidden">
+												<div class="h-full primary-gradient w-[72%]"></div>
+											</div>
+											<span class="text-xs font-bold text-on-surface">72%</span>
+										</div>
+									</td>
+								</tr>
+								<tr class="group hover:bg-secondary-container transition-all cursor-pointer">
+									<td class="px-8 py-5">
+										<div class="font-bold text-on-surface">B-2024-GAMMA</div>
+										<div class="text-xs text-on-surface-variant">Cloud Architecture</div>
+									</td>
+									<td class="px-6 py-5">
+										<div class="flex items-center gap-2">
+											<div
+												class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed-variant text-[10px] font-bold">
+												MR</div>
+											<span class="text-sm font-medium">Maria Rodriguez</span>
+										</div>
+									</td>
+									<td class="px-6 py-5 text-sm text-on-surface-variant font-medium">Nov 01, 2023</td>
+									<td class="px-6 py-5">
+										<span
+											class="px-3 py-1 bg-tertiary/10 text-tertiary rounded-full text-xs font-bold uppercase tracking-tighter">Delayed</span>
+									</td>
+									<td class="px-6 py-5">
+										<div class="flex items-center gap-3">
+											<div
+												class="flex-1 h-2 bg-surface-container-high rounded-full overflow-hidden">
+												<div class="h-full bg-tertiary w-[35%]"></div>
+											</div>
+											<span class="text-xs font-bold text-on-surface">35%</span>
+										</div>
+									</td>
+								</tr>
+								<tr class="group hover:bg-secondary-container transition-all cursor-pointer">
+									<td class="px-8 py-5">
+										<div class="font-bold text-on-surface">B-2023-ZETA</div>
+										<div class="text-xs text-on-surface-variant">Systems Security</div>
+									</td>
+									<td class="px-6 py-5">
+										<div class="flex items-center gap-2">
+											<div
+												class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary text-[10px] font-bold">
+												JH</div>
+											<span class="text-sm font-medium">James Holt</span>
+										</div>
+									</td>
+									<td class="px-6 py-5 text-sm text-on-surface-variant font-medium">Aug 15, 2023</td>
+									<td class="px-6 py-5">
+										<span
+											class="px-3 py-1 bg-secondary-fixed text-on-secondary-fixed-variant rounded-full text-xs font-bold uppercase tracking-tighter">Stabilized</span>
+									</td>
+									<td class="px-6 py-5">
+										<div class="flex items-center gap-3">
+											<div
+												class="flex-1 h-2 bg-surface-container-high rounded-full overflow-hidden">
+												<div class="h-full primary-gradient w-[94%]"></div>
+											</div>
+											<span class="text-xs font-bold text-on-surface">94%</span>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!-- Trainer Quick Stats (Sm Column) -->
+				<div class="bg-inverse-surface rounded-xl p-8 text-white space-y-6">
+					<div class="space-y-1">
+						<h3 class="font-headline text-xl font-bold text-primary-fixed">Trainer Directory</h3>
+						<p class="text-outline-variant text-xs uppercase tracking-widest">Active Mentorship
+							High-Performers</p>
+					</div>
+					<div class="space-y-4">
+						<div
+							class="flex items-center justify-between p-4 bg-surface-variant/10 rounded-lg hover:bg-surface-variant/20 transition-all cursor-pointer">
+							<div class="flex items-center gap-4">
+								<img alt="Trainer Avatar" class="w-10 h-10 rounded-lg object-cover"
+									data-alt="Close-up of a professional woman in business casual attire smiling confidently in a minimalist office"
+									src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtaZfChlqusswXLRx9506MmxEp3GJMD7MZa5OQ6S33zEXjIUyScnTtzYF4I4TcSff6oKumAdeCn470fldxs4Wp3MXNco7kONW0ksbi204P27A0-oWfBI_6OQeAyY8buWkb092FqjqR68XToYLztr4p-QxZ_cZ3fByi_50vFtuGARfhMB-GG2yRacKt7lgJI8ApPSs3GQ6xBJ5Tf_YnhhmUHOLgI8QEkqH6BNFHPncLwbDeCeOeKq4DW-EEvD1Gfj_6IpEykjqYpNNh" />
+								<div>
+									<p class="font-bold text-sm">Elena Vance</p>
+									<p class="text-[10px] text-outline-variant uppercase">3 Active Batches</p>
+								</div>
+							</div>
+							<span class="material-symbols-outlined text-primary-fixed text-sm"
+								data-icon="arrow_forward_ios">arrow_forward_ios</span>
+						</div>
+						<div
+							class="flex items-center justify-between p-4 bg-surface-variant/10 rounded-lg hover:bg-surface-variant/20 transition-all cursor-pointer">
+							<div class="flex items-center gap-4">
+								<img alt="Trainer Avatar" class="w-10 h-10 rounded-lg object-cover"
+									data-alt="Professional man with glasses looking directly at the camera with a neutral and focused expression"
+									src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJm73eCbmsOdGGgTsRCaF0ZgJ1tQx25_7AjQ2QUq03ixZrv-gXLz_X0xZkkQjnSahFWeWI7IxwNJkAUut5SPcAM2Yo4yBChENbhmU4ZPmXRQ-QmuewDKrxaIk4D7aCAUJJICM5m15Clq4RaGKekIhR6p651aWZWauNpntCinSUZRoW8g1JAfZOkxq1OIT0PbtgtHrioL0P6uxHcHc3VzGo0Gg7SZUsaNcY18U2og8IzHRRynWJEHq8mgk-mrPZErPuA6o2K8uCtikt" />
+								<div>
+									<p class="font-bold text-sm">Marcus Thorne</p>
+									<p class="text-[10px] text-outline-variant uppercase">5 Active Batches</p>
+								</div>
+							</div>
+							<span class="material-symbols-outlined text-primary-fixed text-sm"
+								data-icon="arrow_forward_ios">arrow_forward_ios</span>
+						</div>
+						<div
+							class="flex items-center justify-between p-4 bg-surface-variant/10 rounded-lg hover:bg-surface-variant/20 transition-all cursor-pointer">
+							<div class="flex items-center gap-4">
+								<img alt="Trainer Avatar" class="w-10 h-10 rounded-lg object-cover"
+									data-alt="Headshot of a focused professional woman in a modern corporate setting with bokeh background"
+									src="https://lh3.googleusercontent.com/aida-public/AB6AXuDC9qA99AMDgRf4clwtgrCZl4epUrIHOhbzv_u6YmNDSHApeTYv8vZcB_5ILe7_SmbIpMUdgsQ7DilFBkLIKT5Bre02jwIWosYw8xrzvZI2gXb3MoTPpydaR2BwNYNXnuOLPtLOIjkHPjjKHMOUN_pfeQP3hUsPH6C_W3amfop1478HBI-3IK7HEvg-gsInHOIybwr2D5MiKbQaVCq-nXfC3VBTIsV0_Uuzg2MGBdO4pU_s0UyZ8BZR1OxGW5l8OlRiBc9ohAVgBJF8" />
+								<div>
+									<p class="font-bold text-sm">Sarah Jenkins</p>
+									<p class="text-[10px] text-outline-variant uppercase">2 Active Batches</p>
+								</div>
+							</div>
+							<span class="material-symbols-outlined text-primary-fixed text-sm"
+								data-icon="arrow_forward_ios">arrow_forward_ios</span>
+						</div>
+					</div>
+					<button
+						class="w-full py-3 border border-outline-variant/30 rounded-lg text-sm font-bold text-primary-fixed hover:bg-white/5 transition-all">
+						View Full Directory
+					</button>
+				</div>
+			</div>
+			<!-- Detailed Trainer Table -->
+			<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm">
+				<div class="px-8 py-6 border-b border-surface-container-low">
+					<h3 class="font-headline text-xl font-bold text-on-surface">Lead Trainer Performance</h3>
+				</div>
+				<table class="w-full text-left">
+					<thead
+						class="bg-surface-container-low/50 font-label text-[10px] uppercase tracking-[0.1em] text-outline">
+						<tr>
+							<th class="px-8 py-4 font-semibold">Trainer Profile</th>
+							<th class="px-6 py-4 font-semibold">Assigned Batches</th>
+							<th class="px-6 py-4 font-semibold">Contact</th>
+							<th class="px-6 py-4 text-right font-semibold">Management</th>
+						</tr>
+					</thead>
+					<tbody id="batchTableBody" class="divide-y-0">
+						<tr class="hover:bg-secondary-container transition-all">
+							<td class="px-8 py-5">
+								<div class="font-bold text-on-surface">Alan Sterling</div>
+								<div class="text-xs text-on-surface-variant">Senior Technical Instructor</div>
+							</td>
+							<td class="px-6 py-5">
+								<div class="flex flex-wrap gap-1">
+									<span
+										class="text-[10px] font-bold px-2 py-0.5 bg-primary-fixed text-on-primary-fixed-variant rounded">B-2024-ALPHA</span>
+									<span
+										class="text-[10px] font-bold px-2 py-0.5 bg-surface-container-high text-outline rounded">+2
+										more</span>
+								</div>
+							</td>
+							<td class="px-6 py-5 text-sm text-on-surface-variant">alan.s@ledger-system.com</td>
+							<td class="px-6 py-5 text-right">
+								<button class="p-2 text-outline hover:text-primary transition-colors">
+									<span class="material-symbols-outlined" data-icon="edit">edit</span>
+								</button>
+								<button class="p-2 text-outline hover:text-tertiary transition-colors">
+									<span class="material-symbols-outlined" data-icon="delete">delete</span>
+								</button>
+							</td>
+						</tr>
+						<tr class="hover:bg-secondary-container transition-all">
+							<td class="px-8 py-5">
+								<div class="font-bold text-on-surface">Maria Rodriguez</div>
+								<div class="text-xs text-on-surface-variant">Cloud Solutions Specialist</div>
+							</td>
+							<td class="px-6 py-5">
+								<div class="flex flex-wrap gap-1">
+									<span
+										class="text-[10px] font-bold px-2 py-0.5 bg-primary-fixed text-on-primary-fixed-variant rounded">B-2024-GAMMA</span>
+									<span
+										class="text-[10px] font-bold px-2 py-0.5 bg-primary-fixed text-on-primary-fixed-variant rounded">C-2023-DELTA</span>
+								</div>
+							</td>
+							<td class="px-6 py-5 text-sm text-on-surface-variant">m.rodriguez@cloud-edu.io</td>
+							<td class="px-6 py-5 text-right">
+								<button class="p-2 text-outline hover:text-primary transition-colors">
+									<span class="material-symbols-outlined" data-icon="edit">edit</span>
+								</button>
+								<button class="p-2 text-outline hover:text-tertiary transition-colors">
+									<span class="material-symbols-outlined" data-icon="delete">delete</span>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</main>
+	<!-- Assign Batch Modal (Hidden by Default/Simulated Presence) -->
+	<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-on-surface/40 backdrop-blur-[4px] invisible">
+		<div class="glass-panel w-full max-w-lg rounded-xl shadow-2xl p-8 space-y-6 transform scale-95 opacity-0">
+			<div class="flex justify-between items-start">
+				<div>
+					<h2 class="font-headline text-2xl font-bold text-on-surface">Provision New Batch</h2>
+					<p class="text-sm text-on-surface-variant">Assign a technical lead to a specific training track.</p>
+				</div>
+				<button class="text-outline hover:text-on-surface">
+					<span class="material-symbols-outlined" data-icon="close">close</span>
+				</button>
+			</div>
+			<div class="space-y-4">
+				<div class="space-y-1">
+					<label class="text-xs font-bold uppercase tracking-widest text-outline">Batch Name</label>
+					<input
+						class="w-full bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-on-surface py-3"
+						placeholder="e.g. B-2024-SIGMA" type="text" />
+				</div>
+				<div class="space-y-1">
+					<label class="text-xs font-bold uppercase tracking-widest text-outline">Lead Trainer</label>
+					<select
+						class="w-full bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-on-surface py-3">
+						<option>Select a trainer...</option>
+						<option>Alan Sterling</option>
+						<option>Maria Rodriguez</option>
+						<option>James Holt</option>
+					</select>
+				</div>
+				<div class="grid grid-cols-2 gap-4">
+					<div class="space-y-1">
+						<label class="text-xs font-bold uppercase tracking-widest text-outline">Start Date</label>
+						<input
+							class="w-full bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-on-surface py-3"
+							type="date" />
+					</div>
+					<div class="space-y-1">
+						<label class="text-xs font-bold uppercase tracking-widest text-outline">Priority</label>
+						<select
+							class="w-full bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-on-surface py-3">
+							<option>Standard</option>
+							<option>Critical</option>
+							<option>Low</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="flex gap-4 pt-4">
+				<button
+					class="flex-1 py-3 bg-surface-container-high text-on-surface font-bold rounded-lg hover:bg-surface-container-highest transition-all">Cancel</button>
+				<button
+					class="flex-1 py-3 primary-gradient text-white font-bold rounded-lg shadow-lg shadow-primary/20 hover:opacity-90 transition-all">Finalize
+					Assignment</button>
+			</div>
+		</div>
+	</div>
+	<script>
+	//  Check login
+	const token = localStorage.getItem("token");
+
+	if (!token) {
+	    alert("Please login first ❌");
+	    window.location.href = "index.html";
+	}
+
+	//  Logout function
+	function logout() {
+	    localStorage.removeItem("token");
+	    localStorage.removeItem("role");
+
+	    alert("Logged out successfully 👋");
+	    window.location.href = "index.html";
+	}
+
+	//  Load Dashboard Stats
+	fetch("http://localhost:8080/api/admin/dashboard", {
+	    headers: {
+	        "Authorization": "Bearer " + token
+	    }
+	})
+	.then(res => {
+	    if (!res.ok) throw new Error("Failed to load dashboard");
+	    return res.json();
+	})
+	.then(data => {
+	    document.getElementById("totalBatches").innerText = data.totalBatches;
+	    document.getElementById("activeBatches").innerText = data.activeBatches;
+	    document.getElementById("totalTrainers").innerText = data.totalTrainers;
+	    document.getElementById("completedBatches").innerText = data.completedBatches;
+	})
+	.catch(err => {
+	    console.error("Dashboard Error:", err);
+	});
+
+	// 🔥 Load Batch Table
+	fetch("http://localhost:8080/api/admin/batches", {
+	    headers: {
+	        "Authorization": "Bearer " + token
+	    }
+	})
+	.then(res => {
+	    if (!res.ok) throw new Error("Failed to load batches");
+	    return res.json();
+	})
+	.then(data => {
+	    const tableBody = document.getElementById("batchTableBody");
+
+	    if (!tableBody) {
+	        console.error("❌ batchTableBody not found in HTML");
+	        return;
+	    }
+
+	    tableBody.innerHTML = "";
+
+	    data.forEach(batch => {
+	        const row = `
+	        <tr>
+	            <td>${batch.name}</td>
+	            <td>${batch.trainerName || "N/A"}</td>
+	            <td>${batch.startDate}</td>
+	            <td>${batch.status}</td>
+	            <td>${batch.progress || "0"}%</td>
+	        </tr>
+	        `;
+	        tableBody.innerHTML += row;
+	    });
+	})
+	.catch(err => {
+	    console.error("Batch Error:", err);
+	});
+	</script>
+</body>
+
+</html>

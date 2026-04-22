@@ -7,7 +7,7 @@ import { authService } from "../services/authService";
 import { useAuth } from "../hooks/useAuth";
 import { validateLoginForm } from "../utils/validation";
 
-const LoginPage = () => {
+  const LoginPage = () => {
   const navigate = useNavigate();
   const { login, isAuthenticated, role } = useAuth();
   const [form, setForm] = useState({ email: "", password: "" });
