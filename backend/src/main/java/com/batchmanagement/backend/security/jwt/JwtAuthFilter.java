@@ -30,62 +30,63 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                    FilterChain filterChain)
             throws ServletException, IOException {
 
-        String path = request.getRequestURI();
+    	String path = request.getRequestURI();
 
-        // ✅ Skip JWT filter for frontend & public routes
-        if (path.equals("/") ||
-            path.equals("/index.html") ||
-            path.equals("/dashboard.html") ||
-            path.startsWith("/css") ||
-            path.startsWith("/js") ||
-            path.startsWith("/images") ||
-            path.startsWith("/api/auth/")) {
+    	// ✅ Skip static + public routes
+    	if (path.endsWith(".html") ||
+    	    path.startsWith("/css") ||
+    	    path.startsWith("/js") ||
+    	    path.startsWith("/images") ||
+    	    path.startsWith("/api/auth/")) {
 
-            filterChain.doFilter(request, response);
-            return;
-        }
+    	    filterChain.doFilter(request, response);
+    	    return;
+    	}
 
-        final String authHeader = request.getHeader("Authorization");
+    	final String authHeader = request.getHeader("Authorization");
 
-        // ✅ If no token → continue without authentication
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+    	// ✅ If no token → continue
+    	if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+    	    filterChain.doFilter(request, response);
+    	    return;
+    	}
 
-        try {
-            String jwt = authHeader.substring(7);
-            String userEmail = jwtService.extractUsername(jwt);
+    	try {
+    	    String jwt = authHeader.substring(7);
+    	    String userEmail = jwtService.extractUsername(jwt);
 
-            if (userEmail != null &&
-                SecurityContextHolder.getContext().getAuthentication() == null) {
+    	    if (userEmail != null &&
+    	        SecurityContextHolder.getContext().getAuthentication() == null) {
 
-                UserDetails userDetails =
-                        userDetailsService.loadUserByUsername(userEmail);
+    	        UserDetails userDetails =
+    	                userDetailsService.loadUserByUsername(userEmail);
 
-                if (jwtService.isTokenValid(jwt, userDetails.getUsername())) {
+    	        if (jwtService.isTokenValid(jwt, userDetails.getUsername())) {
 
-                    UsernamePasswordAuthenticationToken authToken =
-                            new UsernamePasswordAuthenticationToken(
-                                    userDetails,
-                                    null,
-                                    userDetails.getAuthorities()
-                            );
+    	            UsernamePasswordAuthenticationToken authToken =
+    	                    new UsernamePasswordAuthenticationToken(
+    	                            userDetails,
+    	                            null,
+    	                            userDetails.getAuthorities()
+    	                    );
 
-                    authToken.setDetails(
-                            new WebAuthenticationDetailsSource()
-                                    .buildDetails(request)
-                    );
+    	            authToken.setDetails(
+    	                    new WebAuthenticationDetailsSource()
+    	                            .buildDetails(request)
+    	            );
 
-                    SecurityContextHolder.getContext()
-                            .setAuthentication(authToken);
-                }
-            }
+    	            SecurityContextHolder.getContext()
+    	                    .setAuthentication(authToken);
+    	        }
+    	    }
 
-        } catch (Exception ignored) {
-            // ignore invalid token
-        }
+    	} catch (Exception ignored) {
+    	    // ignore invalid token
+    	}
 
-        filterChain.doFilter(request, response);
+    	if (!path.startsWith("/api/")) {
+    	    filterChain.doFilter(request, response);
+    	    return;
+    	}
     }
 }
