@@ -89,6 +89,65 @@
     body {
       min-height: max(884px, 100dvh);
     }
+	.glow-border {
+	  position: relative;
+	  border-radius: 12px;
+	}
+
+	/* 🔥 Border only effect */
+	.glow-border::before {
+	  content: "";
+	  position: absolute;
+	  inset: 0;
+	  padding: 2px; /* border thickness */
+	  border-radius: 12px;
+
+	  background: linear-gradient(120deg, #00f0ff, #0d7377, #81d4d8, #00f0ff);
+	  background-size: 300%;
+	  animation: glowMove 5s linear infinite;
+
+	  /* MAGIC PART (shows only border) */
+	  -webkit-mask: 
+	    linear-gradient(#fff 0 0) content-box, 
+	    linear-gradient(#fff 0 0);
+	  -webkit-mask-composite: xor;
+	  mask-composite: exclude;
+
+	  pointer-events: none;
+	}
+
+	/* animation */
+	@keyframes glowMove {
+	  0% { background-position: 0% }
+	  100% { background-position: 300% }
+	}
+	/* 🌈 Animation keyframes */
+	@keyframes glowMove {
+	  0% { background-position: 0% }
+	  100% { background-position: 300% }
+	}
+
+	/* 🎯 Button hover animation */
+	button {
+	  transition: all 0.3s ease;
+	}
+	button:hover {
+	  transform: scale(1.03);
+	  box-shadow: 0 5px 15px rgba(13, 115, 119, 0.4);
+	}
+
+	/* ⚡ Sidebar hover animation */
+	aside a {
+	  transition: all 0.3s ease;
+	}
+	aside a:hover {
+	  transform: translateX(6px);
+	}
+
+	/* 💡 Input focus glow */
+	input:focus, textarea:focus, select:focus {
+	  box-shadow: 0 0 0 2px #81d4d8;
+	}
   </style>
   </head>
 <body class="bg-surface font-body text-on-surface antialiased">
@@ -127,7 +186,7 @@
 <header class="sticky top-0 z-30 flex justify-between items-center w-full px-8 py-4 bg-[#f8f9fb] dark:bg-[#191c1e]">
 <div class="flex items-center gap-4">
 <span class="material-symbols-outlined text-[#0d7377] dark:text-[#9df0f4]">menu</span>
-<h1 class="text-lg font-bold tracking-tighter text-[#191c1e] dark:text-[#f8f9fb] font-headline">Precision Ledger</h1>
+<h1 class="text-lg font-bold tracking-tighter text-[#191c1e] dark:text-[#f8f9fb] font-headline">PRECISION LEDGER</h1>
 </div>
 <div class="flex items-center gap-6">
 <button onclick="logout()" class="font-['Manrope'] text-sm tracking-wide uppercase text-[#0d7377] font-bold">Logout</button>
@@ -138,21 +197,21 @@
 <div class="max-w-7xl mx-auto space-y-8">
 <!-- KPI Section -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-<div class="bg-surface-container-lowest p-6 rounded-xl shadow-black/5 flex flex-col gap-2">
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-black/5 flex flex-col gap-2 card-animate glow-border">
 <span class="text-on-surface-variant font-label text-[10px] uppercase tracking-widest font-bold">Active Batches</span>
 <span id="kpiTotal" class="text-4xl font-headline font-extrabold text-on-surface tracking-tighter">0</span>
 <div class="mt-2 w-full h-1 bg-surface-container-high rounded-full overflow-hidden">
 <div class="bg-primary h-full w-2/3"></div>
 </div>
 </div>
-<div class="bg-surface-container-lowest p-6 rounded-xl shadow-black/5 flex flex-col gap-2">
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-black/5 flex flex-col gap-2 card-animate glow-border">
 <span class="text-on-surface-variant font-label text-[10px] uppercase tracking-widest font-bold">Completed This Month</span>
 <span id="kpiCompleted" class="text-4xl font-headline font-extrabold text-on-surface tracking-tighter">0</span>
 <div class="mt-2 w-full h-1 bg-surface-container-high rounded-full overflow-hidden">
 <div class="bg-secondary h-full w-1/3"></div>
 </div>
 </div>
-<div class="bg-surface-container-lowest p-6 rounded-xl shadow-black/5 flex flex-col gap-2">
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-black/5 flex flex-col gap-2 card-animate glow-border">
 <span class="text-on-surface-variant font-label text-[10px] uppercase tracking-widest font-bold">Avg. Performance</span>
 <span id="kpiProgress" class="text-4xl font-headline font-extrabold text-on-surface tracking-tighter">0%</span>
 <div class="mt-2 w-full h-1 bg-surface-container-high rounded-full overflow-hidden">
@@ -165,51 +224,84 @@
 <!-- Batch List Section -->
 <div class="lg:col-span-8 space-y-6">
 <div class="flex justify-between items-end">
-<h2 class="text-2xl font-headline font-bold text-on-surface">Active Assignments</h2>
+<h2 class="text-2xl font-headline font-bold text-on-surface">ACTIVE ASSIGNMENTS</h2>
 <button onclick="window.location.href='/HistoryPage.html'" class="text-primary font-label text-sm font-semibold flex items-center gap-1 hover:underline">
                                 View History <span class="material-symbols-outlined text-sm">arrow_forward</span>
 </button>
 </div>
 <!-- Batch Cards -->
-<div id="adminBatchCards" class="grid gap-6"></div>
+
+<div id="adminBatchCards" class="grid gap-6">
+	
 </div>
+</div>
+
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-black/5 flex flex-col gap-2 card-animate glow-border">
+<div id="adminBatchCards" class="grid gap-6"></div>
+</div></div>
 <!-- Creation Form Section -->
 <div class="lg:col-span-4 sticky top-28">
-<div class="bg-surface-container-lowest p-8 rounded-xl shadow-xl shadow-black/5 border border-outline-variant/10">
+<div class="bg-surface-container-lowest p-8 rounded-xl shadow-xl shadow-black/5 border border-outline-variant/10 card-animate glow-border">
 <div class="mb-6">
 <h2 class="text-xl font-headline font-bold text-on-surface">Create New Batch</h2>
 <p class="text-xs text-on-surface-variant font-label mt-1">Configure parameters for a new training cycle.</p>
 </div>
+
 <form id="assignBatchForm" class="space-y-5">
-<div class="space-y-1.5">
-<label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">Batch Name</label>
-<input id="batchNameInput" class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface placeholder:text-outline-variant" placeholder="Batch Name (existing)" type="text"/>
-</div>
-<div class="grid grid-cols-2 gap-4">
-<div class="space-y-1.5">
-<label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">Start Date</label>
-<input id="batchStartDateInput" class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface" type="date"/>
-</div>
-<div class="space-y-1.5">
-<label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">End Date</label>
-<input id="batchEndDateInput" class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface" type="date"/>
-</div>
-</div>
-<div class="space-y-1.5">
-<label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">Assign Trainer</label>
-<select id="trainerSelectInput" class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface">
-  <option value="">Select trainer...</option>
-</select>
-</div>
-<div class="space-y-1.5">
-<label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">Lab No / Notes</label>
-<textarea id="batchLabInput" class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface placeholder:text-outline-variant" placeholder="e.g. Lab-2" rows="3"></textarea>
-</div>
-<button class="w-full bg-primary-container text-on-primary-container py-3 rounded-lg font-headline font-bold text-sm tracking-tight hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2" type="submit">
-<span class="material-symbols-outlined text-lg">add_circle</span>
-                                    Initialize Batch
-                                </button>
+  <div class="space-y-1.5">
+    <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">Batch Name</label>
+    <input id="batchNameInput" class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface placeholder:text-outline-variant" placeholder="Batch Name (existing)" type="text"/>
+  </div>
+
+  <div class="grid grid-cols-2 gap-4">
+    <div class="space-y-1.5">
+      <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">Start Date</label>
+      <input id="batchStartDateInput" class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface" type="date"/>
+    </div>
+    <div class="space-y-1.5">
+      <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">End Date</label>
+      <input id="batchEndDateInput" class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface" type="date"/>
+    </div>
+  </div>
+
+  <div class="space-y-1.5">
+    <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">Assign Trainer</label>
+    <select id="trainerSelectInput" class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface">
+      <option value="">Select trainer...</option>
+    </select>
+  </div>
+
+  <!-- ✅ NEW: No. of Students -->
+  <div class="space-y-1.5">
+    <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">No. of Students</label>
+    <input id="noOfStudents" class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface placeholder:text-outline-variant" placeholder="e.g. 30" type="number" min="1"/>
+  </div>
+
+  <!-- ✅ NEW: Timing (Start Time & End Time) -->
+  <div class="grid grid-cols-2 gap-4">
+    <div class="space-y-1.5">
+      <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">Start Time</label>
+      <input id="batchStartTime" class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface" type="time"/>
+    </div>
+    <div class="space-y-1.5">
+      <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">End Time</label>
+      <input id="batchEndTime" class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface" type="time"/>
+    </div>
+  </div>
+
+  <div class="space-y-1.5">
+    <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">Lab No / Notes</label>
+    <input id="batchLabInput" class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface placeholder:text-outline-variant" placeholder="e.g. Lab-2" rows="3"></input>
+  </div>
+
+  <button class="w-full bg-primary-container text-on-primary-container py-3 rounded-lg font-headline font-bold text-sm tracking-tight hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2" type="submit">
+    <span class="material-symbols-outlined text-lg">add_circle</span>
+    Initialize Batch
+  </button>
 </form>
+
+
+
 <div class="mt-8 pt-8 border-t border-surface-container-high">
 <div class="relative rounded-lg overflow-hidden h-32 group">
 <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Group of students collaborating around a computer screen in a bright minimalist workspace" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgj7jYQ3IhGPjwkEY4hoKp_ay1ih1iQwGtwm10bSLoaw_xdBxnvQZuoKmxeXy1dDs_eduCI0cud8krWU_FJWNzrTCTePgcrT26iM4Sz5AlYqbcyST4hqFuUs3Jzg9pPXjZSWLV6Aq7V9YtKYC8k7FRGXaWJthr8U0_cIKvev30w5vXltAHX6Zlfcyri8m6lTuMtUWnPiFEeH6Pd-Upau7JqWpOcMU9wvQ5uWD0Q_RBijkY0hzc12fmpQixst9qiSxOspDT2fUitw2-"/>
@@ -251,16 +343,58 @@ async function loadAdminBatches() {
     document.getElementById("kpiTotal").innerText = total;
     document.getElementById("kpiCompleted").innerText = completed;
     document.getElementById("kpiProgress").innerText = `${avg}%`;
-    document.getElementById("adminBatchCards").innerHTML = batches.map(batch => `
-      <div class="bg-surface-container-lowest p-6 rounded-xl group transition-all hover:translate-y-[-2px]">
-        <div class="flex justify-between items-start mb-6"><div><h3 class="text-xl font-headline font-bold text-on-surface">${batch.domainName || "Untitled Batch"}</h3>
-        <p class="text-sm text-on-surface-variant line-clamp-1 mt-1">Trainer: ${batch.trainerName || "Unassigned"}</p></div>
-        <div class="text-right"><span class="block text-xs font-label text-outline uppercase tracking-wider">Timeline</span><span class="text-sm font-medium text-on-surface">${formatDate(batch.startDate)} - ${formatDate(batch.endDate)}</span></div></div>
-        <div class="flex items-center gap-4"><div class="flex-1 h-3 bg-surface-container-high rounded-full overflow-hidden"><div class="bg-gradient-to-r from-primary to-primary-container h-full rounded-full" style="width:${batch.progress ?? 0}%"></div></div><span class="font-headline font-bold text-lg text-primary">${batch.progress ?? 0}%</span></div>
-      </div>`).join("");
+	document.getElementById("adminBatchCards").innerHTML = batches.map(batch => `
+	  <div class="bg-surface-container-lowest p-6 rounded-xl group transition-all hover:translate-y-[-2px]">
+
+	    <div class="flex justify-between items-start mb-6">
+
+	      <div>
+	        <h3 class="text-xl font-headline font-bold text-on-surface">
+	          ${batch.domainName || "Untitled Batch"}
+	        </h3>
+
+	        <p class="text-sm text-on-surface-variant line-clamp-1 mt-1">
+	          Trainer: ${batch.trainerName || "Unassigned"}
+	        </p>
+
+	        <p class="text-sm text-on-surface-variant mt-1">
+	          Lab No: ${batch.labNo || "N/A"}
+	        </p>
+
+	        <!-- ✅ FIXED: was batch.studentCount → now batch.noOfStudents -->
+	        <p class="text-sm text-on-surface-variant mt-1">
+	          Students: ${batch.noOfStudents ?? 0}
+	        </p>
+
+	        <!-- ✅ FIXED: was batch.timing → now batch.time -->
+	        <p class="text-sm text-on-surface-variant mt-1">
+	          Timing: ${batch.time || "Not set"}
+	        </p>
+
+	      </div>
+
+	      <div class="text-right">
+	        <span class="block text-xs font-label text-outline uppercase tracking-wider">Timeline</span>
+	        <span class="text-sm font-medium text-on-surface">
+	          ${formatDate(batch.startDate)} - ${formatDate(batch.endDate)}
+	        </span>
+	      </div>
+	    </div>
+
+	    <div class="flex items-center gap-4">
+	      <div class="flex-1 h-3 bg-surface-container-high rounded-full overflow-hidden">
+	        <div class="bg-gradient-to-r from-primary to-primary-container h-full rounded-full"
+	             style="width:${batch.progress ?? 0}%"></div>
+	      </div>
+	      <span class="font-headline font-bold text-lg text-primary">
+	        ${batch.progress ?? 0}%
+	      </span>
+	    </div>
+
+	  </div>
+	`).join("");
   } catch (e) { console.error(e); }
 }
-
 async function loadTrainerOptions() {
   const res = await fetch(`${API_BASE_URL}/api/admin/trainers`, { headers: { Authorization: `Bearer ${token}` } });
   if (!res.ok) throw new Error("Failed to load trainers");
@@ -274,28 +408,60 @@ async function loadTrainerOptions() {
 
 document.getElementById("assignBatchForm").addEventListener("submit", async (event) => {
   event.preventDefault();
+
   const batchNameRaw = document.getElementById("batchNameInput").value.trim();
-  const batchName = batchNameRaw.toLowerCase();
-  const trainerId = Number(document.getElementById("trainerSelectInput").value || 0);
-  const startDate = document.getElementById("batchStartDateInput").value;
-  const endDate = document.getElementById("batchEndDateInput").value;
-  const labNo = document.getElementById("batchLabInput").value.trim() || "Lab-1";
+  const batchName    = batchNameRaw.toLowerCase();
+  const trainerId    = Number(document.getElementById("trainerSelectInput").value || 0);
+  const startDate    = document.getElementById("batchStartDateInput").value;
+  const endDate      = document.getElementById("batchEndDateInput").value;
+  const labNo        = document.getElementById("batchLabInput").value.trim() || "Lab-1";
+  const noOfStudents = parseInt(document.getElementById("noOfStudents").value, 10) || 0;
+  const startTime    = document.getElementById("batchStartTime").value;
+  const endTime      = document.getElementById("batchEndTime").value;
+
+  const formatTime = (t) => {
+    if (!t) return "";
+    const [h, m] = t.split(":").map(Number);
+    const period = h >= 12 ? "PM" : "AM";
+    const hour   = ((h + 11) % 12 + 1).toString().padStart(2, "0");
+    return `${hour}:${m.toString().padStart(2, "0")} ${period}`;
+  };
+  const timeRange = `${formatTime(startTime)} - ${formatTime(endTime)}`;
+
   if (!batchName || !trainerId) return;
+
+  if (!startTime || !endTime) {
+    alert("Please provide both start time and end time.");
+    return;
+  }
+  if (!noOfStudents || noOfStudents < 1) {
+    alert("Please enter a valid number of students.");
+    return;
+  }
+
   try {
     const [batchRes, trainerRes] = await Promise.all([
-      fetch(`${API_BASE_URL}/api/admin/batches`, { headers: { Authorization: `Bearer ${token}` } }),
+      fetch(`${API_BASE_URL}/api/admin/batches`,  { headers: { Authorization: `Bearer ${token}` } }),
       fetch(`${API_BASE_URL}/api/admin/trainers`, { headers: { Authorization: `Bearer ${token}` } })
     ]);
+
     if (!batchRes.ok || !trainerRes.ok) {
       throw new Error("Unable to load latest batch/trainer data.");
     }
+
     const batches = await batchRes.json();
-    const batch = batches.find(b => String(b.domainName || "").toLowerCase() === batchName);
+    const batch   = batches.find(b => String(b.domainName || "").toLowerCase() === batchName);
+
     if (batch) {
       const assignRes = await fetch(`${API_BASE_URL}/api/admin/assign-batch`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-        body: JSON.stringify({ batchId: batch.id, trainerId })
+        body: JSON.stringify({
+          batchId: batch.id,
+          trainerId,
+          time:          timeRange,
+          noOfStudents,
+        })
       });
       if (!assignRes.ok) {
         const errorText = await assignRes.text();
@@ -303,21 +469,21 @@ document.getElementById("assignBatchForm").addEventListener("submit", async (eve
       }
     } else {
       if (!startDate || !endDate) {
-        alert("Provide start and end date to create new batch.");
+        alert("Provide start and end date to create a new batch.");
         return;
       }
       const createRes = await fetch(`${API_BASE_URL}/api/admin/batches`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
         body: JSON.stringify({
-          domainName: batchNameRaw,
+          domainName:  batchNameRaw,
           startDate,
           endDate,
-          time: "09:00 AM - 11:00 AM",
+          time:        timeRange,
           labNo,
-          noOfStudents: 25,
-          progress: 0,
-          trainerId
+          noOfStudents,
+          progress:    0,
+          trainerId,
         })
       });
       if (!createRes.ok) {
@@ -325,9 +491,11 @@ document.getElementById("assignBatchForm").addEventListener("submit", async (eve
         throw new Error(errorText || "Batch create failed");
       }
     }
+
     event.target.reset();
     await loadAdminBatches();
     await loadTrainerOptions();
+
   } catch (e) {
     console.error(e);
     alert("Unable to assign batch: " + e.message);
@@ -338,4 +506,6 @@ setLoggedInName();
 loadAdminBatches();
 loadTrainerOptions();
 </script>
-</body></html>
+
+</body>
+</html>
