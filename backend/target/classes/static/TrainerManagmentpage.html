@@ -87,6 +87,45 @@
     body {
       min-height: max(884px, 100dvh);
     }
+	/* 🔥 Common smooth animation */
+	.card-animate {
+	  transition: all 0.35s ease;
+	}
+	.card-animate:hover {
+	  transform: translateY(-6px);
+	  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+	}
+
+	/* ✨ Always visible animated border */
+	.glow-border {
+	  position: relative;
+	  border-radius: 12px;
+	  padding: 1.5px; /* border thickness */
+	  background: linear-gradient(120deg, #00f0ff, #0d7377, #81d4d8, #00f0ff);
+	  background-size: 300%;
+	  animation: glowMove 5s linear infinite;
+	}
+
+	/* inner card fix */
+	.glow-border > * {
+	  border-radius: 10px;
+	}
+
+	/* 🌈 border animation */
+	@keyframes glowMove {
+	  0% { background-position: 0% }
+	  100% { background-position: 300% }
+	}
+
+	/* 💡 input focus glow */
+	input:focus, textarea:focus {
+	  box-shadow: 0 0 0 2px #81d4d8;
+	}
+
+	/* ⚡ sidebar hover */
+	aside a:hover {
+	  transform: translateX(6px);
+	}
   </style>
   </head>
 <body class="bg-background font-body text-on-surface antialiased">
@@ -152,7 +191,7 @@ href="/TrainerManagmentpage.html">
 <header class="flex justify-between items-center w-full px-8 py-4 bg-[#f8f9fb] docked full-width top-0 sticky z-30">
 <div class="flex items-center gap-4">
 <span class="material-symbols-outlined text-[#0d7377]">menu</span>
-<h1 class="font-['Manrope'] text-sm tracking-wide uppercase font-bold text-[#0d7377]">Precision Ledger</h1>
+<h1 class="font-['Manrope'] text-sm tracking-wide uppercase font-bold text-[#0d7377]">PRECISION LEDGER</h1>
 </div>
 <div class="flex items-center gap-6">
 <div class="relative">
@@ -166,7 +205,7 @@ href="/TrainerManagmentpage.html">
 <div class="px-10 py-8 bg-surface-container-low min-h-[calc(100vh-72px)]">
 <div class="flex justify-between items-end mb-10">
 <div>
-<h2 class="font-headline text-3xl font-extrabold tracking-tight text-on-surface mb-2">Trainer Directory</h2>
+<h2 class="font-headline text-3xl font-extrabold tracking-tight text-on-surface mb-2">TRAINER DIRECTORY</h2>
 <p class="text-on-surface-variant font-medium">Manage and audit institutional educator accounts.</p>
 </div>
 <button id="openTrainerCreate" class="bg-primary hover:bg-primary-container text-white px-6 py-3 rounded-full flex items-center gap-2 font-bold transition-all transform active:scale-95 shadow-lg shadow-primary/20">
@@ -176,22 +215,22 @@ href="/TrainerManagmentpage.html">
 </div>
 <!-- Bento Grid for Stats -->
 <div class="grid grid-cols-4 gap-6 mb-10">
-<div class="col-span-1 bg-surface-container-lowest p-6 rounded-xl shadow-sm">
+<div class="glow-border card-animate"><div class="bg-surface-container-lowest p-6 rounded-xl shadow-black/5 flex flex-col gap-2">
 <p class="font-label text-[10px] uppercase tracking-widest text-outline mb-2">Total Trainers</p>
 <p id="kpiTotalTrainers" class="font-headline text-4xl font-extrabold text-on-surface">0</p>
 <div class="flex items-center gap-1 mt-2 text-primary text-xs font-bold">
 <span class="material-symbols-outlined text-xs">trending_up</span>
 <span>+12% from last month</span>
 </div>
-</div>
-<div class="col-span-1 bg-surface-container-lowest p-6 rounded-xl shadow-sm">
+</div></div>
+<div class="glow-border card-animate"><div class="bg-surface-container-lowest p-6 rounded-xl shadow-black/5 flex flex-col gap-2">
 <p class="font-label text-[10px] uppercase tracking-widest text-outline mb-2">Active Sessions</p>
 <p id="kpiActiveSessions" class="font-headline text-4xl font-extrabold text-on-surface">0</p>
 <div class="flex items-center gap-1 mt-2 text-primary text-xs font-bold">
 <span class="material-symbols-outlined text-xs">sync</span>
 <span>Live across 4 regions</span>
 </div>
-</div>
+</div></div>
 <div class="col-span-2 bg-gradient-to-br from-primary to-primary-container p-6 rounded-xl shadow-lg relative overflow-hidden">
 <div class="relative z-10">
 <p class="font-label text-[10px] uppercase tracking-widest text-primary-fixed mb-2">System Capacity</p>
@@ -204,7 +243,7 @@ href="/TrainerManagmentpage.html">
 </div>
 </div>
 <!-- CRUD Table Area -->
-<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden border border-outline-variant/10">
+<div class="glow-border card-animate"><div class="bg-surface-container-lowest p-6 rounded-xl shadow-black/5 flex flex-col gap-2">
 <div class="p-6 border-b border-surface-container flex justify-between items-center bg-surface-bright">
 <div class="relative flex-1 max-w-md">
 <span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline">filter_list</span>
@@ -243,7 +282,7 @@ href="/TrainerManagmentpage.html">
 <button class="px-4 py-2 text-sm font-bold text-primary hover:text-primary-container transition-all">Next</button>
 </div>
 </div>
-</div>
+</div></div>
 </div>
 </main>
 <!-- Modal Form (Hidden by default, shown here for structure) -->
