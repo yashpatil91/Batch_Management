@@ -1,444 +1,621 @@
 <!DOCTYPE html>
 
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>System Reports | Precision Ledger</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "on-primary-fixed-variant": "#004f52",
-                    "on-primary-fixed": "#002021",
-                    "surface-tint": "#00696d",
-                    "primary": "#00595c",
-                    "surface-container-high": "#e6e8ea",
-                    "on-tertiary": "#ffffff",
-                    "surface-variant": "#e0e3e5",
-                    "secondary-container": "#c9e9ea",
-                    "on-secondary": "#ffffff",
-                    "on-tertiary-fixed-variant": "#930019",
-                    "on-error-container": "#93000a",
-                    "on-surface-variant": "#3e4949",
-                    "surface": "#f8f9fb",
-                    "on-surface": "#191c1e",
-                    "outline-variant": "#bec9c9",
-                    "primary-fixed": "#9df0f4",
-                    "secondary": "#466365",
-                    "error": "#ba1a1a",
-                    "tertiary-container": "#ca1f2f",
-                    "on-secondary-container": "#4c696b",
-                    "surface-container": "#eceef0",
-                    "error-container": "#ffdad6",
-                    "surface-container-low": "#f2f4f6",
-                    "primary-container": "#0d7377",
-                    "on-background": "#191c1e",
-                    "on-tertiary-container": "#ffe1df",
-                    "surface-container-highest": "#e0e3e5",
-                    "surface-dim": "#d8dadc",
-                    "on-primary": "#ffffff",
-                    "inverse-on-surface": "#eff1f3",
-                    "secondary-fixed": "#c9e9ea",
-                    "on-error": "#ffffff",
-                    "inverse-primary": "#81d4d8",
-                    "background": "#f8f9fb",
-                    "tertiary-fixed-dim": "#ffb3af",
-                    "tertiary-fixed": "#ffdad8",
-                    "outline": "#6e7979",
-                    "surface-container-lowest": "#ffffff",
-                    "on-secondary-fixed": "#002021",
-                    "on-secondary-fixed-variant": "#2f4c4d",
-                    "inverse-surface": "#2d3133",
-                    "primary-fixed-dim": "#81d4d8",
-                    "secondary-fixed-dim": "#adccce",
-                    "surface-bright": "#f8f9fb",
-                    "on-tertiary-fixed": "#410006",
-                    "on-primary-container": "#a2f5f9",
-                    "tertiary": "#a4001d"
-            },
-            "borderRadius": {
-                    "DEFAULT": "0.125rem",
-                    "lg": "0.25rem",
-                    "xl": "0.5rem",
-                    "full": "0.75rem"
-            },
-            "fontFamily": {
-                    "headline": ["Manrope"],
-                    "display": ["Manrope"],
-                    "body": ["Inter"],
-                    "label": ["Inter"]
-            }
-          },
-        },
-      }
-    </script>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #00595c;
-            border-radius: 10px;
-        }
-    </style>
+<html class="light" lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+	<title>System Reports | Precision Ledger</title>
+	<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap"
+		rel="stylesheet" />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+		rel="stylesheet" />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+		rel="stylesheet" />
+	<script id="tailwind-config">
+		tailwind.config = {
+			darkMode: "class",
+			theme: {
+				extend: {
+					"colors": {
+						"on-primary-fixed-variant": "#004f52",
+						"on-primary-fixed": "#002021",
+						"surface-tint": "#00696d",
+						"primary": "#00595c",
+						"surface-container-high": "#e6e8ea",
+						"on-tertiary": "#ffffff",
+						"surface-variant": "#e0e3e5",
+						"secondary-container": "#c9e9ea",
+						"on-secondary": "#ffffff",
+						"on-tertiary-fixed-variant": "#930019",
+						"on-error-container": "#93000a",
+						"on-surface-variant": "#3e4949",
+						"surface": "#f8f9fb",
+						"on-surface": "#191c1e",
+						"outline-variant": "#bec9c9",
+						"primary-fixed": "#9df0f4",
+						"secondary": "#466365",
+						"error": "#ba1a1a",
+						"tertiary-container": "#ca1f2f",
+						"on-secondary-container": "#4c696b",
+						"surface-container": "#eceef0",
+						"error-container": "#ffdad6",
+						"surface-container-low": "#f2f4f6",
+						"primary-container": "#0d7377",
+						"on-background": "#191c1e",
+						"on-tertiary-container": "#ffe1df",
+						"surface-container-highest": "#e0e3e5",
+						"surface-dim": "#d8dadc",
+						"on-primary": "#ffffff",
+						"inverse-on-surface": "#eff1f3",
+						"secondary-fixed": "#c9e9ea",
+						"on-error": "#ffffff",
+						"inverse-primary": "#81d4d8",
+						"background": "#f8f9fb",
+						"tertiary-fixed-dim": "#ffb3af",
+						"tertiary-fixed": "#ffdad8",
+						"outline": "#6e7979",
+						"surface-container-lowest": "#ffffff",
+						"on-secondary-fixed": "#002021",
+						"on-secondary-fixed-variant": "#2f4c4d",
+						"inverse-surface": "#2d3133",
+						"primary-fixed-dim": "#81d4d8",
+						"secondary-fixed-dim": "#adccce",
+						"surface-bright": "#f8f9fb",
+						"on-tertiary-fixed": "#410006",
+						"on-primary-container": "#a2f5f9",
+						"tertiary": "#a4001d"
+					},
+					"borderRadius": {
+						"DEFAULT": "0.125rem",
+						"lg": "0.25rem",
+						"xl": "0.5rem",
+						"full": "0.75rem"
+					},
+					"fontFamily": {
+						"headline": ["Manrope"],
+						"display": ["Manrope"],
+						"body": ["Inter"],
+						"label": ["Inter"]
+					}
+				},
+			},
+		}
+	</script>
+	<style>
+		.material-symbols-outlined {
+			font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+		}
+
+		.custom-scrollbar::-webkit-scrollbar {
+			width: 4px;
+		}
+
+		.custom-scrollbar::-webkit-scrollbar-track {
+			background: transparent;
+		}
+
+		.custom-scrollbar::-webkit-scrollbar-thumb {
+			background: #00595c;
+			border-radius: 10px;
+		}
+	</style>
 </head>
+
 <body class="bg-surface text-on-surface font-body antialiased">
-<!-- Sidebar Navigation Shell -->
-<aside class="h-screen w-64 fixed left-0 top-0 overflow-y-auto bg-zinc-900 dark:bg-black shadow-2xl flex flex-col py-6 z-50">
-<div class="px-6 mb-10">
-<h1 class="text-lg font-headline font-bold text-white tracking-wide">Precision Ledger</h1>
-<p class="text-[10px] uppercase tracking-widest text-zinc-500 font-medium mt-1">Batch Control v2.0</p>
-</div>
-<nav class="flex-1 px-2 space-y-1">
-<a class="flex items-center gap-3 text-zinc-400 px-4 py-3 hover:bg-zinc-800 hover:text-white transition-all font-label text-sm font-medium tracking-wide" href="#">
-<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-                Dashboard
-            </a>
-<a class="flex items-center gap-3 text-zinc-400 px-4 py-3 hover:bg-zinc-800 hover:text-white transition-all font-label text-sm font-medium tracking-wide" href="#">
-<span class="material-symbols-outlined" data-icon="layers">layers</span>
-                Batch Management
-            </a>
-<a class="flex items-center gap-3 text-zinc-400 px-4 py-3 hover:bg-zinc-800 hover:text-white transition-all font-label text-sm font-medium tracking-wide" href="#">
-<span class="material-symbols-outlined" data-icon="group">group</span>
-                Trainer Directory
-            </a>
-<a class="flex items-center gap-3 bg-teal-500/10 text-teal-400 border-l-4 border-teal-500 px-4 py-3 font-label text-sm font-medium tracking-wide" href="#">
-<span class="material-symbols-outlined" data-icon="analytics" style="font-variation-settings: 'FILL' 1;">analytics</span>
-                Reports
-            </a>
-<a class="flex items-center gap-3 text-zinc-400 px-4 py-3 hover:bg-zinc-800 hover:text-white transition-all font-label text-sm font-medium tracking-wide" href="#">
-<span class="material-symbols-outlined" data-icon="person">person</span>
-                Profile
-            </a>
-</nav>
-<div class="mt-auto pt-6 border-t border-zinc-800/50 px-2 space-y-1">
-<a class="flex items-center gap-3 text-zinc-400 px-4 py-3 hover:bg-zinc-800 hover:text-white transition-all font-label text-sm font-medium tracking-wide" href="#">
-<span class="material-symbols-outlined" data-icon="settings">settings</span>
-                Settings
-            </a>
-<a class="flex items-center gap-3 text-zinc-400 px-4 py-3 hover:bg-zinc-800 hover:text-white transition-all font-label text-sm font-medium tracking-wide" href="#">
-<span class="material-symbols-outlined" data-icon="logout">logout</span>
-                Logout
-            </a>
-</div>
-</aside>
-<!-- Main Content Canvas -->
-<main class="ml-64 min-h-screen">
-<!-- Top Navigation Bar -->
-<header class="bg-slate-50/80 backdrop-blur-xl sticky top-0 z-40 flex justify-between items-center w-full px-8 py-4 shadow-sm">
-<div class="flex items-center gap-4">
-<h2 class="text-xl font-headline font-bold text-slate-900 tracking-tight">System Reports</h2>
-</div>
-<div class="flex items-center gap-6">
-<!-- Date Range Picker Mock -->
-<div class="flex items-center gap-3 bg-surface-container-low px-4 py-2 rounded-xl text-on-surface-variant text-sm font-medium border border-outline-variant/20 hover:bg-surface-container-high transition-colors cursor-pointer">
-<span class="material-symbols-outlined text-[20px]" data-icon="calendar_today">calendar_today</span>
-<span>Oct 01, 2023 - Oct 31, 2023</span>
-<span class="material-symbols-outlined text-[18px]" data-icon="expand_more">expand_more</span>
-</div>
-<div class="flex items-center gap-4 border-l border-outline-variant/30 pl-6">
-<button class="p-2 rounded-full text-slate-500 hover:bg-slate-200/50 active:scale-95 duration-150">
-<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-</button>
-<button class="flex items-center gap-2 p-1 pr-3 rounded-full hover:bg-slate-200/50 active:scale-95 duration-150 group">
-<div class="h-8 w-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container text-xs font-bold">JD</div>
-<span class="text-sm font-semibold text-slate-900">John Doe</span>
-</button>
-</div>
-</div>
-</header>
-<div class="p-8 space-y-8 max-w-[1600px] mx-auto">
-<!-- Quick Actions & Generation -->
-<section class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-surface-container-low p-6 rounded-xl border border-outline-variant/10">
-<div>
-<h3 class="text-lg font-headline font-bold text-on-surface">Generate Intelligence</h3>
-<p class="text-sm text-on-surface-variant">Create customized data extracts for deeper analysis.</p>
-</div>
-<div class="flex items-center gap-3">
-<div class="flex items-center bg-surface-container-lowest rounded-lg border border-outline-variant/30 p-1">
-<button class="px-4 py-2 text-xs font-bold text-primary bg-primary/10 rounded-md">PDF</button>
-<button class="px-4 py-2 text-xs font-bold text-on-surface-variant hover:bg-surface-container-low rounded-md">EXCEL</button>
-</div>
-<button class="flex items-center gap-2 bg-primary-container text-on-primary-container px-6 py-3 rounded-xl font-headline font-bold shadow-sm hover:opacity-90 active:scale-95 transition-all">
-<span class="material-symbols-outlined text-[20px]" data-icon="add_chart">add_chart</span>
-                        Generate New Custom Report
-                    </button>
-</div>
-</section>
-<!-- Analytics Cards (KPIs) -->
-<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-<!-- KPI 1 -->
-<div class="bg-surface-container-lowest p-6 rounded-xl transition-all hover:shadow-md group">
-<div class="flex justify-between items-start mb-4">
-<div class="p-2 bg-primary/10 rounded-lg text-primary">
-<span class="material-symbols-outlined" data-icon="task_alt">task_alt</span>
-</div>
-<span class="text-[10px] font-bold text-teal-600 bg-teal-50 px-2 py-1 rounded-full uppercase tracking-tighter">+12.5%</span>
-</div>
-<p class="text-xs font-label uppercase tracking-widest text-on-surface-variant mb-1">Total Batches Completed</p>
-<h4 class="text-3xl font-display font-extrabold text-on-surface">1,284</h4>
-</div>
-<!-- KPI 2 -->
-<div class="bg-surface-container-lowest p-6 rounded-xl transition-all hover:shadow-md">
-<div class="flex justify-between items-start mb-4">
-<div class="p-2 bg-secondary/10 rounded-lg text-secondary">
-<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
-</div>
-<span class="text-[10px] font-bold text-teal-600 bg-teal-50 px-2 py-1 rounded-full uppercase tracking-tighter">Target: 95%</span>
-</div>
-<p class="text-xs font-label uppercase tracking-widest text-on-surface-variant mb-1">Average Completion Rate</p>
-<h4 class="text-3xl font-display font-extrabold text-on-surface">98.2<span class="text-lg text-on-surface-variant font-normal">%</span></h4>
-</div>
-<!-- KPI 3 -->
-<div class="bg-surface-container-lowest p-6 rounded-xl transition-all hover:shadow-md">
-<div class="flex justify-between items-start mb-4">
-<div class="p-2 bg-primary-container/20 rounded-lg text-primary-container">
-<span class="material-symbols-outlined" data-icon="military_tech">military_tech</span>
-</div>
-</div>
-<p class="text-xs font-label uppercase tracking-widest text-on-surface-variant mb-1">Top Performing Trainer</p>
-<div class="flex items-center gap-3 mt-1">
-<div class="h-10 w-10 rounded-full bg-zinc-200 overflow-hidden">
-<img alt="Marcus Chen" class="w-full h-full object-cover" data-alt="headshot of a middle-aged professional man smiling in a corporate setting with soft natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTIWzkROrBej65s2gl7t1YalC8-apeQnfV0oLbQSuC9srUgLd3e3EcB0CfWln_Hb3TyHxWkP4lIOvCczvqxsbj1fTWPOPgu7g7mdZGCDT4znVElQxdxmlWm3SzLsnngYHXgnfTDQTaoZehLaoJnXZMR0mfRHKH5HDbk91psye58ckN2pLhlutYftQEh0hzXHS-40qPY7XhpbMo2GAs2YcGqkCqpj3h8Jg-93Assv9ttZG9u8sJ5NYO_OWm3b1tt3vuUyYYWbTsjE8"/>
-</div>
-<div>
-<h4 class="text-lg font-headline font-bold text-on-surface leading-tight">Marcus Chen</h4>
-<p class="text-[10px] text-primary font-bold">142 Batches Lead</p>
-</div>
-</div>
-</div>
-<!-- KPI 4 -->
-<div class="bg-surface-container-lowest p-6 rounded-xl transition-all hover:shadow-md">
-<div class="flex justify-between items-start mb-4">
-<div class="p-2 bg-surface-container-high rounded-lg text-on-surface">
-<span class="material-symbols-outlined" data-icon="schedule">schedule</span>
-</div>
-</div>
-<p class="text-xs font-label uppercase tracking-widest text-on-surface-variant mb-1">Total Training Hours</p>
-<h4 class="text-3xl font-display font-extrabold text-on-surface">4,520<span class="text-lg text-on-surface-variant font-normal">hrs</span></h4>
-</div>
-</section>
-<!-- Data Visualizations (Bento Style) -->
-<section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-<!-- Monthly Enrollment Trends (Line Chart Mockup) -->
-<div class="lg:col-span-2 bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10">
-<div class="flex justify-between items-end mb-10">
-<div>
-<h3 class="text-xl font-headline font-bold text-on-surface">Monthly Enrollment Trends</h3>
-<p class="text-sm text-on-surface-variant">User registration volume for current fiscal year</p>
-</div>
-<div class="flex gap-4">
-<div class="flex items-center gap-2">
-<div class="w-3 h-3 rounded-full bg-primary-container"></div>
-<span class="text-xs font-bold text-on-surface-variant">2023</span>
-</div>
-<div class="flex items-center gap-2">
-<div class="w-3 h-3 rounded-full bg-surface-variant"></div>
-<span class="text-xs font-bold text-on-surface-variant">2022</span>
-</div>
-</div>
-</div>
-<!-- Chart Mockup -->
-<div class="h-64 flex items-end justify-between px-2 relative">
-<div class="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-20 py-2">
-<div class="border-b border-outline"></div>
-<div class="border-b border-outline"></div>
-<div class="border-b border-outline"></div>
-<div class="border-b border-outline"></div>
-</div>
-<div class="flex-1 flex flex-col items-center justify-end group">
-<div class="w-2 bg-primary-container rounded-t-full h-24 mb-2"></div>
-<span class="text-[10px] font-bold text-on-surface-variant">JAN</span>
-</div>
-<div class="flex-1 flex flex-col items-center justify-end group">
-<div class="w-2 bg-primary-container rounded-t-full h-32 mb-2"></div>
-<span class="text-[10px] font-bold text-on-surface-variant">FEB</span>
-</div>
-<div class="flex-1 flex flex-col items-center justify-end group">
-<div class="w-2 bg-primary-container rounded-t-full h-44 mb-2"></div>
-<span class="text-[10px] font-bold text-on-surface-variant">MAR</span>
-</div>
-<div class="flex-1 flex flex-col items-center justify-end group">
-<div class="w-2 bg-primary-container rounded-t-full h-36 mb-2"></div>
-<span class="text-[10px] font-bold text-on-surface-variant">APR</span>
-</div>
-<div class="flex-1 flex flex-col items-center justify-end group">
-<div class="w-2 bg-primary-container rounded-t-full h-56 mb-2"></div>
-<span class="text-[10px] font-bold text-on-surface-variant">MAY</span>
-</div>
-<div class="flex-1 flex flex-col items-center justify-end group">
-<div class="w-2 bg-primary-container rounded-t-full h-48 mb-2"></div>
-<span class="text-[10px] font-bold text-on-surface-variant">JUN</span>
-</div>
-<div class="flex-1 flex flex-col items-center justify-end group">
-<div class="w-2 bg-primary-container rounded-t-full h-60 mb-2"></div>
-<span class="text-[10px] font-bold text-on-surface-variant">JUL</span>
-</div>
-</div>
-</div>
-<!-- Batch Success Rate (Bar Chart Mockup) -->
-<div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10">
-<div class="mb-8">
-<h3 class="text-xl font-headline font-bold text-on-surface">Departmental Success</h3>
-<p class="text-sm text-on-surface-variant">Completion rate by category</p>
-</div>
-<div class="space-y-6">
-<div class="space-y-2">
-<div class="flex justify-between text-xs font-bold">
-<span class="text-on-surface">Logistics &amp; Supply</span>
-<span class="text-primary">94%</span>
-</div>
-<div class="h-3 bg-surface-container-high rounded-full overflow-hidden">
-<div class="h-full w-[94%] bg-gradient-to-r from-primary to-primary-container rounded-full"></div>
-</div>
-</div>
-<div class="space-y-2">
-<div class="flex justify-between text-xs font-bold">
-<span class="text-on-surface">Data Management</span>
-<span class="text-primary">88%</span>
-</div>
-<div class="h-3 bg-surface-container-high rounded-full overflow-hidden">
-<div class="h-full w-[88%] bg-gradient-to-r from-primary to-primary-container rounded-full"></div>
-</div>
-</div>
-<div class="space-y-2">
-<div class="flex justify-between text-xs font-bold">
-<span class="text-on-surface">Quality Control</span>
-<span class="text-primary">99%</span>
-</div>
-<div class="h-3 bg-surface-container-high rounded-full overflow-hidden">
-<div class="h-full w-[99%] bg-gradient-to-r from-primary to-primary-container rounded-full"></div>
-</div>
-</div>
-<div class="space-y-2">
-<div class="flex justify-between text-xs font-bold">
-<span class="text-on-surface">IT Infrastructure</span>
-<span class="text-primary">76%</span>
-</div>
-<div class="h-3 bg-surface-container-high rounded-full overflow-hidden">
-<div class="h-full w-[76%] bg-gradient-to-r from-primary to-primary-container rounded-full"></div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- Recent Reports Table -->
-<section class="bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/10 shadow-sm">
-<div class="p-6 border-b border-outline-variant/10 flex justify-between items-center">
-<h3 class="text-lg font-headline font-bold text-on-surface">Recent Reports</h3>
-<div class="flex items-center gap-2 text-primary cursor-pointer hover:underline text-sm font-bold">
-                        View All History
-                        <span class="material-symbols-outlined text-[18px]" data-icon="arrow_forward">arrow_forward</span>
-</div>
-</div>
-<div class="overflow-x-auto">
-<table class="w-full text-left border-collapse">
-<thead class="bg-surface-container-low">
-<tr>
-<th class="px-6 py-4 text-[10px] font-label font-bold uppercase tracking-widest text-outline">Report Name</th>
-<th class="px-6 py-4 text-[10px] font-label font-bold uppercase tracking-widest text-outline">Type</th>
-<th class="px-6 py-4 text-[10px] font-label font-bold uppercase tracking-widest text-outline">Date Generated</th>
-<th class="px-6 py-4 text-[10px] font-label font-bold uppercase tracking-widest text-outline">Status</th>
-<th class="px-6 py-4 text-[10px] font-label font-bold uppercase tracking-widest text-outline text-right">Actions</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-outline-variant/10">
-<!-- Row 1 -->
-<tr class="hover:bg-secondary-container/30 transition-colors group">
-<td class="px-6 py-4">
-<div class="flex items-center gap-3">
-<div class="h-8 w-8 rounded-lg bg-red-50 text-red-600 flex items-center justify-center">
-<span class="material-symbols-outlined text-[18px]" data-icon="picture_as_pdf">picture_as_pdf</span>
-</div>
-<span class="font-bold text-on-surface">Q3_Training_Performance.pdf</span>
-</div>
-</td>
-<td class="px-6 py-4 text-sm text-on-surface-variant font-medium">Performance Metrics</td>
-<td class="px-6 py-4 text-sm text-on-surface-variant">Oct 24, 2023 14:20</td>
-<td class="px-6 py-4">
-<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-green-100 text-green-700">
-<span class="w-1.5 h-1.5 rounded-full bg-green-700"></span>
-                                        Ready
-                                    </span>
-</td>
-<td class="px-6 py-4 text-right">
-<button class="bg-primary/10 text-primary p-2 rounded-lg hover:bg-primary hover:text-white transition-all">
-<span class="material-symbols-outlined" data-icon="download">download</span>
-</button>
-</td>
-</tr>
-<!-- Row 2 -->
-<tr class="hover:bg-secondary-container/30 transition-colors group">
-<td class="px-6 py-4">
-<div class="flex items-center gap-3">
-<div class="h-8 w-8 rounded-lg bg-green-50 text-green-600 flex items-center justify-center">
-<span class="material-symbols-outlined text-[18px]" data-icon="table_chart">table_chart</span>
-</div>
-<span class="font-bold text-on-surface">Batch_Success_Raw_Data.xlsx</span>
-</div>
-</td>
-<td class="px-6 py-4 text-sm text-on-surface-variant font-medium">Data Export</td>
-<td class="px-6 py-4 text-sm text-on-surface-variant">Oct 23, 2023 09:15</td>
-<td class="px-6 py-4">
-<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-green-100 text-green-700">
-<span class="w-1.5 h-1.5 rounded-full bg-green-700"></span>
-                                        Ready
-                                    </span>
-</td>
-<td class="px-6 py-4 text-right">
-<button class="bg-primary/10 text-primary p-2 rounded-lg hover:bg-primary hover:text-white transition-all">
-<span class="material-symbols-outlined" data-icon="download">download</span>
-</button>
-</td>
-</tr>
-<!-- Row 3 -->
-<tr class="hover:bg-secondary-container/30 transition-colors group">
-<td class="px-6 py-4">
-<div class="flex items-center gap-3">
-<div class="h-8 w-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
-<span class="material-symbols-outlined text-[18px]" data-icon="picture_as_pdf">picture_as_pdf</span>
-</div>
-<span class="font-bold text-on-surface">Trainer_Efficiency_Audit.pdf</span>
-</div>
-</td>
-<td class="px-6 py-4 text-sm text-on-surface-variant font-medium">Compliance Audit</td>
-<td class="px-6 py-4 text-sm text-on-surface-variant">Oct 22, 2023 18:45</td>
-<td class="px-6 py-4">
-<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-100 text-blue-700 animate-pulse">
-<span class="w-1.5 h-1.5 rounded-full bg-blue-700"></span>
-                                        Processing
-                                    </span>
-</td>
-<td class="px-6 py-4 text-right">
-<button class="bg-slate-100 text-slate-400 p-2 rounded-lg cursor-not-allowed">
-<span class="material-symbols-outlined" data-icon="hourglass_empty">hourglass_empty</span>
-</button>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-</div>
-<!-- Footer / Credits (Subtle) -->
-<footer class="p-8 border-t border-outline-variant/10 text-center">
-<p class="text-xs text-on-surface-variant font-medium">Precision Ledger Batch Management System © 2023. Generated by Corporate Analytics Engine.</p>
-</footer>
-</main>
-<!-- FAB (Suppressed on Details/Reports but kept here for potential global interaction if needed, hidden by default per rules) -->
-<button class="fixed bottom-8 right-8 bg-primary-container text-on-primary-container h-14 w-14 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50 hidden">
-<span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
-</button>
-</body></html>
+	<!-- Sidebar Navigation Shell -->
+	<aside
+		class="h-screen w-64 fixed left-0 top-0 overflow-y-auto bg-zinc-900 dark:bg-black shadow-2xl flex flex-col py-6 z-50">
+		<div class="px-6 mb-10">
+			<h1 class="text-lg font-headline font-bold text-white tracking-wide">Precision Ledger</h1>
+			<p class="text-[10px] uppercase tracking-widest text-zinc-500 font-medium mt-1">Batch Control v2.0</p>
+		</div>
+		<nav class="flex-1 px-2 space-y-1">
+			<!-- Dashboard -->
+			<a href="dashboard.html"
+				class="flex items-center gap-3 text-zinc-400 px-4 py-3 hover:bg-zinc-800 hover:text-white transition-all font-label text-sm font-medium tracking-wide">
+				<span class="material-symbols-outlined">dashboard</span>
+				Dashboard
+			</a>
+
+			<!-- Batch Management -->
+			<a href="BatchDetailPage.html"
+				class="flex items-center gap-3 text-zinc-400 px-4 py-3 hover:bg-zinc-800 hover:text-white transition-all font-label text-sm font-medium tracking-wide">
+				<span class="material-symbols-outlined">layers</span>
+				Batch Management
+			</a>
+
+			<!-- Trainer Directory -->
+			<a href="TrainerManagmentpage.html"
+				class="flex items-center gap-3 text-zinc-400 px-4 py-3 hover:bg-zinc-800 hover:text-white transition-all font-label text-sm font-medium tracking-wide">
+				<span class="material-symbols-outlined">group</span>
+				Trainer Directory
+			</a>
+
+			<!-- Reports -->
+			<a href="report.html"
+				class="flex items-center gap-3 text-zinc-400 px-4 py-3 hover:bg-zinc-800 hover:text-white transition-all font-label text-sm font-medium tracking-wide">
+				<span class="material-symbols-outlined">analytics</span>
+				Reports
+			</a>
+
+			<!-- Profile -->
+			<a href="#"
+				class="flex items-center gap-3 text-zinc-400 px-4 py-3 hover:bg-zinc-800 hover:text-white transition-all font-label text-sm font-medium tracking-wide">
+				<span class="material-symbols-outlined">person</span>
+				Profile
+			</a>
+		</nav>
+		<div class="mt-auto pt-6 border-t border-zinc-800/50 px-2 space-y-1">
+			<a class="flex items-center gap-3 text-zinc-400 px-4 py-3 hover:bg-zinc-800 hover:text-white transition-all font-label text-sm font-medium tracking-wide"
+				href="#">
+				<span class="material-symbols-outlined" data-icon="settings">settings</span>
+				Settings
+			</a>
+			<a class="flex items-center gap-3 text-zinc-400 px-4 py-3 hover:bg-zinc-800 hover:text-white transition-all font-label text-sm font-medium tracking-wide"
+				href="#">
+				<span class="material-symbols-outlined" data-icon="logout">logout</span>
+				Logout
+			</a>
+		</div>
+	</aside>
+	<!-- Main Content Canvas -->
+	<main class="ml-64 min-h-screen">
+		<!-- Top Navigation Bar -->
+		<header
+			class="bg-slate-50/80 backdrop-blur-xl sticky top-0 z-40 flex justify-between items-center w-full px-8 py-4 shadow-sm">
+			<div class="flex items-center gap-4">
+				<h2 class="text-xl font-headline font-bold text-slate-900 tracking-tight">System Reports</h2>
+			</div>
+			<div class="flex items-center gap-6">
+				<!-- Date Range Picker Mock -->
+				<div
+					class="flex items-center gap-3 bg-surface-container-low px-4 py-2 rounded-xl text-on-surface-variant text-sm font-medium border border-outline-variant/20 hover:bg-surface-container-high transition-colors cursor-pointer">
+					<span class="material-symbols-outlined text-[20px]" data-icon="calendar_today">calendar_today</span>
+					<span>Oct 01, 2023 - Oct 31, 2023</span>
+					<span class="material-symbols-outlined text-[18px]" data-icon="expand_more">expand_more</span>
+				</div>
+				<div class="flex items-center gap-4 border-l border-outline-variant/30 pl-6">
+					<button class="p-2 rounded-full text-slate-500 hover:bg-slate-200/50 active:scale-95 duration-150">
+						<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+					</button>
+					<button
+						class="flex items-center gap-2 p-1 pr-3 rounded-full hover:bg-slate-200/50 active:scale-95 duration-150 group">
+						<div
+							class="h-8 w-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container text-xs font-bold">
+							JD</div>
+						<span class="text-sm font-semibold text-slate-900">John Doe</span>
+					</button>
+				</div>
+			</div>
+		</header>
+		<div class="p-8 space-y-8 max-w-[1600px] mx-auto">
+			<!-- Quick Actions & Generation -->
+			<section
+				class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-surface-container-low p-6 rounded-xl border border-outline-variant/10">
+				<div>
+					<h3 class="text-lg font-headline font-bold text-on-surface">Generate Intelligence</h3>
+					<p class="text-sm text-on-surface-variant">Create customized data extracts for deeper analysis.</p>
+				</div>
+				<div class="flex items-center gap-3">
+					<div
+						class="flex items-center bg-surface-container-lowest rounded-lg border border-outline-variant/30 p-1">
+						<button class="px-4 py-2 text-xs font-bold text-primary bg-primary/10 rounded-md">PDF</button>
+						<button
+							class="px-4 py-2 text-xs font-bold text-on-surface-variant hover:bg-surface-container-low rounded-md">EXCEL</button>
+					</div>
+					<button
+						class="flex items-center gap-2 bg-primary-container text-on-primary-container px-6 py-3 rounded-xl font-headline font-bold shadow-sm hover:opacity-90 active:scale-95 transition-all">
+						<span class="material-symbols-outlined text-[20px]" data-icon="add_chart">add_chart</span>
+						Generate New Custom Report
+					</button>
+				</div>
+			</section>
+			<!-- Analytics Cards (KPIs) -->
+			<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+				<!-- KPI 1 -->
+				<div class="bg-surface-container-lowest p-6 rounded-xl transition-all hover:shadow-md group">
+					<div class="flex justify-between items-start mb-4">
+						<div class="p-2 bg-primary/10 rounded-lg text-primary">
+							<span class="material-symbols-outlined" data-icon="task_alt">task_alt</span>
+						</div>
+						<span
+							class="text-[10px] font-bold text-teal-600 bg-teal-50 px-2 py-1 rounded-full uppercase tracking-tighter">+12.5%</span>
+					</div>
+					<p class="text-xs font-label uppercase tracking-widest text-on-surface-variant mb-1">Total Batches
+						Completed</p>
+					<h4 id="totalBatches" class="text-3xl font-display font-extrabold text-on-surface">0</h4>
+				</div>
+				<!-- KPI 2 -->
+				<div class="bg-surface-container-lowest p-6 rounded-xl transition-all hover:shadow-md">
+					<div class="flex justify-between items-start mb-4">
+						<div class="p-2 bg-secondary/10 rounded-lg text-secondary">
+							<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
+						</div>
+						<span
+							class="text-[10px] font-bold text-teal-600 bg-teal-50 px-2 py-1 rounded-full uppercase tracking-tighter">Target:
+							95%</span>
+					</div>
+					<p class="text-xs font-label uppercase tracking-widest text-on-surface-variant mb-1">Average
+						Completion Rate</p>
+					<h4 id="completionRate" class="text-3xl font-display font-extrabold text-on-surface">0<span
+							class="text-lg text-on-surface-variant font-normal">%</span></h4>
+				</div>
+				<!-- KPI 3 -->
+				<div class="bg-surface-container-lowest p-6 rounded-xl transition-all hover:shadow-md">
+					<div class="flex justify-between items-start mb-4">
+						<div class="p-2 bg-primary-container/20 rounded-lg text-primary-container">
+							<span class="material-symbols-outlined" data-icon="military_tech">military_tech</span>
+						</div>
+					</div>
+					<p class="text-xs font-label uppercase tracking-widest text-on-surface-variant mb-1">Top Performing
+						Trainer</p>
+					<div class="flex items-center gap-3 mt-1">
+						<div class="h-10 w-10 rounded-full bg-zinc-200 overflow-hidden">
+							<img alt="Marcus Chen" class="w-full h-full object-cover"
+								data-alt="headshot of a middle-aged professional man smiling in a corporate setting with soft natural light"
+								src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTIWzkROrBej65s2gl7t1YalC8-apeQnfV0oLbQSuC9srUgLd3e3EcB0CfWln_Hb3TyHxWkP4lIOvCczvqxsbj1fTWPOPgu7g7mdZGCDT4znVElQxdxmlWm3SzLsnngYHXgnfTDQTaoZehLaoJnXZMR0mfRHKH5HDbk91psye58ckN2pLhlutYftQEh0hzXHS-40qPY7XhpbMo2GAs2YcGqkCqpj3h8Jg-93Assv9ttZG9u8sJ5NYO_OWm3b1tt3vuUyYYWbTsjE8" />
+						</div>
+						<div>
+							<h4 id="topTrainer" class="text-lg font-headline font-bold text-on-surface">N/A</h4>
+							<p class="text-[10px] text-primary font-bold">142 Batches Lead</p>
+						</div>
+					</div>
+				</div>
+				<!-- KPI 4 -->
+				<div class="bg-surface-container-lowest p-6 rounded-xl transition-all hover:shadow-md">
+					<div class="flex justify-between items-start mb-4">
+						<div class="p-2 bg-surface-container-high rounded-lg text-on-surface">
+							<span class="material-symbols-outlined" data-icon="schedule">schedule</span>
+						</div>
+					</div>
+					<p class="text-xs font-label uppercase tracking-widest text-on-surface-variant mb-1">Total Training
+						Hours</p>
+					<h4 id="trainingHours" class="text-3xl font-display font-extrabold text-on-surface">0 hrs <span
+							class="text-lg text-on-surface-variant font-normal">hrs</span></h4>
+				</div>
+			</section>
+			<!-- Data Visualizations (Bento Style) -->
+			<section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+				<!-- Monthly Enrollment Trends (Line Chart Mockup) -->
+				<div class="lg:col-span-2 bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10">
+					<div class="flex justify-between items-end mb-10">
+						<div>
+							<h3>Monthly Enrollment Trends</h3>
+
+
+							<p class="text-sm text-on-surface-variant">User registration volume for current fiscal year
+							</p>
+						</div>
+						<div class="flex gap-4">
+							<div class="flex items-center gap-2">
+								<div class="w-3 h-3 rounded-full bg-primary-container"></div>
+								<span class="text-xs font-bold text-on-surface-variant">2023</span>
+							</div>
+							<div class="flex items-center gap-2">
+								<div class="w-3 h-3 rounded-full bg-surface-variant"></div>
+								<span class="text-xs font-bold text-on-surface-variant">2022</span>
+							</div>
+						</div>
+					</div>
+					<!-- Chart Mockup -->
+					<div style="height:420px; display:flex; justify-content:center; align-items:center;">
+						<canvas id="enrollmentChart"></canvas>
+					</div>
+
+					<!-- ✅ CORRECT PLACE -->
+
+				</div>
+				<!-- Batch Success Rate (Bar Chart Mockup) -->
+				<div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10">
+					<div class="mb-6">
+						<h3 class="text-xl font-headline font-bold text-on-surface">Batch Progress Overview</h3>
+						<p class="text-sm text-on-surface-variant">Live progress of all batches</p>
+					</div>
+
+
+					<div id="reportBatchProgress" class="space-y-4 max-h-[350px] overflow-y-auto custom-scrollbar">
+					</div>
+				</div>
+			</section>
+			<!-- Recent Reports Table -->
+			<section
+				class="bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/10 shadow-sm">
+				<div class="p-6 border-b border-outline-variant/10 flex justify-between items-center">
+					<h3 class="text-lg font-headline font-bold text-on-surface">Recent Reports</h3>
+					<div onclick="window.location.href='HistoryPage.html'"
+						class="flex items-center gap-2 text-primary cursor-pointer hover:underline text-sm font-bold">
+
+						View All History
+						<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+					</div>
+				</div>
+				<div class="overflow-x-auto">
+					<table class="w-full text-left border-collapse">
+						<thead class="bg-surface-container-low">
+							<tr>
+								<th
+									class="px-6 py-4 text-[10px] font-label font-bold uppercase tracking-widest text-outline">
+									Report Name</th>
+								<th
+									class="px-6 py-4 text-[10px] font-label font-bold uppercase tracking-widest text-outline">
+									Type</th>
+								<th
+									class="px-6 py-4 text-[10px] font-label font-bold uppercase tracking-widest text-outline">
+									Date Generated</th>
+								<th
+									class="px-6 py-4 text-[10px] font-label font-bold uppercase tracking-widest text-outline">
+									Status</th>
+								<th
+									class="px-6 py-4 text-[10px] font-label font-bold uppercase tracking-widest text-outline text-right">
+									Actions</th>
+							</tr>
+						</thead>
+						<tbody id="reportHistoryTable" class="divide-y divide-outline-variant/10">
+						</tbody>
+
+						</tbody>
+					</table>
+				</div>
+			</section>
+		</div>
+		<!-- Footer / Credits (Subtle) -->
+		<footer class="p-8 border-t border-outline-variant/10 text-center">
+			<p class="text-xs text-on-surface-variant font-medium">Precision Ledger Batch Management System © 2023.
+				Generated by Corporate Analytics Engine.</p>
+		</footer>
+	</main>
+	<!-- FAB (Suppressed on Details/Reports but kept here for potential global interaction if needed, hidden by default per rules) -->
+	<button
+		class="fixed bottom-8 right-8 bg-primary-container text-on-primary-container h-14 w-14 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50 hidden">
+		<span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
+	</button>
+	<script>
+		const API_BASE = "http://localhost:8080/api";
+		const token = localStorage.getItem("token");
+
+		let chartInstance = null;
+		let trainerChartInstance = null;
+
+		function loadReport() {
+			fetch(API_BASE + "/admin/dashboard", {
+				headers: {
+					"Authorization": "Bearer " + token
+				}
+			})
+				.then(res => res.json())
+				.then(data => {
+
+					// KPI
+					document.getElementById("totalBatches").innerText = data.totalBatches || 0;
+
+					document.getElementById("completionRate").innerText =
+						((data.totalBatches - data.ongoingBatches) / (data.totalBatches || 1) * 100).toFixed(1) + "%";
+
+					document.getElementById("trainingHours").innerText =
+						(data.totalBatches * 40) + " hrs";
+
+					document.getElementById("topTrainer").innerText = data.topTrainer || "Top Trainer";
+
+					loadChart(data);
+					loadBatchProgress();
+					loadTrainerChart();
+
+					// 🔥 NEW: Load history into table
+					loadReportHistory();
+				});
+		}
+
+
+		// 🔥 DOUGHNUT CHART
+		function loadChart(data) {
+
+			const ctx = document.getElementById("enrollmentChart").getContext("2d");
+
+			if (chartInstance) chartInstance.destroy();
+
+			const total = data.totalBatches || 0;
+			const ongoing = data.ongoingBatches || 0;
+			const completed = total - ongoing;
+
+			const centerTextPlugin = {
+				id: 'centerText',
+				beforeDraw(chart) {
+					const {width, height, ctx} = chart;
+
+					ctx.save();
+					ctx.font = "bold 30px sans-serif";
+					ctx.fillStyle = "#111";
+					ctx.textAlign = "center";
+					ctx.textBaseline = "middle";
+
+					ctx.fillText(total, width / 2, height / 2 - 10);
+
+					ctx.font = "14px sans-serif";
+					ctx.fillStyle = "#666";
+					ctx.fillText("Total Batches", width / 2, height / 2 + 15);
+
+					ctx.restore();
+				}
+			};
+
+			const percentagePlugin = {
+				id: 'percentageLabel',
+				afterDatasetsDraw(chart) {
+					const {ctx} = chart;
+					const dataset = chart.data.datasets[0];
+					const total = dataset.data.reduce((a, b) => a + b, 0);
+
+					chart.getDatasetMeta(0).data.forEach((arc, i) => {
+						const value = dataset.data[i];
+						const percent = ((value / total) * 100).toFixed(0) + "%";
+
+						const angle = (arc.startAngle + arc.endAngle) / 2;
+						const radius = (arc.outerRadius + arc.innerRadius) / 2;
+
+						const x = arc.x + Math.cos(angle) * radius;
+						const y = arc.y + Math.sin(angle) * radius;
+
+						ctx.fillStyle = "#fff";
+						ctx.font = "bold 12px sans-serif";
+						ctx.textAlign = "center";
+						ctx.textBaseline = "middle";
+
+						ctx.fillText(percent, x, y);
+					});
+				}
+			};
+
+			chartInstance = new Chart(ctx, {
+				type: 'doughnut',
+				data: {
+					labels: ['Ongoing', 'Completed'],
+					datasets: [{
+						data: [ongoing, completed],
+						backgroundColor: ['#f59e0b', '#22c55e'],
+						borderWidth: 0
+					}]
+				},
+				options: {
+					responsive: true,
+					cutout: '75%',
+					animation: {
+						animateRotate: true,
+						animateScale: true,
+						duration: 1200
+					},
+					plugins: {
+						legend: {position: 'bottom'}
+					}
+				},
+				plugins: [centerTextPlugin, percentagePlugin]
+			});
+		}
+
+
+		// 🔥 TRAINER CHART
+		function loadTrainerChart() {
+
+			fetch(API_BASE + "/admin/trainers-performance", {
+				headers: {Authorization: "Bearer " + token}
+			})
+				.then(res => res.json())
+				.then(data => {
+
+					const names = data.map(t => t.name);
+					const values = data.map(t => t.batchCount);
+
+					const ctx = document.getElementById("trainerChart").getContext("2d");
+
+					if (trainerChartInstance) trainerChartInstance.destroy();
+
+					trainerChartInstance = new Chart(ctx, {
+						type: 'bar',
+						data: {
+							labels: names,
+							datasets: [{
+								data: values,
+								backgroundColor: '#0d7377'
+							}]
+						},
+						options: {
+							plugins: {legend: {display: false}}
+						}
+					});
+				});
+		}
+
+
+		// 🔥 BATCH PROGRESS
+		function loadBatchProgress() {
+			fetch(API_BASE + "/admin/batches", {
+				headers: {Authorization: "Bearer " + token}
+			})
+				.then(res => res.json())
+				.then(data => {
+
+					const container = document.getElementById("reportBatchProgress");
+					if (!container) return;
+
+					container.innerHTML = "";
+
+					data.forEach(batch => {
+
+						const progress = batch.progress || 0;
+
+						let color = progress < 40 ? '#ef4444' :
+							progress < 70 ? '#f59e0b' :
+								'#22c55e';
+
+						container.innerHTML += `
+	                <div class="mb-4">
+	                    <div class="flex justify-between text-sm font-semibold">
+	                        <span>${batch.domainName}</span>
+	                        <span>${progress}%</span>
+	                    </div>
+	                    <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+	                        <div class="h-2 rounded-full"
+	                             style="width:${progress}%; background:${color}">
+	                        </div>
+	                    </div>
+	                </div>
+	            `;
+					});
+				});
+		}
+
+
+		// 🔥 NEW: HISTORY → REPORT TABLE
+		function loadReportHistory() {
+
+			const data = JSON.parse(localStorage.getItem("batchHistoryData")) || [];
+			const table = document.getElementById("reportHistoryTable");
+
+			if (!table) return;
+
+			table.innerHTML = "";
+
+			if (data.length === 0) {
+				table.innerHTML = `
+	        <tr>
+	            <td colspan="5" class="text-center py-6 text-gray-500">
+	                No data available
+	            </td>
+	        </tr>`;
+				return;
+			}
+
+			data.forEach(batch => {
+
+				const statusColor = batch.status === "ONGOING"
+					? "bg-yellow-100 text-yellow-700"
+					: "bg-green-100 text-green-700";
+
+				table.innerHTML += `
+	        <tr class="hover:bg-secondary-container/30 transition-colors">
+	            <td class="px-6 py-4 font-bold">${batch.domainName || "Batch"}</td>
+	            <td class="px-6 py-4">${batch.trainerName || "N/A"}</td>
+	            <td class="px-6 py-4">${batch.startDate ? new Date(batch.startDate).toLocaleDateString() : "N/A"}</td>
+	            <td class="px-6 py-4">${batch.endDate ? new Date(batch.endDate).toLocaleDateString() : "N/A"}</td>
+	            <td class="px-6 py-4">
+	                <span class="px-2 py-1 rounded text-xs font-bold ${statusColor}">
+	                    ${batch.status || "N/A"}
+	                </span>
+	            </td>
+	        </tr>`;
+			});
+		}
+
+
+		// LOAD
+		window.onload = loadReport;
+	</script>
+</body>
+
+</html>
