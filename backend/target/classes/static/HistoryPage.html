@@ -266,7 +266,7 @@
 <!-- Contextual FAB (Hidden on history list as per suppression rule, but included logic for placement awareness) -->
 <!-- Suppression Logic: Suppress on Detail/History screens as focus is on reading. -->
 <script>
-const API_BASE_URL = "";
+const API_BASE_URL = "http://localhost:8080";
 const token = localStorage.getItem("token");
 const role = localStorage.getItem("role");
 const tableBody = document.getElementById("historyTableBody");
@@ -287,7 +287,7 @@ function setLoggedInName() {
   const name = localStorage.getItem("name");
   if (!name) return;
   const targets = document.querySelectorAll("span.font-headline.text-\\[\\#9df0f4\\]");
-  targets.forEach((node) => { node.textContent = name; });
+  targets.forEach(node => node.textContent = name);
 }
 
 function formatDate(value) {
@@ -302,43 +302,97 @@ function duration(start, end) {
   return `${days} Days`;
 }
 
+
+// 🔥 MAIN LOAD FUNCTION
 async function loadHistory() {
   try {
     const res = await fetch(`${API_BASE_URL}/api/admin/batches`, {
       headers: { Authorization: `Bearer ${token}` }
     });
+
     if (!res.ok) throw new Error("Unable to load history");
+
     const batches = await res.json();
-    const closed = batches.filter(item => (item.status || "").toUpperCase() !== "ONGOING");
+
+    // 🔥 STORE DATA FOR REPORT PAGE (IMPORTANT)
+    localStorage.setItem("batchHistoryData", JSON.stringify(batches));
+
+    // Filter closed batches
+    const closed = batches.filter(item =>
+      (item.status || "").toUpperCase() !== "ONGOING"
+    );
+
     const records = closed.length ? closed : batches;
+
     tableBody.innerHTML = "";
+
     if (!records.length) {
       document.getElementById("historyTotalCycles").innerText = "0";
       document.getElementById("historyAvgDuration").innerText = "0d";
       return;
     }
-    const totalDuration = records.reduce((acc, item) => {
-      if (!item.startDate || !item.endDate) return acc;
-      return acc + Math.max(0, Math.round((new Date(item.endDate) - new Date(item.startDate)) / (1000 * 60 * 60 * 24)));
-    }, 0);
-    document.getElementById("historyTotalCycles").innerText = String(records.length);
-    document.getElementById("historyAvgDuration").innerText = `${Math.round(totalDuration / records.length)}d`;
+
+    // 🔥 CALCULATIONS
+    let totalDuration = 0;
+
+    records.forEach(item => {
+      if (item.startDate && item.endDate) {
+        totalDuration += Math.max(0,
+          Math.round((new Date(item.endDate) - new Date(item.startDate)) / (1000 * 60 * 60 * 24))
+        );
+      }
+    });
+
+    const avgDuration = Math.round(totalDuration / records.length);
+
+    document.getElementById("historyTotalCycles").innerText = records.length;
+    document.getElementById("historyAvgDuration").innerText = avgDuration + "d";
+
+
+    // 🔥 TABLE RENDER
     records.forEach(item => {
       tableBody.insertAdjacentHTML("beforeend", `
-      <tr class="hover:bg-secondary-container/30 transition-colors group">
-        <td class="px-6 py-5"><span class="font-semibold text-on-surface">${item.domainName || "N/A"}</span></td>
-        <td class="px-6 py-5"><span class="text-on-surface-variant">${item.trainerName || "Unassigned"}</span></td>
-        <td class="px-6 py-5 text-on-surface-variant">${formatDate(item.startDate)}</td>
-        <td class="px-6 py-5 text-on-surface-variant">${formatDate(item.endDate)}</td>
-        <td class="px-6 py-5"><span class="bg-surface-container-low px-2.5 py-1 rounded-md text-[12px] font-medium text-primary">${duration(item.startDate, item.endDate)}</span></td>
-        <td class="px-6 py-5 text-right"><span class="text-[11px] font-bold uppercase tracking-tighter text-on-secondary-fixed-variant bg-secondary-fixed px-2 py-0.5 rounded">${item.status || "N/A"}</span></td>
-      </tr>`);
+        <tr class="hover:bg-secondary-container/30 transition-colors group">
+          <td class="px-6 py-5">
+            <span class="font-semibold text-on-surface">${item.domainName || "N/A"}</span>
+          </td>
+
+          <td class="px-6 py-5">
+            <span class="text-on-surface-variant">${item.trainerName || "Unassigned"}</span>
+          </td>
+
+          <td class="px-6 py-5 text-on-surface-variant">
+            ${formatDate(item.startDate)}
+          </td>
+
+          <td class="px-6 py-5 text-on-surface-variant">
+            ${formatDate(item.endDate)}
+          </td>
+
+          <td class="px-6 py-5">
+            <span class="bg-surface-container-low px-2.5 py-1 rounded-md text-[12px] font-medium text-primary">
+              ${duration(item.startDate, item.endDate)}
+            </span>
+          </td>
+
+          <td class="px-6 py-5 text-right">
+            <span class="text-[11px] font-bold uppercase tracking-tighter 
+              ${item.status === "ONGOING" ? "text-yellow-700 bg-yellow-100" : "text-green-700 bg-green-100"} 
+              px-2 py-0.5 rounded">
+              ${item.status || "N/A"}
+            </span>
+          </td>
+        </tr>
+      `);
     });
+
   } catch (error) {
-    console.error(error);
+    console.error("History Error:", error);
   }
 }
 
+
+// 🔥 INIT
 setLoggedInName();
 loadHistory();
 </script>

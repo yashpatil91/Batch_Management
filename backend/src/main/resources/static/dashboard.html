@@ -105,32 +105,48 @@
 		body {
 			min-height: max(884px, 100dvh);
 		}
-		/* ===== Card Border (All Cards) ===== */
+
+		/* ===== ONLY BORDER GLOW EFFECT (FIXED) ===== */
 		.bg-surface-container-lowest {
-		  border: 1px solid #0d7377;
-		  transition: all 0.3s ease;
+			position: relative;
+			border-radius: 12px;
+			background: #ffffff;
+			/* keep inside clean */
+			z-index: 0;
+			overflow: hidden;
 		}
 
-		/* ===== Card Hover Animation ===== */
-		.bg-surface-container-lowest:hover {
-		  transform: translateY(-6px) scale(1.01);
-		  box-shadow: 0 15px 35px rgba(13, 115, 119, 0.2);
+		/* 🌈 Animated Border */
+		.bg-surface-container-lowest::before {
+			content: "";
+			position: absolute;
+			inset: -2px;
+			border-radius: 12px;
+			background: linear-gradient(120deg, #00f0ff, #0d7377, #81d4d8, #00f0ff);
+			background-size: 300%;
+			animation: glowMove 4s linear infinite;
+			z-index: -2;
 		}
 
-		/* ===== Smooth Fade + Slide Entry ===== */
-		.bg-surface-container-lowest {
-		  animation: cardFadeUp 0.8s ease forwards;
+		/* 🧱 Inner white layer (so only border shows) */
+		.bg-surface-container-lowest::after {
+			content: "";
+			position: absolute;
+			inset: 2px;
+			background: #ffffff;
+			border-radius: 10px;
+			z-index: -1;
 		}
 
-		@keyframes cardFadeUp {
-		  0% {
-		    transform: translateY(30px);
-		    opacity: 0.9;
-		  }
-		  100% {
-		    transform: translateY(0);
-		    opacity: 1;
-		  }
+		/* ✨ Animation */
+		@keyframes glowMove {
+			0% {
+				background-position: 0%
+			}
+
+			100% {
+				background-position: 300%
+			}
 		}
 
 		/* ===== KPI Numbers Animation ===== */
@@ -138,85 +154,86 @@
 		#activeBatches,
 		#totalTrainers,
 		#completedBatches {
-		  font-size: 28px;
-		  font-weight: bold;
-		  color: #0d7377;
-		  animation: popNumber 0.6s ease;
+			font-size: 28px;
+			font-weight: bold;
+			color: #0d7377;
+			animation: popNumber 0.6s ease;
 		}
 
 		@keyframes popNumber {
-		  0% {
-		    transform: scale(0.7);
-		    opacity: 0.5;
-		  }
-		  100% {
-		    transform: scale(1);
-		    opacity: 1;
-		  }
+			0% {
+				transform: scale(0.7);
+				opacity: 0.5;
+			}
+
+			100% {
+				transform: scale(1);
+				opacity: 1;
+			}
 		}
 
 		/* ===== Table Row Hover Effect ===== */
 		tbody tr {
-		  transition: all 0.3s ease;
+			transition: all 0.3s ease;
 		}
 
 		tbody tr:hover {
-		  background-color: rgba(13, 115, 119, 0.08);
-		  transform: scale(1.01);
+			background-color: rgba(13, 115, 119, 0.08);
+			transform: scale(1.01);
 		}
 
 		/* ===== Progress Bar Animation ===== */
 		.primary-gradient {
-		  animation: progressFill 1.5s ease-in-out;
+			animation: progressFill 1.5s ease-in-out;
 		}
 
 		@keyframes progressFill {
-		  from {
-		    width: 0%;
-		  }
+			from {
+				width: 0%;
+			}
 		}
 
 		/* ===== Button Animation ===== */
 		button {
-		  transition: all 0.3s ease;
+			transition: all 0.3s ease;
 		}
 
 		button:hover {
-		  transform: translateY(-2px);
-		  box-shadow: 0 10px 25px rgba(13, 115, 119, 0.25);
+			transform: translateY(-2px);
+			box-shadow: 0 10px 25px rgba(13, 115, 119, 0.25);
 		}
 
 		/* ===== Sidebar Links Animation ===== */
 		aside a {
-		  position: relative;
-		  overflow: hidden;
+			position: relative;
+			overflow: hidden;
 		}
 
 		aside a::before {
-		  content: "";
-		  position: absolute;
-		  left: 0;
-		  top: 0;
-		  height: 100%;
-		  width: 0%;
-		  background: rgba(157, 240, 244, 0.1);
-		  transition: 0.3s;
+			content: "";
+			position: absolute;
+			left: 0;
+			top: 0;
+			height: 100%;
+			width: 0%;
+			background: rgba(157, 240, 244, 0.1);
+			transition: 0.3s;
 		}
 
 		aside a:hover::before {
-		  width: 100%;
+			width: 100%;
 		}
 
 		/* ===== Header Sticky Smooth Effect ===== */
 		header {
-		  transition: all 0.3s ease;
+			transition: all 0.3s ease;
 		}
 
 		header:hover {
-		  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+			box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
 		}
+
 		/**/
-		
 	</style>
 </head>
 
@@ -225,7 +242,7 @@
 	<aside
 		class="fixed left-0 top-0 bottom-0 z-40 flex flex-col h-screen w-64 bg-[#2d3133] shadow-xl shadow-black/10 font-['Inter'] text-sm font-medium">
 		<div class="p-8">
-			<h1 class="text-lg font-bold tracking-tighter text-[#f8f9fb]">Precision Ledger</h1>
+			<h1 class="text-lg font-bold tracking-tighter text-[#f8f9fb]">PRECISION LEDGER</h1>
 		</div>
 		<nav class="flex-1 px-0">
 			<a class="border-l-4 border-[#9df0f4] bg-[#3f484a] text-[#9df0f4] py-3 px-6 flex items-center gap-3 transition-all"
@@ -244,7 +261,7 @@
 				Trainer Directory
 			</a>
 			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
-				href="#">
+				href="/report.html">
 				<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
 				Reports
 			</a>
@@ -268,7 +285,7 @@
 			class="flex justify-between items-center w-full px-8 py-4 sticky top-0 z-30 bg-[#f8f9fb] font-['Manrope'] text-sm tracking-wide uppercase">
 			<div class="flex items-center gap-4">
 				<span class="material-symbols-outlined text-[#0d7377]" data-icon="menu">menu</span>
-				<span class="text-lg font-bold tracking-tighter text-[#191c1e] lowercase">Overview</span>
+				<span class="text-lg font-bold tracking-tighter text-[#191c1e] lowercase">OVERVIEW</span>
 			</div>
 			<div class="flex items-center gap-6">
 				<div class="relative group">
@@ -284,7 +301,7 @@
 			<!-- Page Header & Action -->
 			<div class="flex justify-between items-end">
 				<div>
-					<h2 class="font-headline text-3xl font-bold text-on-surface tracking-tight">Executive Dashboard</h2>
+					<h2 class="font-headline text-3xl font-bold text-on-surface tracking-tight">EXECUTIVE DASHBOARD</h2>
 					<p class="text-on-surface-variant font-body">Operational metrics and batch oversight for Q3
 						Lifecycle.</p>
 				</div>
@@ -307,7 +324,7 @@
 					</div>
 				</div>
 				<!-- Active Batches -->
-				<div class="bg-surface-container-lowest p-6 rounded-xl space-y-2 border-l-4 border-primary">
+				<div class="bg-surface-container-lowest p-6 rounded-xl space-y-2 ">
 					<div class="flex justify-between items-start">
 						<span class="material-symbols-outlined text-primary p-2 bg-primary-fixed rounded-lg"
 							data-icon="rocket_launch">rocket_launch</span>
@@ -373,7 +390,7 @@
 							</thead>
 							<tbody id="batchTableBody" class="divide-y-0">
 							</tbody>
-							
+
 
 
 
@@ -406,7 +423,7 @@
 							<th class="px-8 py-4 font-semibold">Trainer Profile</th>
 							<th class="px-6 py-4 font-semibold">Assigned Batches</th>
 							<th class="px-6 py-4 font-semibold">Contact</th>
-							<th class="px-6 py-4 text-right font-semibold">Management</th>
+							<th class="px-6 py-4 text-center font-semibold">Management</th>
 						</tr>
 					</thead>
 					<tbody id="trainerPerformanceBody" class="divide-y-0"></tbody>
@@ -497,7 +514,7 @@
 	    </div>
 	</div>
 	<script>
-		const API_BASE_URL = "";
+		const API_BASE_URL = "http://localhost:8080";
 		const token = localStorage.getItem("token");
 		const role = localStorage.getItem("role");
 
@@ -534,12 +551,12 @@
 			const name = localStorage.getItem("name");
 			if (!name) return;
 			const targets = document.querySelectorAll("p.text-\\[\\#9df0f4\\].truncate.font-semibold");
-			targets.forEach((node) => { node.textContent = name; });
+			targets.forEach((node) => {node.textContent = name;});
 		}
 
 		async function loadDashboard() {
 			try {
-				const res = await fetch(`${API_BASE_URL}/api/admin/dashboard`, { headers: authHeaders() });
+				const res = await fetch(`${API_BASE_URL}/api/admin/dashboard`, {headers: authHeaders()});
 				if (!res.ok) throw new Error("Failed to load dashboard");
 				const data = await res.json();
 				document.getElementById("totalBatches").innerText = data.totalBatches ?? 0;
@@ -556,7 +573,7 @@
 
 		async function loadBatches() {
 			try {
-				const res = await fetch(`${API_BASE_URL}/api/admin/batches`, { headers: authHeaders() });
+				const res = await fetch(`${API_BASE_URL}/api/admin/batches`, {headers: authHeaders()});
 				if (!res.ok) throw new Error("Failed to load batches");
 				const data = await res.json();
 				const tableBody = document.getElementById("batchTableBody");
@@ -581,7 +598,7 @@
 
 		async function loadTrainers() {
 			try {
-				const res = await fetch(`${API_BASE_URL}/api/admin/trainers`, { headers: authHeaders() });
+				const res = await fetch(`${API_BASE_URL}/api/admin/trainers`, {headers: authHeaders()});
 				if (!res.ok) throw new Error("Failed to load trainers");
 				const data = await res.json();
 				const trainerBody = document.getElementById("trainerPerformanceBody");
