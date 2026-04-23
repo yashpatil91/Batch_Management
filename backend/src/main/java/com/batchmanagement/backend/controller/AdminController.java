@@ -80,4 +80,5 @@ public class AdminController {
     public ResponseEntity<DashboardResponse> getDashboard() {
         return ResponseEntity.ok(adminService.getDashboard());
     }
+
 }
