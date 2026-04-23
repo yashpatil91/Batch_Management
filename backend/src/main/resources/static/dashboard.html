@@ -229,7 +229,7 @@
 		</div>
 		<nav class="flex-1 px-0">
 			<a class="border-l-4 border-[#9df0f4] bg-[#3f484a] text-[#9df0f4] py-3 px-6 flex items-center gap-3 transition-all"
-				href="#">
+				href="/dashboard.html">
 				<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
 				Dashboard
 			</a>
@@ -333,7 +333,7 @@
 					</div>
 				</div>
 				<!-- Completed Batches -->
-				<div class="bg-surface-container-lowest p-6 rounded-xl space-y-2">f
+				<div class="bg-surface-container-lowest p-6 rounded-xl space-y-2">
 					<div class="flex justify-between items-start">
 						<span class="material-symbols-outlined text-tertiary p-2 bg-tertiary-fixed rounded-lg"
 							data-icon="verified">verified</span>
@@ -389,50 +389,7 @@
 						<p class="text-outline-variant text-xs uppercase tracking-widest">Active Mentorship
 							High-Performers</p>
 					</div>
-					<div class="space-y-4">
-						<div
-							class="flex items-center justify-between p-4 bg-surface-variant/10 rounded-lg hover:bg-surface-variant/20 transition-all cursor-pointer">
-							<div class="flex items-center gap-4">
-								<img alt="Trainer Avatar" class="w-10 h-10 rounded-lg object-cover"
-									data-alt="Close-up of a professional woman in business casual attire smiling confidently in a minimalist office"
-									src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtaZfChlqusswXLRx9506MmxEp3GJMD7MZa5OQ6S33zEXjIUyScnTtzYF4I4TcSff6oKumAdeCn470fldxs4Wp3MXNco7kONW0ksbi204P27A0-oWfBI_6OQeAyY8buWkb092FqjqR68XToYLztr4p-QxZ_cZ3fByi_50vFtuGARfhMB-GG2yRacKt7lgJI8ApPSs3GQ6xBJ5Tf_YnhhmUHOLgI8QEkqH6BNFHPncLwbDeCeOeKq4DW-EEvD1Gfj_6IpEykjqYpNNh" />
-								<div>
-									<p class="font-bold text-sm">Elena Vance</p>
-									<p class="text-[10px] text-outline-variant uppercase">3 Active Batches</p>
-								</div>
-							</div>
-							<span class="material-symbols-outlined text-primary-fixed text-sm"
-								data-icon="arrow_forward_ios">arrow_forward_ios</span>
-						</div>
-						<div
-							class="flex items-center justify-between p-4 bg-surface-variant/10 rounded-lg hover:bg-surface-variant/20 transition-all cursor-pointer">
-							<div class="flex items-center gap-4">
-								<img alt="Trainer Avatar" class="w-10 h-10 rounded-lg object-cover"
-									data-alt="Professional man with glasses looking directly at the camera with a neutral and focused expression"
-									src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJm73eCbmsOdGGgTsRCaF0ZgJ1tQx25_7AjQ2QUq03ixZrv-gXLz_X0xZkkQjnSahFWeWI7IxwNJkAUut5SPcAM2Yo4yBChENbhmU4ZPmXRQ-QmuewDKrxaIk4D7aCAUJJICM5m15Clq4RaGKekIhR6p651aWZWauNpntCinSUZRoW8g1JAfZOkxq1OIT0PbtgtHrioL0P6uxHcHc3VzGo0Gg7SZUsaNcY18U2og8IzHRRynWJEHq8mgk-mrPZErPuA6o2K8uCtikt" />
-								<div>
-									<p class="font-bold text-sm">Marcus Thorne</p>
-									<p class="text-[10px] text-outline-variant uppercase">5 Active Batches</p>
-								</div>
-							</div>
-							<span class="material-symbols-outlined text-primary-fixed text-sm"
-								data-icon="arrow_forward_ios">arrow_forward_ios</span>
-						</div>
-						<div
-							class="flex items-center justify-between p-4 bg-surface-variant/10 rounded-lg hover:bg-surface-variant/20 transition-all cursor-pointer">
-							<div class="flex items-center gap-4">
-								<img alt="Trainer Avatar" class="w-10 h-10 rounded-lg object-cover"
-									data-alt="Headshot of a focused professional woman in a modern corporate setting with bokeh background"
-									src="https://lh3.googleusercontent.com/aida-public/AB6AXuDC9qA99AMDgRf4clwtgrCZl4epUrIHOhbzv_u6YmNDSHApeTYv8vZcB_5ILe7_SmbIpMUdgsQ7DilFBkLIKT5Bre02jwIWosYw8xrzvZI2gXb3MoTPpydaR2BwNYNXnuOLPtLOIjkHPjjKHMOUN_pfeQP3hUsPH6C_W3amfop1478HBI-3IK7HEvg-gsInHOIybwr2D5MiKbQaVCq-nXfC3VBTIsV0_Uuzg2MGBdO4pU_s0UyZ8BZR1OxGW5l8OlRiBc9ohAVgBJF8" />
-								<div>
-									<p class="font-bold text-sm">Sarah Jenkins</p>
-									<p class="text-[10px] text-outline-variant uppercase">2 Active Batches</p>
-								</div>
-							</div>
-							<span class="material-symbols-outlined text-primary-fixed text-sm"
-								data-icon="arrow_forward_ios">arrow_forward_ios</span>
-						</div>
-					</div>
+					<div id="trainerQuickStats" class="space-y-4"></div>
 					<button
 						class="w-full py-3 border border-outline-variant/30 rounded-lg text-sm font-bold text-primary-fixed hover:bg-white/5 transition-all">
 						View Full Directory
@@ -454,55 +411,7 @@
 							<th class="px-6 py-4 text-right font-semibold">Management</th>
 						</tr>
 					</thead>
-					<tbody class="divide-y-0">
-						<tr class="hover:bg-secondary-container transition-all">
-							<td class="px-8 py-5">
-								<div class="font-bold text-on-surface">Alan Sterling</div>
-								<div class="text-xs text-on-surface-variant">Senior Technical Instructor</div>
-							</td>
-							<td class="px-6 py-5">
-								<div class="flex flex-wrap gap-1">
-									<span
-										class="text-[10px] font-bold px-2 py-0.5 bg-primary-fixed text-on-primary-fixed-variant rounded">B-2024-ALPHA</span>
-									<span
-										class="text-[10px] font-bold px-2 py-0.5 bg-surface-container-high text-outline rounded">+2
-										more</span>
-								</div>
-							</td>
-							<td class="px-6 py-5 text-sm text-on-surface-variant">alan.s@ledger-system.com</td>
-							<td class="px-6 py-5 text-right">
-								<button class="p-2 text-outline hover:text-primary transition-colors">
-									<span class="material-symbols-outlined" data-icon="edit">edit</span>
-								</button>
-								<button class="p-2 text-outline hover:text-tertiary transition-colors">
-									<span class="material-symbols-outlined" data-icon="delete">delete</span>
-								</button>
-							</td>
-						</tr>
-						<tr class="hover:bg-secondary-container transition-all">
-							<td class="px-8 py-5">
-								<div class="font-bold text-on-surface">Maria Rodriguez</div>
-								<div class="text-xs text-on-surface-variant">Cloud Solutions Specialist</div>
-							</td>
-							<td class="px-6 py-5">
-								<div class="flex flex-wrap gap-1">
-									<span
-										class="text-[10px] font-bold px-2 py-0.5 bg-primary-fixed text-on-primary-fixed-variant rounded">B-2024-GAMMA</span>
-									<span
-										class="text-[10px] font-bold px-2 py-0.5 bg-primary-fixed text-on-primary-fixed-variant rounded">C-2023-DELTA</span>
-								</div>
-							</td>
-							<td class="px-6 py-5 text-sm text-on-surface-variant">m.rodriguez@cloud-edu.io</td>
-							<td class="px-6 py-5 text-right">
-								<button class="p-2 text-outline hover:text-primary transition-colors">
-									<span class="material-symbols-outlined" data-icon="edit">edit</span>
-								</button>
-								<button class="p-2 text-outline hover:text-tertiary transition-colors">
-									<span class="material-symbols-outlined" data-icon="delete">delete</span>
-								</button>
-							</td>
-						</tr>
-					</tbody>
+					<tbody id="trainerPerformanceBody" class="divide-y-0"></tbody>
 				</table>
 			</div>
 		</div>
@@ -564,79 +473,136 @@
 		</div>
 	</div>
 	<script>
-		//  Check login
+		const API_BASE_URL = "";
 		const token = localStorage.getItem("token");
+		const role = localStorage.getItem("role");
 
 		if (!token) {
-			alert("Please login first ❌");
+			alert("Please login first.");
 			window.location.href = "index.html";
 		}
 
-		//  Logout function
+		if (!role || role !== "ADMIN") {
+			window.location.href = role === "TRAINER" ? "Trainerdashboard.html" : "index.html";
+		}
+
+		function authHeaders() {
+			return {
+				"Authorization": "Bearer " + token
+			};
+		}
+
+		function formatDate(value) {
+			if (!value) return "N/A";
+			const parsed = new Date(value);
+			return Number.isNaN(parsed.getTime()) ? value : parsed.toLocaleDateString();
+		}
+
 		function logout() {
 			localStorage.removeItem("token");
 			localStorage.removeItem("role");
-
-			alert("Logged out successfully 👋");
+			localStorage.removeItem("name");
+			localStorage.removeItem("userId");
 			window.location.href = "index.html";
 		}
 
-		//  Load Dashboard Stats
-		fetch("http://localhost:8080/api/admin/dashboard", {
-			headers: {
-				"Authorization": "Bearer " + token
-			}
-		})
-			.then(res => {
+		function setLoggedInName() {
+			const name = localStorage.getItem("name");
+			if (!name) return;
+			const targets = document.querySelectorAll("p.text-\\[\\#9df0f4\\].truncate.font-semibold");
+			targets.forEach((node) => { node.textContent = name; });
+		}
+
+		async function loadDashboard() {
+			try {
+				const res = await fetch(`${API_BASE_URL}/api/admin/dashboard`, { headers: authHeaders() });
 				if (!res.ok) throw new Error("Failed to load dashboard");
-				return res.json();
-			})
-			.then(data => {
-				document.getElementById("totalBatches").innerText = data.totalBatches;
-				document.getElementById("activeBatches").innerText = data.activeBatches;
-				document.getElementById("totalTrainers").innerText = data.totalTrainers;
-				document.getElementById("completedBatches").innerText = data.completedBatches;
-			})
-			.catch(err => {
+				const data = await res.json();
+				document.getElementById("totalBatches").innerText = data.totalBatches ?? 0;
+				document.getElementById("activeBatches").innerText = data.ongoingBatches ?? 0;
+				document.getElementById("totalTrainers").innerText = data.totalTrainers ?? 0;
+				document.getElementById("completedBatches").innerText = Math.max(
+					(data.totalBatches ?? 0) - (data.ongoingBatches ?? 0),
+					0
+				);
+			} catch (err) {
 				console.error("Dashboard Error:", err);
-			});
-
-		// 🔥 Load Batch Table
-		fetch("http://localhost:8080/api/admin/batches", {
-			headers: {
-				"Authorization": "Bearer " + token
 			}
-		})
-			.then(res => {
+		}
+
+		async function loadBatches() {
+			try {
+				const res = await fetch(`${API_BASE_URL}/api/admin/batches`, { headers: authHeaders() });
 				if (!res.ok) throw new Error("Failed to load batches");
-				return res.json();
-			})
-			.then(data => {
+				const data = await res.json();
 				const tableBody = document.getElementById("batchTableBody");
-
-				if (!tableBody) {
-					console.error("❌ batchTableBody not found in HTML");
-					return;
-				}
-
 				tableBody.innerHTML = "";
 
 				data.forEach(batch => {
 					const row = `
-	        <tr>
-	            <td>${batch.name}</td>
-	            <td>${batch.trainerName || "N/A"}</td>
-	            <td>${batch.startDate}</td>
-	            <td>${batch.status}</td>
-	            <td>${batch.progress || "0"}%</td>
-	        </tr>
-	        `;
-					tableBody.innerHTML += row;
+						<tr class="hover:bg-secondary-container transition-all">
+							<td class="px-8 py-4 font-semibold">${batch.domainName || "N/A"}</td>
+							<td class="px-6 py-4">${batch.trainerName || "Unassigned"}</td>
+							<td class="px-6 py-4">${formatDate(batch.startDate)}</td>
+							<td class="px-6 py-4">${batch.status || "N/A"}</td>
+							<td class="px-6 py-4">${batch.progress ?? 0}%</td>
+						</tr>
+					`;
+					tableBody.insertAdjacentHTML("beforeend", row);
 				});
-			})
-			.catch(err => {
+			} catch (err) {
 				console.error("Batch Error:", err);
-			});
+			}
+		}
+
+		async function loadTrainers() {
+			try {
+				const res = await fetch(`${API_BASE_URL}/api/admin/trainers`, { headers: authHeaders() });
+				if (!res.ok) throw new Error("Failed to load trainers");
+				const data = await res.json();
+				const trainerBody = document.getElementById("trainerPerformanceBody");
+				const quickStats = document.getElementById("trainerQuickStats");
+				trainerBody.innerHTML = "";
+				quickStats.innerHTML = "";
+				data.forEach((trainer) => {
+					trainerBody.insertAdjacentHTML("beforeend", `
+						<tr class="hover:bg-secondary-container transition-all">
+							<td class="px-8 py-5">
+								<div class="font-bold text-on-surface">${trainer.name || "N/A"}</div>
+								<div class="text-xs text-on-surface-variant">Trainer</div>
+							</td>
+							<td class="px-6 py-5">
+								<div class="flex flex-wrap gap-1">
+									<span class="text-[10px] font-bold px-2 py-0.5 bg-primary-fixed text-on-primary-fixed-variant rounded">ID-${trainer.id}</span>
+								</div>
+							</td>
+							<td class="px-6 py-5 text-sm text-on-surface-variant">${trainer.email || "N/A"}</td>
+							<td class="px-6 py-5 text-right">
+								<span class="text-xs font-semibold text-on-surface-variant">Live</span>
+							</td>
+						</tr>
+					`);
+				});
+				data.slice(0, 3).forEach((trainer) => {
+					quickStats.insertAdjacentHTML("beforeend", `
+						<div class="flex items-center justify-between p-4 bg-surface-variant/10 rounded-lg hover:bg-surface-variant/20 transition-all cursor-pointer">
+							<div>
+								<p class="font-bold text-sm">${trainer.name || "N/A"}</p>
+								<p class="text-[10px] text-outline-variant uppercase">${trainer.email || "N/A"}</p>
+							</div>
+							<span class="material-symbols-outlined text-primary-fixed text-sm" data-icon="arrow_forward_ios">arrow_forward_ios</span>
+						</div>
+					`);
+				});
+			} catch (err) {
+				console.error("Trainer Error:", err);
+			}
+		}
+
+		setLoggedInName();
+		loadDashboard();
+		loadBatches();
+		loadTrainers();
 	</script>
 </body>
 

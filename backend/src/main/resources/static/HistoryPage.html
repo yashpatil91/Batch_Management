@@ -102,15 +102,15 @@
 </div>
 </div>
 <nav class="flex-1 mt-4">
-<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 font-['Inter'] text-sm font-medium hover:bg-[#3f484a] hover:text-white transition-all" href="#">
+<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 font-['Inter'] text-sm font-medium hover:bg-[#3f484a] hover:text-white transition-all" href="/dashboard.html">
 <span class="material-symbols-outlined">dashboard</span>
                 Dashboard
             </a>
-<a class="border-l-4 border-[#9df0f4] bg-[#3f484a] text-[#9df0f4] py-3 px-6 flex items-center gap-3 font-['Inter'] text-sm font-medium transition-all" href="#">
+<a class="border-l-4 border-[#9df0f4] bg-[#3f484a] text-[#9df0f4] py-3 px-6 flex items-center gap-3 font-['Inter'] text-sm font-medium transition-all" href="/HistoryPage.html">
 <span class="material-symbols-outlined">layers</span>
                 Batch Management
             </a>
-<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 font-['Inter'] text-sm font-medium hover:bg-[#3f484a] hover:text-white transition-all" href="#">
+<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 font-['Inter'] text-sm font-medium hover:bg-[#3f484a] hover:text-white transition-all" href="/TrainerManagmentpage.html">
 <span class="material-symbols-outlined">groups</span>
                 Trainer Directory
             </a>
@@ -135,7 +135,7 @@
                         <span class="material-symbols-outlined text-xs">expand_more</span>
 </button>
 </div>
-<button class="font-['Manrope'] text-sm tracking-wide uppercase text-[#0d7377] font-bold hover:bg-[#c9e9ea] px-3 py-1 rounded transition-all">
+<button onclick="logout()" class="font-['Manrope'] text-sm tracking-wide uppercase text-[#0d7377] font-bold hover:bg-[#c9e9ea] px-3 py-1 rounded transition-all">
                     Logout
                 </button>
 </div>
@@ -150,11 +150,11 @@
 <div class="flex items-center gap-4">
 <div class="bg-surface-container-lowest p-4 rounded-xl shadow-black/5 flex flex-col items-end min-w-[120px]">
 <span class="font-label text-[10px] uppercase tracking-widest text-outline">Total Cycles</span>
-<span class="font-headline text-3xl font-bold text-primary">142</span>
+<span id="historyTotalCycles" class="font-headline text-3xl font-bold text-primary">0</span>
 </div>
 <div class="bg-surface-container-lowest p-4 rounded-xl shadow-black/5 flex flex-col items-end min-w-[120px]">
 <span class="font-label text-[10px] uppercase tracking-widest text-outline">Avg. Duration</span>
-<span class="font-headline text-3xl font-bold text-primary">14d</span>
+<span id="historyAvgDuration" class="font-headline text-3xl font-bold text-primary">0d</span>
 </div>
 </div>
 </div>
@@ -199,128 +199,7 @@
 <th class="px-6 py-4 font-label text-[11px] font-bold text-outline uppercase tracking-[0.1em] text-right">Status</th>
 </tr>
 </thead>
-<tbody class="font-body text-sm divide-y divide-surface-container-low">
-<tr class="hover:bg-secondary-container/30 transition-colors group">
-<td class="px-6 py-5">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-<span class="material-symbols-outlined text-sm">inventory_2</span>
-</div>
-<span class="font-semibold text-on-surface">Q4_SYS_REF_001</span>
-</div>
-</td>
-<td class="px-6 py-5">
-<div class="flex items-center gap-2">
-<img class="w-6 h-6 rounded-full object-cover" data-alt="headshot of a middle-aged male corporate trainer with glasses and a professional smile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2EsqAc4XBGKoyBHHQV3dEEovpYYiRQ4mjJAXR8ygo0pjTdXsde8JLJnJPx0M7DNaKTfx2yaZATz5dtLC0rvenO68rj457MhZdfiK3JsCMI_JlDByXpG17TdmJ5sYUozKncib6mwbBCZ9LG2WsVMrGI_yxhboLv0itz491fZBSwH7KipHujsEqeVbvfnc6pU_4F89LZ_gkUr_cEykv4G31RSxqgSknWDus6y8jYhYCb3FpKDc_HN0kdBBBNk1B30Sc5pA_xoZNnise"/>
-<span class="text-on-surface-variant">David Henderson</span>
-</div>
-</td>
-<td class="px-6 py-5 text-on-surface-variant">Oct 12, 2023</td>
-<td class="px-6 py-5 text-on-surface-variant">Oct 26, 2023</td>
-<td class="px-6 py-5">
-<span class="bg-surface-container-low px-2.5 py-1 rounded-md text-[12px] font-medium text-primary">14 Days</span>
-</td>
-<td class="px-6 py-5 text-right">
-<span class="text-[11px] font-bold uppercase tracking-tighter text-on-secondary-fixed-variant bg-secondary-fixed px-2 py-0.5 rounded">Closed</span>
-</td>
-</tr>
-<tr class="hover:bg-secondary-container/30 transition-colors group">
-<td class="px-6 py-5">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-<span class="material-symbols-outlined text-sm">inventory_2</span>
-</div>
-<span class="font-semibold text-on-surface">Q3_PROT_ALPHA</span>
-</div>
-</td>
-<td class="px-6 py-5">
-<div class="flex items-center gap-2">
-<img class="w-6 h-6 rounded-full object-cover" data-alt="professional portrait of a confident woman with a focused expression in a corporate office setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUXD8E8MMgFYDKYg1mR1IssR4gKmWlhpKF_ZGxg0fVKX-El4_7es5Fahhetotd9VPv0z5lb5Tp8DECuxKrdXysIyk01CV2IFw0qjZRrRRL7rAH33UWz_tJF6sk7mSVr_tpt7DzEUJ83be0lSV0SUT4zyeSE0twn5JWRUVnDO0aqIK22RqxQhdrHq-vzVuFwXIaFfX75mxUXrcQ3ToUrVRgWqMo5O-DEeR9cxT24IVempOAXhSYpcxfGFohbf4xJJmTfzeYIlK7LNV7"/>
-<span class="text-on-surface-variant">Sarah Jenkins</span>
-</div>
-</td>
-<td class="px-6 py-5 text-on-surface-variant">Sep 01, 2023</td>
-<td class="px-6 py-5 text-on-surface-variant">Sep 15, 2023</td>
-<td class="px-6 py-5">
-<span class="bg-surface-container-low px-2.5 py-1 rounded-md text-[12px] font-medium text-primary">14 Days</span>
-</td>
-<td class="px-6 py-5 text-right">
-<span class="text-[11px] font-bold uppercase tracking-tighter text-on-secondary-fixed-variant bg-secondary-fixed px-2 py-0.5 rounded">Closed</span>
-</td>
-</tr>
-<tr class="hover:bg-secondary-container/30 transition-colors group">
-<td class="px-6 py-5">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-<span class="material-symbols-outlined text-sm">inventory_2</span>
-</div>
-<span class="font-semibold text-on-surface">M_SYNC_BATCH_12</span>
-</div>
-</td>
-<td class="px-6 py-5">
-<div class="flex items-center gap-2">
-<img class="w-6 h-6 rounded-full object-cover" data-alt="close-up portrait of a male professional in a neutral tone blazer against a soft-lit background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDANiepcy7CqXbV26BjeKNtF1tbpGBnkEsN-Bvl2rjVk7s2UE9-PydjnKRJ6LXEQW7AXkBI_Ip6GOn6Qx6Shac9TRerL7RLpgQBttrG3QYfLzSf9PlsvfMqndALy2N_jo9adD88uTvpqgusjOK1UG9q6R3B7PDdBrrpx9Mo6qx45wlrCPi_mQzA9OrFEIKQ8xykRnkbPuXY-_QyBf7XRxz4f6dQBzCA30GvNpp3aoSiUtrEdGmvHCFIG5kcQEmccfprGoSYd_UbDyY"/>
-<span class="text-on-surface-variant">Marcus Thorne</span>
-</div>
-</td>
-<td class="px-6 py-5 text-on-surface-variant">Aug 18, 2023</td>
-<td class="px-6 py-5 text-on-surface-variant">Aug 28, 2023</td>
-<td class="px-6 py-5">
-<span class="bg-surface-container-low px-2.5 py-1 rounded-md text-[12px] font-medium text-primary">10 Days</span>
-</td>
-<td class="px-6 py-5 text-right">
-<span class="text-[11px] font-bold uppercase tracking-tighter text-on-secondary-fixed-variant bg-secondary-fixed px-2 py-0.5 rounded">Closed</span>
-</td>
-</tr>
-<tr class="hover:bg-secondary-container/30 transition-colors group">
-<td class="px-6 py-5">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-<span class="material-symbols-outlined text-sm">inventory_2</span>
-</div>
-<span class="font-semibold text-on-surface">V_CORE_LOGIC_44</span>
-</div>
-</td>
-<td class="px-6 py-5">
-<div class="flex items-center gap-2">
-<img class="w-6 h-6 rounded-full object-cover" data-alt="professional portrait of a woman of color in a modern office, soft bokeh background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuR3WfTLMRllsRvwXIrjRHTPui-IeUgnqd9azniixeSfNZzoAEj7ABJJ70_O0DZsAs1Vyfuy_4pYWq8-3wGG_kqCN46hXkktwy_5O8cnesi0ITNOyb7pQRPXXv2_5fbnu2vxx7O--Uck95-wfKPra8YgI8N1NVe6AEu_9YLxci2LUWIAOyz1RQ9_Pwgh0eotgXXmW-6V5jlsOCVYf1lypU9gh30GvNFxfUCWF2c0OgAz8dlFAI_7rrKSG1vpeOCy5U5Frpu7EOKNoP"/>
-<span class="text-on-surface-variant">Aria Chen</span>
-</div>
-</td>
-<td class="px-6 py-5 text-on-surface-variant">Jul 05, 2023</td>
-<td class="px-6 py-5 text-on-surface-variant">Jul 26, 2023</td>
-<td class="px-6 py-5">
-<span class="bg-surface-container-low px-2.5 py-1 rounded-md text-[12px] font-medium text-primary">21 Days</span>
-</td>
-<td class="px-6 py-5 text-right">
-<span class="text-[11px] font-bold uppercase tracking-tighter text-on-secondary-fixed-variant bg-secondary-fixed px-2 py-0.5 rounded">Closed</span>
-</td>
-</tr>
-<tr class="hover:bg-secondary-container/30 transition-colors group">
-<td class="px-6 py-5">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-<span class="material-symbols-outlined text-sm">inventory_2</span>
-</div>
-<span class="font-semibold text-on-surface">DELTA_SEC_COMP</span>
-</div>
-</td>
-<td class="px-6 py-5">
-<div class="flex items-center gap-2">
-<img class="w-6 h-6 rounded-full object-cover" data-alt="portrait of a bearded male executive in a smart casual outfit, soft directional lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDQEapFQqQi8Hdbodq7tevpO45ZKktKSHViI0-86teEn7lo6ug_atIS-fQH8iBSTCpxxkX8lHiWlUILZHs_KsFMrLbVdUuN6kDcSK3NzCA94kbVxSovU_Yctf23ffIR3YRPOEaW-y3G1Togbnu4k23M0zmECsgIfMVByRtSpMvKnffGQWSFhD-iu1CylHCZg7e0G5VpVRQaAAXtYk3eUL4D8cGpTjPDJ04n4qRa97qCIEEOwQwxtpiJOP-ashE_P76KThefGM1DYV4"/>
-<span class="text-on-surface-variant">Robert Vance</span>
-</div>
-</td>
-<td class="px-6 py-5 text-on-surface-variant">Jun 10, 2023</td>
-<td class="px-6 py-5 text-on-surface-variant">Jun 24, 2023</td>
-<td class="px-6 py-5">
-<span class="bg-surface-container-low px-2.5 py-1 rounded-md text-[12px] font-medium text-primary">14 Days</span>
-</td>
-<td class="px-6 py-5 text-right">
-<span class="text-[11px] font-bold uppercase tracking-tighter text-on-secondary-fixed-variant bg-secondary-fixed px-2 py-0.5 rounded">Closed</span>
-</td>
-</tr>
-</tbody>
+<tbody id="historyTableBody" class="font-body text-sm divide-y divide-surface-container-low"></tbody>
 </table>
 <!-- Pagination/Footer -->
 <div class="bg-surface-container-low p-4 flex items-center justify-between border-t border-outline-variant/10">
@@ -386,4 +265,81 @@
 </main>
 <!-- Contextual FAB (Hidden on history list as per suppression rule, but included logic for placement awareness) -->
 <!-- Suppression Logic: Suppress on Detail/History screens as focus is on reading. -->
+<script>
+const API_BASE_URL = "";
+const token = localStorage.getItem("token");
+const role = localStorage.getItem("role");
+const tableBody = document.getElementById("historyTableBody");
+
+if (!token) {
+  window.location.href = "index.html";
+}
+if (!role || role !== "ADMIN") {
+  window.location.href = role === "TRAINER" ? "Trainerdashboard.html" : "index.html";
+}
+
+function logout() {
+  localStorage.clear();
+  window.location.href = "index.html";
+}
+
+function setLoggedInName() {
+  const name = localStorage.getItem("name");
+  if (!name) return;
+  const targets = document.querySelectorAll("span.font-headline.text-\\[\\#9df0f4\\]");
+  targets.forEach((node) => { node.textContent = name; });
+}
+
+function formatDate(value) {
+  if (!value) return "N/A";
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.getTime()) ? value : parsed.toLocaleDateString();
+}
+
+function duration(start, end) {
+  if (!start || !end) return "N/A";
+  const days = Math.max(0, Math.round((new Date(end) - new Date(start)) / (1000 * 60 * 60 * 24)));
+  return `${days} Days`;
+}
+
+async function loadHistory() {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/admin/batches`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!res.ok) throw new Error("Unable to load history");
+    const batches = await res.json();
+    const closed = batches.filter(item => (item.status || "").toUpperCase() !== "ONGOING");
+    const records = closed.length ? closed : batches;
+    tableBody.innerHTML = "";
+    if (!records.length) {
+      document.getElementById("historyTotalCycles").innerText = "0";
+      document.getElementById("historyAvgDuration").innerText = "0d";
+      return;
+    }
+    const totalDuration = records.reduce((acc, item) => {
+      if (!item.startDate || !item.endDate) return acc;
+      return acc + Math.max(0, Math.round((new Date(item.endDate) - new Date(item.startDate)) / (1000 * 60 * 60 * 24)));
+    }, 0);
+    document.getElementById("historyTotalCycles").innerText = String(records.length);
+    document.getElementById("historyAvgDuration").innerText = `${Math.round(totalDuration / records.length)}d`;
+    records.forEach(item => {
+      tableBody.insertAdjacentHTML("beforeend", `
+      <tr class="hover:bg-secondary-container/30 transition-colors group">
+        <td class="px-6 py-5"><span class="font-semibold text-on-surface">${item.domainName || "N/A"}</span></td>
+        <td class="px-6 py-5"><span class="text-on-surface-variant">${item.trainerName || "Unassigned"}</span></td>
+        <td class="px-6 py-5 text-on-surface-variant">${formatDate(item.startDate)}</td>
+        <td class="px-6 py-5 text-on-surface-variant">${formatDate(item.endDate)}</td>
+        <td class="px-6 py-5"><span class="bg-surface-container-low px-2.5 py-1 rounded-md text-[12px] font-medium text-primary">${duration(item.startDate, item.endDate)}</span></td>
+        <td class="px-6 py-5 text-right"><span class="text-[11px] font-bold uppercase tracking-tighter text-on-secondary-fixed-variant bg-secondary-fixed px-2 py-0.5 rounded">${item.status || "N/A"}</span></td>
+      </tr>`);
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+setLoggedInName();
+loadHistory();
+</script>
 </body></html>

@@ -84,9 +84,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     	    // ignore invalid token
     	}
 
-    	if (!path.startsWith("/api/")) {
-    	    filterChain.doFilter(request, response);
-    	    return;
-    	}
+        filterChain.doFilter(request, response);
     }
 }

@@ -1,6 +1,7 @@
 package com.batchmanagement.backend.controller;
 
 import com.batchmanagement.backend.dto.admin.AssignBatchRequest;
+import com.batchmanagement.backend.dto.admin.CreateBatchRequest;
 import com.batchmanagement.backend.dto.admin.DashboardResponse;
 import com.batchmanagement.backend.dto.common.BatchResponse;
 import com.batchmanagement.backend.dto.common.UserCreateRequest;
@@ -68,6 +69,11 @@ public class AdminController {
     @PostMapping("/assign-batch")
     public ResponseEntity<BatchResponse> assignBatch(@Valid @RequestBody AssignBatchRequest request) {
         return ResponseEntity.ok(adminService.assignBatch(request));
+    }
+
+    @PostMapping("/batches")
+    public ResponseEntity<BatchResponse> createBatch(@Valid @RequestBody CreateBatchRequest request) {
+        return ResponseEntity.ok(adminService.createBatch(request));
     }
 
     @GetMapping("/dashboard")

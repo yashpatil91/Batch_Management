@@ -1,6 +1,7 @@
 package com.batchmanagement.backend.service;
 
 import com.batchmanagement.backend.dto.admin.AssignBatchRequest;
+import com.batchmanagement.backend.dto.admin.CreateBatchRequest;
 import com.batchmanagement.backend.dto.admin.DashboardResponse;
 import com.batchmanagement.backend.dto.common.BatchResponse;
 import com.batchmanagement.backend.dto.common.UserCreateRequest;
@@ -56,6 +57,7 @@ public class AdminService {
 
         trainer.setName(request.getName());
         trainer.setEmail(request.getEmail());
+        trainer.setExpertise(request.getExpertise());
 
         if (request.getPassword() != null && !request.getPassword().isBlank()) {
             trainer.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -103,6 +105,27 @@ public class AdminService {
         return BatchMapper.toResponse(batchRepository.save(batch));
     }
 
+    public BatchResponse createBatch(CreateBatchRequest request) {
+        Batch batch = new Batch();
+        batch.setDomainName(request.getDomainName());
+        batch.setStartDate(request.getStartDate());
+        batch.setEndDate(request.getEndDate());
+        batch.setTime(request.getTime());
+        batch.setLabNo(request.getLabNo());
+        batch.setNoOfStudents(request.getNoOfStudents());
+        batch.setProgress(request.getProgress() == null ? 0 : request.getProgress());
+        batch.setStatus(BatchStatus.ONGOING);
+
+        if (request.getTrainerId() != null) {
+            User trainer = userRepository.findById(request.getTrainerId())
+                    .filter(user -> user.getRole() == Role.TRAINER)
+                    .orElseThrow(() -> new ResourceNotFoundException("Trainer not found"));
+            batch.setTrainer(trainer);
+        }
+
+        return BatchMapper.toResponse(batchRepository.save(batch));
+    }
+
     public DashboardResponse getDashboard() {
 
         DashboardResponse response = new DashboardResponse();
@@ -126,6 +149,7 @@ public class AdminService {
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(role);
+        user.setExpertise(request.getExpertise());
 
         return userRepository.save(user);
     }

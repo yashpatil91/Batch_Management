@@ -15,6 +15,8 @@ public class UserUpdateRequest {
     @Size(min = 6)
     private String password;
 
+    private String expertise;
+
     public String getName() {
         return name;
     }
@@ -37,5 +39,13 @@ public class UserUpdateRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getExpertise() {
+        return expertise;
+    }
+
+    public void setExpertise(String expertise) {
+        this.expertise = expertise;
     }
 }

@@ -16,6 +16,8 @@ public class UserCreateRequest {
     @Size(min = 6)
     private String password;
 
+    private String expertise;
+
     public String getName() {
         return name;
     }
@@ -38,5 +40,13 @@ public class UserCreateRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getExpertise() {
+        return expertise;
+    }
+
+    public void setExpertise(String expertise) {
+        this.expertise = expertise;
     }
 }

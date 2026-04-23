@@ -8,13 +8,15 @@ public class UserResponse {
     private String name;
     private String email;
     private Role role;
+    private String expertise;
 
     // Constructor
-    public UserResponse(Long id, String name, String email, Role role) {
+    public UserResponse(Long id, String name, String email, Role role, String expertise) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.role = role;
+        this.expertise = expertise;
     }
 
     // GETTERS
@@ -33,5 +35,9 @@ public class UserResponse {
 
     public Role getRole() {
         return role;
+    }
+
+    public String getExpertise() {
+        return expertise;
     }
 }

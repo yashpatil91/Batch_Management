@@ -3,6 +3,9 @@ package com.batchmanagement.backend.controller;
 import com.batchmanagement.backend.dto.common.BatchRequest;
 import com.batchmanagement.backend.dto.common.BatchResponse;
 import com.batchmanagement.backend.dto.trainer.ProgressUpdateRequest;
+import com.batchmanagement.backend.dto.trainer.TopicCreateRequest;
+import com.batchmanagement.backend.dto.trainer.TopicResponse;
+import com.batchmanagement.backend.dto.trainer.TopicStatusUpdateRequest;
 import com.batchmanagement.backend.service.TrainerService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -48,5 +51,28 @@ public class TrainerController {
     @PutMapping("/complete/{id}")
     public ResponseEntity<BatchResponse> markCompleted(@PathVariable Long id, Authentication authentication) {
         return ResponseEntity.ok(trainerService.markComplete(authentication.getName(), id));
+    }
+
+    @GetMapping("/batches/{id}/topics")
+    public ResponseEntity<List<TopicResponse>> getTopics(@PathVariable Long id, Authentication authentication) {
+        return ResponseEntity.ok(trainerService.getTopics(authentication.getName(), id));
+    }
+
+    @PostMapping("/batches/{id}/topics")
+    public ResponseEntity<TopicResponse> addTopic(
+            @PathVariable Long id,
+            @Valid @RequestBody TopicCreateRequest request,
+            Authentication authentication
+    ) {
+        return ResponseEntity.ok(trainerService.addTopic(authentication.getName(), id, request));
+    }
+
+    @PutMapping("/topics/{topicId}")
+    public ResponseEntity<TopicResponse> updateTopicStatus(
+            @PathVariable Long topicId,
+            @Valid @RequestBody TopicStatusUpdateRequest request,
+            Authentication authentication
+    ) {
+        return ResponseEntity.ok(trainerService.updateTopicStatus(authentication.getName(), topicId, request));
     }
 }

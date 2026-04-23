@@ -159,7 +159,7 @@ href="/TrainerManagmentpage.html">
 <span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-sm text-outline">search</span>
 <input class="bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 text-xs w-64 focus:ring-1 focus:ring-primary-container" placeholder="Search system logs..." type="text"/>
 </div>
-<button class="font-['Manrope'] text-sm tracking-wide uppercase font-bold text-[#191c1e] hover:bg-[#c9e9ea] transition-colors px-4 py-2 rounded-lg">Logout</button>
+<button onclick="logout()" class="font-['Manrope'] text-sm tracking-wide uppercase font-bold text-[#191c1e] hover:bg-[#c9e9ea] transition-colors px-4 py-2 rounded-lg">Logout</button>
 </div>
 </header>
 <!-- Page Content -->
@@ -169,7 +169,7 @@ href="/TrainerManagmentpage.html">
 <h2 class="font-headline text-3xl font-extrabold tracking-tight text-on-surface mb-2">Trainer Directory</h2>
 <p class="text-on-surface-variant font-medium">Manage and audit institutional educator accounts.</p>
 </div>
-<button class="bg-primary hover:bg-primary-container text-white px-6 py-3 rounded-full flex items-center gap-2 font-bold transition-all transform active:scale-95 shadow-lg shadow-primary/20">
+<button id="openTrainerCreate" class="bg-primary hover:bg-primary-container text-white px-6 py-3 rounded-full flex items-center gap-2 font-bold transition-all transform active:scale-95 shadow-lg shadow-primary/20">
 <span class="material-symbols-outlined">add</span>
 <span>Register New Trainer</span>
 </button>
@@ -178,7 +178,7 @@ href="/TrainerManagmentpage.html">
 <div class="grid grid-cols-4 gap-6 mb-10">
 <div class="col-span-1 bg-surface-container-lowest p-6 rounded-xl shadow-sm">
 <p class="font-label text-[10px] uppercase tracking-widest text-outline mb-2">Total Trainers</p>
-<p class="font-headline text-4xl font-extrabold text-on-surface">142</p>
+<p id="kpiTotalTrainers" class="font-headline text-4xl font-extrabold text-on-surface">0</p>
 <div class="flex items-center gap-1 mt-2 text-primary text-xs font-bold">
 <span class="material-symbols-outlined text-xs">trending_up</span>
 <span>+12% from last month</span>
@@ -186,7 +186,7 @@ href="/TrainerManagmentpage.html">
 </div>
 <div class="col-span-1 bg-surface-container-lowest p-6 rounded-xl shadow-sm">
 <p class="font-label text-[10px] uppercase tracking-widest text-outline mb-2">Active Sessions</p>
-<p class="font-headline text-4xl font-extrabold text-on-surface">84</p>
+<p id="kpiActiveSessions" class="font-headline text-4xl font-extrabold text-on-surface">0</p>
 <div class="flex items-center gap-1 mt-2 text-primary text-xs font-bold">
 <span class="material-symbols-outlined text-xs">sync</span>
 <span>Live across 4 regions</span>
@@ -195,7 +195,7 @@ href="/TrainerManagmentpage.html">
 <div class="col-span-2 bg-gradient-to-br from-primary to-primary-container p-6 rounded-xl shadow-lg relative overflow-hidden">
 <div class="relative z-10">
 <p class="font-label text-[10px] uppercase tracking-widest text-primary-fixed mb-2">System Capacity</p>
-<p class="font-headline text-4xl font-extrabold text-white">92.4%</p>
+<p id="kpiCapacity" class="font-headline text-4xl font-extrabold text-white">0%</p>
 <div class="w-full bg-white/20 h-2 rounded-full mt-4">
 <div class="bg-primary-fixed h-full rounded-full w-[92.4%]"></div>
 </div>
@@ -229,122 +229,10 @@ href="/TrainerManagmentpage.html">
 <th class="text-right py-4 px-8 font-label text-[10px] uppercase tracking-widest text-outline">Administrative Actions</th>
 </tr>
 </thead>
-<tbody class="divide-y divide-surface-container">
-<!-- Row 1 -->
-<tr class="hover:bg-secondary-container transition-all group">
-<td class="py-5 px-8">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-lg overflow-hidden bg-primary-fixed">
-<img class="w-full h-full object-cover" data-alt="Portrait of a middle-aged male trainer with glasses and a friendly professional expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzKoxjYRZP_K6u8qOsM6l-p421HFFA8Wic3DTKwmbtxVrA7t91UB2vGMRYqP2EoqVk6793LCYWSO7yHFNNd-OY_6A6DfL_v76xK63mz9tWjQkdGZIf0m3Z7xgxBuw3LDK8nuPSQRhHbzupgZv-0Cz5JEwR8J6eDx-xX7xtdFyUg1Fc3lcSF7P8hpWrQieyqPR7YICwkF3LPVQ6YMgLY71p-ilyFmOa-P1U90b3ZOyoJsRnUxA_q-lZ4sccO-y5Zhy4X9UxOe22-Xl7"/>
-</div>
-<div>
-<p class="font-bold text-on-surface">Dr. Elias Vance</p>
-<p class="text-[11px] text-outline font-medium">ID: TR-88219</p>
-</div>
-</div>
-</td>
-<td class="py-5 px-8">
-<p class="text-sm font-medium text-on-surface">elias.vance@ledger.edu</p>
-<p class="text-[11px] text-outline">+1 (555) 902-1142</p>
-</td>
-<td class="py-5 px-8">
-<span class="bg-primary/10 text-primary text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Cloud Infrastructure</span>
-</td>
-<td class="py-5 px-8">
-<div class="flex items-center gap-2">
-<div class="w-2 h-2 rounded-full bg-emerald-500"></div>
-<span class="text-sm font-semibold text-on-surface">Active</span>
-</div>
-</td>
-<td class="py-5 px-8 text-right">
-<div class="flex items-center justify-end gap-2">
-<button class="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-primary-container hover:text-white transition-all text-primary">
-<span class="material-symbols-outlined text-xl">edit</span>
-</button>
-<button class="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-error-container hover:text-error transition-all text-outline">
-<span class="material-symbols-outlined text-xl">delete</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Row 2 -->
-<tr class="hover:bg-secondary-container transition-all group">
-<td class="py-5 px-8">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-lg overflow-hidden bg-primary-fixed">
-<img class="w-full h-full object-cover" data-alt="Portrait of a focused professional woman in a modern architectural space" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2M87jvXXsx2UpvoBgFcPelvbmMU5WVec-e362-cm2qFoq7OYmRe81S6BdvPNVAZsqtFly4isrX1gk5UZSvoxt4j5ClpYYVqsfok15PBN2ji-Rl2mZTr-lrtUUl1uOkdmo7jl6H1jRwdWPWm0NfzCEeV_Zccfm9bNhQK2wTf3Yq51f1mXPmNFbECruBMllmYNNPII853UKfSVSipqxhFf6wFWZEDnEiqSAwLMQixYRF1-Bsd-N2Kr36S_u6D0oLOkpif_AoNMdl0QT"/>
-</div>
-<div>
-<p class="font-bold text-on-surface">Sarah Connor</p>
-<p class="text-[11px] text-outline font-medium">ID: TR-99031</p>
-</div>
-</div>
-</td>
-<td class="py-5 px-8">
-<p class="text-sm font-medium text-on-surface">s.connor@ledger.edu</p>
-<p class="text-[11px] text-outline">+1 (555) 341-9008</p>
-</td>
-<td class="py-5 px-8">
-<span class="bg-primary/10 text-primary text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Cybersecurity</span>
-</td>
-<td class="py-5 px-8">
-<div class="flex items-center gap-2">
-<div class="w-2 h-2 rounded-full bg-emerald-500"></div>
-<span class="text-sm font-semibold text-on-surface">Active</span>
-</div>
-</td>
-<td class="py-5 px-8 text-right">
-<div class="flex items-center justify-end gap-2">
-<button class="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-primary-container hover:text-white transition-all text-primary">
-<span class="material-symbols-outlined text-xl">edit</span>
-</button>
-<button class="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-error-container hover:text-error transition-all text-outline">
-<span class="material-symbols-outlined text-xl">delete</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Row 3 -->
-<tr class="hover:bg-secondary-container transition-all group">
-<td class="py-5 px-8">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-lg overflow-hidden bg-primary-fixed">
-<img class="w-full h-full object-cover" data-alt="Portrait of a young male professional in a creative studio setting, warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpiRoM8Nx4NmXLhPVpzb103YQN3Q2gOPB3_uXrV-7LaZKI-JLFy5UVNBgwoa0NJlpSSihZa34nLIwg2os5Eyi2u-ZO04hZ70z3tQLN0bfg-lWpFhHPQG60ZIHyu2ogLoZ5bG7bW6UTbGVI-TPdFzsZAiVmfeJvHkXkeIquGjsVJsVcT44s-KZYx1vUT8Sn4q0pEmQdyWXowC1Qx1l78EqTfZCo-jk_3qWDRGlur-IGMlKFWR8z_hbSqi_gB07ecbBI0fOm2FxF5NB8"/>
-</div>
-<div>
-<p class="font-bold text-on-surface">Marcus Holloway</p>
-<p class="text-[11px] text-outline font-medium">ID: TR-77412</p>
-</div>
-</div>
-</td>
-<td class="py-5 px-8">
-<p class="text-sm font-medium text-on-surface">m.holloway@ledger.edu</p>
-<p class="text-[11px] text-outline">+1 (555) 112-4450</p>
-</td>
-<td class="py-5 px-8">
-<span class="bg-primary/10 text-primary text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Ethical Hacking</span>
-</td>
-<td class="py-5 px-8">
-<div class="flex items-center gap-2">
-<div class="w-2 h-2 rounded-full bg-amber-500"></div>
-<span class="text-sm font-semibold text-on-surface">On Leave</span>
-</div>
-</td>
-<td class="py-5 px-8 text-right">
-<div class="flex items-center justify-end gap-2">
-<button class="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-primary-container hover:text-white transition-all text-primary">
-<span class="material-symbols-outlined text-xl">edit</span>
-</button>
-<button class="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-error-container hover:text-error transition-all text-outline">
-<span class="material-symbols-outlined text-xl">delete</span>
-</button>
-</div>
-</td>
-</tr>
-</tbody>
+<tbody id="trainerTableBody" class="divide-y divide-surface-container"></tbody>
 </table>
 <div class="p-6 bg-surface-container-low/30 border-t border-surface-container flex justify-between items-center">
-<p class="text-xs text-on-surface-variant font-medium">Showing <span class="font-bold text-on-surface">1-3</span> of 142 registered accounts</p>
+<p id="trainerSummaryText" class="text-xs text-on-surface-variant font-medium">Showing <span class="font-bold text-on-surface">0</span> registered accounts</p>
 <div class="flex items-center gap-2">
 <button class="px-4 py-2 text-sm font-bold text-outline hover:text-on-surface transition-all">Previous</button>
 <div class="flex items-center">
@@ -359,7 +247,7 @@ href="/TrainerManagmentpage.html">
 </div>
 </main>
 <!-- Modal Form (Hidden by default, shown here for structure) -->
-<div class="fixed inset-0 z-50 flex items-center justify-center bg-on-surface/40 backdrop-blur-[4px] opacity-0 pointer-events-none transition-opacity">
+<div id="trainerModal" class="fixed inset-0 z-50 flex items-center justify-center bg-on-surface/40 backdrop-blur-[4px] opacity-0 pointer-events-none transition-opacity">
 <div class="bg-surface-container-lowest w-full max-w-xl rounded-xl shadow-2xl overflow-hidden transform scale-95 transition-transform border border-outline-variant/10">
 <div class="p-8 border-b border-surface-container flex justify-between items-center bg-surface-bright">
 <div class="flex items-center gap-3">
@@ -371,7 +259,7 @@ href="/TrainerManagmentpage.html">
 <p class="text-xs text-outline font-medium uppercase tracking-wider">New System Entity Creation</p>
 </div>
 </div>
-<button class="text-outline hover:text-on-surface transition-all">
+<button id="closeTrainerCreate" class="text-outline hover:text-on-surface transition-all">
 <span class="material-symbols-outlined">close</span>
 </button>
 </div>
@@ -379,20 +267,24 @@ href="/TrainerManagmentpage.html">
 <div class="grid grid-cols-2 gap-6">
 <div class="space-y-2">
 <label class="block text-[11px] font-bold uppercase tracking-widest text-outline">Full Name</label>
-<input class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container" placeholder="e.g. Alan Turing" type="text"/>
+<input id="trainerName" class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container" placeholder="e.g. Alan Turing" type="text"/>
 </div>
 <div class="space-y-2">
 <label class="block text-[11px] font-bold uppercase tracking-widest text-outline">Internal ID</label>
-<input class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container" placeholder="TR-XXXXX" type="text"/>
+<input id="trainerInternalId" class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container" placeholder="TR-XXXXX" type="text"/>
 </div>
 </div>
 <div class="space-y-2">
 <label class="block text-[11px] font-bold uppercase tracking-widest text-outline">Educational Email</label>
-<input class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container" placeholder="name@ledger.edu" type="email"/>
+<input id="trainerEmail" class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container" placeholder="name@ledger.edu" type="email"/>
+</div>
+<div class="space-y-2">
+<label class="block text-[11px] font-bold uppercase tracking-widest text-outline">Login Password</label>
+<input id="trainerPassword" class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container" placeholder="Minimum 6 characters" type="password"/>
 </div>
 <div class="space-y-2">
 <label class="block text-[11px] font-bold uppercase tracking-widest text-outline">Core Expertise</label>
-<select class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container">
+<select id="trainerExpertise" class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container">
 <option>Artificial Intelligence</option>
 <option>Cybersecurity</option>
 <option>Data Science</option>
@@ -401,9 +293,124 @@ href="/TrainerManagmentpage.html">
 </div>
 </div>
 <div class="p-8 bg-surface-container-low flex justify-end gap-4">
-<button class="px-6 py-2.5 text-sm font-bold text-on-surface-variant hover:text-on-surface transition-all">Cancel</button>
-<button class="bg-primary text-white px-8 py-2.5 rounded-full text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary-container transition-all">Establish Account</button>
+<button id="cancelTrainerCreate" class="px-6 py-2.5 text-sm font-bold text-on-surface-variant hover:text-on-surface transition-all">Cancel</button>
+<button id="submitTrainerCreate" class="bg-primary text-white px-8 py-2.5 rounded-full text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary-container transition-all">Establish Account</button>
 </div>
 </div>
 </div>
+<script>
+const API_BASE_URL = "";
+const token = localStorage.getItem("token");
+const role = localStorage.getItem("role");
+
+if (!token) window.location.href = "index.html";
+if (!role || role !== "ADMIN") {
+  window.location.href = role === "TRAINER" ? "Trainerdashboard.html" : "index.html";
+}
+
+const trainerTableBody = document.getElementById("trainerTableBody");
+const trainerModal = document.getElementById("trainerModal");
+
+function logout() {
+  localStorage.clear();
+  window.location.href = "index.html";
+}
+
+function setLoggedInName() {
+  const name = localStorage.getItem("name");
+  if (!name) return;
+  const targets = document.querySelectorAll("h3.text-\\[\\#9df0f4\\], p.font-headline.text-sm.font-bold.text-\\[\\#9df0f4\\]");
+  targets.forEach((node) => { node.textContent = name; });
+}
+
+function toggleModal(show) {
+  trainerModal.classList.toggle("opacity-0", !show);
+  trainerModal.classList.toggle("pointer-events-none", !show);
+}
+
+async function fetchTrainers() {
+  const res = await fetch(`${API_BASE_URL}/api/admin/trainers`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  if (!res.ok) throw new Error("Failed to load trainers");
+  return res.json();
+}
+
+function renderTrainers(list) {
+  trainerTableBody.innerHTML = "";
+  list.forEach((trainer, index) => {
+    trainerTableBody.insertAdjacentHTML("beforeend", `
+      <tr class="hover:bg-secondary-container transition-all group">
+        <td class="py-5 px-8"><p class="font-bold text-on-surface">${trainer.name || "N/A"}</p><p class="text-[11px] text-outline font-medium">ID: ${trainer.id}</p></td>
+        <td class="py-5 px-8"><p class="text-sm font-medium text-on-surface">${trainer.email || "N/A"}</p></td>
+        <td class="py-5 px-8"><span class="bg-primary/10 text-primary text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">${trainer.expertise || "General"}</span></td>
+        <td class="py-5 px-8"><div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-emerald-500"></div><span class="text-sm font-semibold text-on-surface">Active</span></div></td>
+        <td class="py-5 px-8 text-right"><div class="flex items-center justify-end gap-2">
+          <button onclick="deleteTrainer(${trainer.id})" class="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-error-container hover:text-error transition-all text-outline"><span class="material-symbols-outlined text-xl">delete</span></button>
+        </div></td>
+      </tr>`);
+  });
+  document.getElementById("kpiTotalTrainers").innerText = list.length;
+  document.getElementById("kpiActiveSessions").innerText = list.length;
+  document.getElementById("kpiCapacity").innerText = list.length ? "100%" : "0%";
+  document.getElementById("trainerSummaryText").innerHTML = `Showing <span class="font-bold text-on-surface">${list.length}</span> registered accounts`;
+}
+
+async function loadTrainers() {
+  try {
+    const trainers = await fetchTrainers();
+    renderTrainers(trainers);
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+async function createTrainer() {
+  const name = document.getElementById("trainerName").value.trim();
+  const email = document.getElementById("trainerEmail").value.trim();
+  const password = document.getElementById("trainerPassword").value.trim();
+  const expertise = document.getElementById("trainerExpertise").value;
+  if (!name || !email || !password) return;
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/admin/trainers`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ name, email, password, expertise })
+    });
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(errorText || "Failed to create trainer");
+    }
+    toggleModal(false);
+    await loadTrainers();
+  } catch (error) {
+    console.error(error);
+    alert("Unable to create trainer: " + error.message);
+  }
+}
+
+async function deleteTrainer(id) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/admin/trainers/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!res.ok) throw new Error("Delete failed");
+    await loadTrainers();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+document.getElementById("openTrainerCreate").addEventListener("click", () => toggleModal(true));
+document.getElementById("closeTrainerCreate").addEventListener("click", () => toggleModal(false));
+document.getElementById("cancelTrainerCreate").addEventListener("click", () => toggleModal(false));
+document.getElementById("submitTrainerCreate").addEventListener("click", createTrainer);
+
+setLoggedInName();
+loadTrainers();
+</script>
 </body></html>

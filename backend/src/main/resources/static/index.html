@@ -374,7 +374,7 @@ function loginUser(event) {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
-    fetch("http://localhost:8080/api/auth/login", {
+    fetch("/api/auth/login", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -391,18 +391,20 @@ function loginUser(event) {
         return response.json();
     })
     .then(data => {
-        console.log(data);
-
-        // ✅ Save token
         localStorage.setItem("token", data.token);
-
-        // ✅ Save role
         localStorage.setItem("role", data.role);
+        localStorage.setItem("name", data.name || "");
+        localStorage.setItem("userId", data.userId || "");
 
-        alert("Login Successful ✅");
-
-        // ✅ Redirect
-        window.location.href = "dashboard.html";
+        if (data.role === "ADMIN") {
+            window.location.href = "dashboard.html";
+            return;
+        }
+        if (data.role === "TRAINER") {
+            window.location.href = "Trainerdashboard.html";
+            return;
+        }
+        window.location.href = "index.html";
     })
     .catch(error => {
         alert("Invalid Email or Password ❌");

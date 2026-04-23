@@ -24,6 +24,9 @@ public class User {
     @Column(nullable = false)
     private Role role;
 
+    @Column(name = "expertise")
+    private String expertise;
+
     // Default constructor
     public User() {}
 
@@ -42,6 +45,7 @@ public class User {
     public String getEmail() { return email; }
     public String getPassword() { return password; }
     public Role getRole() { return role; }
+    public String getExpertise() { return expertise; }
 
     // SETTERS
     public void setId(Long id) { this.id = id; }
@@ -49,4 +53,5 @@ public class User {
     public void setEmail(String email) { this.email = email; }
     public void setPassword(String password) { this.password = password; }
     public void setRole(Role role) { this.role = role; }
+    public void setExpertise(String expertise) { this.expertise = expertise; }
 }
