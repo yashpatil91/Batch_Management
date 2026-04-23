@@ -8,8 +8,12 @@ import com.batchmanagement.backend.dto.common.UserCreateRequest;
 import com.batchmanagement.backend.dto.common.UserResponse;
 import com.batchmanagement.backend.dto.common.UserUpdateRequest;
 import com.batchmanagement.backend.service.AdminService;
+import com.batchmanagement.backend.service.EmailService;
+
 import jakarta.validation.Valid;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -80,5 +84,18 @@ public class AdminController {
     public ResponseEntity<DashboardResponse> getDashboard() {
         return ResponseEntity.ok(adminService.getDashboard());
     }
+    @Autowired
+    private EmailService emailService;
 
+    @GetMapping("/test-email")
+    public String testEmail() {
+
+        emailService.sendEmail(
+            "yourgmail@gmail.com",   // 👈 YOUR EMAIL HERE
+            "Test Email",
+            "Spring Boot Email Working"
+        );
+
+        return "Email Sent";
+    }
 }

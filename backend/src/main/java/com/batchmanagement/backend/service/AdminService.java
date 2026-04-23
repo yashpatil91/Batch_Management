@@ -17,7 +17,10 @@ import com.batchmanagement.backend.mapper.BatchMapper;
 import com.batchmanagement.backend.mapper.UserMapper;
 import com.batchmanagement.backend.repository.BatchRepository;
 import com.batchmanagement.backend.repository.UserRepository;
+
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,11 +31,18 @@ public class AdminService {
     private final BatchRepository batchRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public AdminService(UserRepository userRepository, BatchRepository batchRepository, PasswordEncoder passwordEncoder) {
+    @Autowired
+    private EmailService emailService;
+
+    public AdminService(UserRepository userRepository,
+                        BatchRepository batchRepository,
+                        PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.batchRepository = batchRepository;
         this.passwordEncoder = passwordEncoder;
     }
+
+    // ================= TRAINER =================
 
     public List<UserResponse> getTrainers() {
         List<User> trainers = userRepository.findByRole(Role.TRAINER);
@@ -77,6 +87,8 @@ public class AdminService {
         userRepository.delete(trainer);
     }
 
+    // ================= ADMIN =================
+
     public List<UserResponse> getAdmins() {
         return userRepository.findByRole(Role.ADMIN)
                 .stream()
@@ -88,6 +100,8 @@ public class AdminService {
         return UserMapper.toResponse(createUser(request, Role.ADMIN));
     }
 
+    // ================= BATCH =================
+
     public List<BatchResponse> getAllBatches() {
         return batchRepository.findAll()
                 .stream()
@@ -95,7 +109,9 @@ public class AdminService {
                 .toList();
     }
 
+    // 🔥 ASSIGN BATCH + HTML EMAIL
     public BatchResponse assignBatch(AssignBatchRequest request) {
+
         Batch batch = batchRepository.findById(request.getBatchId())
                 .orElseThrow(() -> new ResourceNotFoundException("Batch not found"));
 
@@ -105,10 +121,26 @@ public class AdminService {
 
         batch.setTrainer(trainer);
 
-        return BatchMapper.toResponse(batchRepository.save(batch));
+        Batch savedBatch = batchRepository.save(batch);
+
+        // 🔥 HTML EMAIL
+        try {
+            emailService.sendBatchEmail(
+                    trainer.getEmail(),
+                    trainer.getName(),
+                    savedBatch.getDomainName(),
+                    savedBatch.getStartDate().toString()
+            );
+        } catch (Exception e) {
+            System.out.println("Email failed: " + e.getMessage());
+        }
+
+        return BatchMapper.toResponse(savedBatch);
     }
 
+    // 🔥 CREATE BATCH + HTML EMAIL
     public BatchResponse createBatch(CreateBatchRequest request) {
+
         Batch batch = new Batch();
         batch.setDomainName(request.getDomainName());
         batch.setStartDate(request.getStartDate());
@@ -119,18 +151,38 @@ public class AdminService {
         batch.setProgress(request.getProgress() == null ? 0 : request.getProgress());
         batch.setStatus(BatchStatus.ONGOING);
 
+        User trainer = null;
+
         if (request.getTrainerId() != null) {
-            User trainer = userRepository.findById(request.getTrainerId())
+            trainer = userRepository.findById(request.getTrainerId())
                     .filter(user -> user.getRole() == Role.TRAINER)
                     .orElseThrow(() -> new ResourceNotFoundException("Trainer not found"));
+
             batch.setTrainer(trainer);
         }
 
-        return BatchMapper.toResponse(batchRepository.save(batch));
+        Batch savedBatch = batchRepository.save(batch);
+
+        // 🔥 EMAIL IF TRAINER EXISTS
+        if (trainer != null) {
+            try {
+                emailService.sendBatchEmail(
+                        trainer.getEmail(),
+                        trainer.getName(),
+                        savedBatch.getDomainName(),
+                        savedBatch.getStartDate().toString()
+                );
+            } catch (Exception e) {
+                System.out.println("Email failed: " + e.getMessage());
+            }
+        }
+
+        return BatchMapper.toResponse(savedBatch);
     }
 
-    public DashboardResponse getDashboard() {
+    // ================= DASHBOARD =================
 
+    public DashboardResponse getDashboard() {
         DashboardResponse response = new DashboardResponse();
 
         response.setTotalTrainers(userRepository.findByRole(Role.TRAINER).size());
@@ -139,6 +191,8 @@ public class AdminService {
 
         return response;
     }
+
+    // ================= COMMON =================
 
     private User createUser(UserCreateRequest request, Role role) {
 
