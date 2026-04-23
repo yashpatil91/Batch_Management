@@ -11,4 +11,5 @@ public interface BatchRepository extends JpaRepository<Batch, Long> {
     List<Batch> findByTrainer(User trainer);
 
     long countByStatus(BatchStatus status);
+    int countByTrainer(User trainer);
 }

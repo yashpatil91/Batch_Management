@@ -1,5 +1,7 @@
 package com.batchmanagement.backend.entity;
 
+import java.util.List;
+
 import com.batchmanagement.backend.entity.enums.Role;
 import jakarta.persistence.*;
 
@@ -54,4 +56,8 @@ public class User {
     public void setPassword(String password) { this.password = password; }
     public void setRole(Role role) { this.role = role; }
     public void setExpertise(String expertise) { this.expertise = expertise; }
+    
+ // ✅ Add this inside your User entity class
+    @OneToMany(mappedBy = "trainer", fetch = FetchType.EAGER)
+    private List<Batch> batches;
 }

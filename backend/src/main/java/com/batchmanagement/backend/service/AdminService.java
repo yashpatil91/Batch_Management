@@ -35,9 +35,12 @@ public class AdminService {
     }
 
     public List<UserResponse> getTrainers() {
-        return userRepository.findByRole(Role.TRAINER)
-                .stream()
-                .map(UserMapper::toResponse)
+        List<User> trainers = userRepository.findByRole(Role.TRAINER);
+        return trainers.stream()
+                .map(trainer -> {
+                    int totalBatches = batchRepository.countByTrainer(trainer);
+                    return UserMapper.toResponse(trainer, totalBatches);
+                })
                 .toList();
     }
 
