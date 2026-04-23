@@ -105,41 +105,48 @@
 		body {
 			min-height: max(884px, 100dvh);
 		}
+
 		/* ===== ONLY BORDER GLOW EFFECT (FIXED) ===== */
 		.bg-surface-container-lowest {
-		  position: relative;
-		  border-radius: 12px;
-		  background: #ffffff; /* keep inside clean */
-		  z-index: 0;
-		  overflow: hidden;
+			position: relative;
+			border-radius: 12px;
+			background: #ffffff;
+			/* keep inside clean */
+			z-index: 0;
+			overflow: hidden;
 		}
 
 		/* 🌈 Animated Border */
 		.bg-surface-container-lowest::before {
-		  content: "";
-		  position: absolute;
-		  inset: -2px;
-		  border-radius: 12px;
-		  background: linear-gradient(120deg, #00f0ff, #0d7377, #81d4d8, #00f0ff);
-		  background-size: 300%;
-		  animation: glowMove 4s linear infinite;
-		  z-index: -2;
+			content: "";
+			position: absolute;
+			inset: -2px;
+			border-radius: 12px;
+			background: linear-gradient(120deg, #00f0ff, #0d7377, #81d4d8, #00f0ff);
+			background-size: 300%;
+			animation: glowMove 4s linear infinite;
+			z-index: -2;
 		}
 
 		/* 🧱 Inner white layer (so only border shows) */
 		.bg-surface-container-lowest::after {
-		  content: "";
-		  position: absolute;
-		  inset: 2px;
-		  background: #ffffff;
-		  border-radius: 10px;
-		  z-index: -1;
+			content: "";
+			position: absolute;
+			inset: 2px;
+			background: #ffffff;
+			border-radius: 10px;
+			z-index: -1;
 		}
 
 		/* ✨ Animation */
 		@keyframes glowMove {
-		  0% { background-position: 0% }
-		  100% { background-position: 300% }
+			0% {
+				background-position: 0%
+			}
+
+			100% {
+				background-position: 300%
+			}
 		}
 
 		/* ===== KPI Numbers Animation ===== */
@@ -147,85 +154,86 @@
 		#activeBatches,
 		#totalTrainers,
 		#completedBatches {
-		  font-size: 28px;
-		  font-weight: bold;
-		  color: #0d7377;
-		  animation: popNumber 0.6s ease;
+			font-size: 28px;
+			font-weight: bold;
+			color: #0d7377;
+			animation: popNumber 0.6s ease;
 		}
 
 		@keyframes popNumber {
-		  0% {
-		    transform: scale(0.7);
-		    opacity: 0.5;
-		  }
-		  100% {
-		    transform: scale(1);
-		    opacity: 1;
-		  }
+			0% {
+				transform: scale(0.7);
+				opacity: 0.5;
+			}
+
+			100% {
+				transform: scale(1);
+				opacity: 1;
+			}
 		}
 
 		/* ===== Table Row Hover Effect ===== */
 		tbody tr {
-		  transition: all 0.3s ease;
+			transition: all 0.3s ease;
 		}
 
 		tbody tr:hover {
-		  background-color: rgba(13, 115, 119, 0.08);
-		  transform: scale(1.01);
+			background-color: rgba(13, 115, 119, 0.08);
+			transform: scale(1.01);
 		}
 
 		/* ===== Progress Bar Animation ===== */
 		.primary-gradient {
-		  animation: progressFill 1.5s ease-in-out;
+			animation: progressFill 1.5s ease-in-out;
 		}
 
 		@keyframes progressFill {
-		  from {
-		    width: 0%;
-		  }
+			from {
+				width: 0%;
+			}
 		}
 
 		/* ===== Button Animation ===== */
 		button {
-		  transition: all 0.3s ease;
+			transition: all 0.3s ease;
 		}
 
 		button:hover {
-		  transform: translateY(-2px);
-		  box-shadow: 0 10px 25px rgba(13, 115, 119, 0.25);
+			transform: translateY(-2px);
+			box-shadow: 0 10px 25px rgba(13, 115, 119, 0.25);
 		}
 
 		/* ===== Sidebar Links Animation ===== */
 		aside a {
-		  position: relative;
-		  overflow: hidden;
+			position: relative;
+			overflow: hidden;
 		}
 
 		aside a::before {
-		  content: "";
-		  position: absolute;
-		  left: 0;
-		  top: 0;
-		  height: 100%;
-		  width: 0%;
-		  background: rgba(157, 240, 244, 0.1);
-		  transition: 0.3s;
+			content: "";
+			position: absolute;
+			left: 0;
+			top: 0;
+			height: 100%;
+			width: 0%;
+			background: rgba(157, 240, 244, 0.1);
+			transition: 0.3s;
 		}
 
 		aside a:hover::before {
-		  width: 100%;
+			width: 100%;
 		}
 
 		/* ===== Header Sticky Smooth Effect ===== */
 		header {
-		  transition: all 0.3s ease;
+			transition: all 0.3s ease;
 		}
 
 		header:hover {
-		  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+			box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
 		}
+
 		/**/
-		
 	</style>
 </head>
 
@@ -384,7 +392,7 @@
 							</thead>
 							<tbody id="batchTableBody" class="divide-y-0">
 							</tbody>
-							
+
 
 
 
@@ -519,12 +527,12 @@
 			const name = localStorage.getItem("name");
 			if (!name) return;
 			const targets = document.querySelectorAll("p.text-\\[\\#9df0f4\\].truncate.font-semibold");
-			targets.forEach((node) => { node.textContent = name; });
+			targets.forEach((node) => {node.textContent = name;});
 		}
 
 		async function loadDashboard() {
 			try {
-				const res = await fetch(`${API_BASE_URL}/api/admin/dashboard`, { headers: authHeaders() });
+				const res = await fetch(`${API_BASE_URL}/api/admin/dashboard`, {headers: authHeaders()});
 				if (!res.ok) throw new Error("Failed to load dashboard");
 				const data = await res.json();
 				document.getElementById("totalBatches").innerText = data.totalBatches ?? 0;
@@ -541,7 +549,7 @@
 
 		async function loadBatches() {
 			try {
-				const res = await fetch(`${API_BASE_URL}/api/admin/batches`, { headers: authHeaders() });
+				const res = await fetch(`${API_BASE_URL}/api/admin/batches`, {headers: authHeaders()});
 				if (!res.ok) throw new Error("Failed to load batches");
 				const data = await res.json();
 				const tableBody = document.getElementById("batchTableBody");
@@ -566,7 +574,7 @@
 
 		async function loadTrainers() {
 			try {
-				const res = await fetch(`${API_BASE_URL}/api/admin/trainers`, { headers: authHeaders() });
+				const res = await fetch(`${API_BASE_URL}/api/admin/trainers`, {headers: authHeaders()});
 				if (!res.ok) throw new Error("Failed to load trainers");
 				const data = await res.json();
 				const trainerBody = document.getElementById("trainerPerformanceBody");
