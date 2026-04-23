@@ -148,6 +148,29 @@
 	input:focus, textarea:focus, select:focus {
 	  box-shadow: 0 0 0 2px #81d4d8;
 	}
+	
+	.active-glow {
+	  position: relative;
+	  border-radius: 12px;
+	}
+
+	.active-glow::before {
+	  content: "";
+	  position: absolute;
+	  inset: 0;
+	  padding: 2px;
+	  border-radius: 12px;
+
+	  background: linear-gradient(120deg, #00f0ff, #0d7377, #81d4d8, #00f0ff);
+	  background-size: 300%;
+	  animation: glowMove 4s linear infinite;
+
+	  -webkit-mask: 
+	    linear-gradient(#fff 0 0) content-box, 
+	    linear-gradient(#fff 0 0);
+	  -webkit-mask-composite: xor;
+	  mask-composite: exclude;
+	}
   </style>
   </head>
 <body class="bg-surface font-body text-on-surface antialiased">
@@ -163,13 +186,14 @@
 </div>
 </div>
 <nav class="flex-1 py-6">
-<a class="border-l-4 border-[#9df0f4] bg-[#3f484a] text-[#9df0f4] py-3 px-6 flex items-center gap-3 transition-all" href="/dashboard.html">
+	<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all" href="/dashboard.html">
 <span class="material-symbols-outlined">dashboard</span>
 <span>Dashboard</span>
 </a>
-<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all" href="/BatchDetailPage.html">
-<span class="material-symbols-outlined">layers</span>
-<span>Batch Management</span>
+<a id="batchNav"
+class="relative py-3 px-6 flex items-center gap-3 transition-all rounded-xl text-[#9df0f4] bg-[#3f484a]">
+    <span class="material-symbols-outlined">layers</span>
+    <span>Batch Management</span>
 </a>
 <a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all" href="/TrainerManagmentpage.html">
 <span class="material-symbols-outlined">groups</span>
@@ -236,11 +260,9 @@
 </div>
 </div>
 
-<div class="bg-surface-container-lowest p-6 rounded-xl shadow-black/5 flex flex-col gap-2 card-animate glow-border">
-<div id="adminBatchCards" class="grid gap-6"></div>
-</div></div>
 <!-- Creation Form Section -->
-<div class="lg:col-span-4 sticky top-28">
+<div class="lg:col-span-4 self-start">
+    <div class="sticky top-28">
 <div class="bg-surface-container-lowest p-8 rounded-xl shadow-xl shadow-black/5 border border-outline-variant/10 card-animate glow-border">
 <div class="mb-6">
 <h2 class="text-xl font-headline font-bold text-on-surface">Create New Batch</h2>
@@ -307,6 +329,7 @@
 <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Group of students collaborating around a computer screen in a bright minimalist workspace" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgj7jYQ3IhGPjwkEY4hoKp_ay1ih1iQwGtwm10bSLoaw_xdBxnvQZuoKmxeXy1dDs_eduCI0cud8krWU_FJWNzrTCTePgcrT26iM4Sz5AlYqbcyST4hqFuUs3Jzg9pPXjZSWLV6Aq7V9YtKYC8k7FRGXaWJthr8U0_cIKvev30w5vXltAHX6Zlfcyri8m6lTuMtUWnPiFEeH6Pd-Upau7JqWpOcMU9wvQ5uWD0Q_RBijkY0hzc12fmpQixst9qiSxOspDT2fUitw2-"/>
 <div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex items-end p-4">
 <p class="text-white text-[10px] font-label font-bold uppercase">Training Resources Hub</p>
+</div>
 </div>
 </div>
 </div>
@@ -505,6 +528,14 @@ document.getElementById("assignBatchForm").addEventListener("submit", async (eve
 setLoggedInName();
 loadAdminBatches();
 loadTrainerOptions();
+
+const currentPath = window.location.pathname;
+
+document.querySelectorAll("aside nav a").forEach(link => {
+    if (link.getAttribute("href") === currentPath) {
+        link.classList.add("active-glow", "bg-[#3f484a]", "text-[#9df0f4]");
+    }
+});
 </script>
 
 </body>
