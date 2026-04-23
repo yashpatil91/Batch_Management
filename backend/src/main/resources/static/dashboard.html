@@ -383,17 +383,19 @@
 					</div>
 				</div>
 				<!-- Trainer Quick Stats (Sm Column) -->
-				<div class="bg-inverse-surface rounded-xl p-8 text-white space-y-6">
+				<div class="relative">
+					<div id="trainerBox"
+					     class="bg-inverse-surface rounded-xl p-8 text-white space-y-6 top-0 right-0 w-full xl:w-[350px] z-20">
 					<div class="space-y-1">
 						<h3 class="font-headline text-xl font-bold text-primary-fixed">Trainer Directory</h3>
 						<p class="text-outline-variant text-xs uppercase tracking-widest">Active Mentorship
 							High-Performers</p>
 					</div>
-					<div id="trainerQuickStats" class="space-y-4"></div>
-					<button
-						class="w-full py-3 border border-outline-variant/30 rounded-lg text-sm font-bold text-primary-fixed hover:bg-white/5 transition-all">
-						View Full Directory
+							<div id="trainerQuickStats" class="space-y-4 overflow-hidden flex-1"></div>					<button id="toggleBtn" onclick="openTrainerModal()"
+					    class="w-full py-3 border border-outline-variant/30 rounded-lg text-sm font-bold text-primary-fixed hover:bg-white/5 transition-all">
+					    View Full Directory
 					</button>
+					</div>
 				</div>
 			</div>
 			<!-- Detailed Trainer Table -->
@@ -473,6 +475,9 @@
 		</div>
 	</div>
 	<script>
+		
+		//let showAll = false;
+		let trainerData = [];
 		const API_BASE_URL = "";
 		const token = localStorage.getItem("token");
 		const role = localStorage.getItem("role");
@@ -560,6 +565,7 @@
 				const res = await fetch(`${API_BASE_URL}/api/admin/trainers`, { headers: authHeaders() });
 				if (!res.ok) throw new Error("Failed to load trainers");
 				const data = await res.json();
+				trainerData = data;
 				const trainerBody = document.getElementById("trainerPerformanceBody");
 				const quickStats = document.getElementById("trainerQuickStats");
 				trainerBody.innerHTML = "";
@@ -583,17 +589,7 @@
 						</tr>
 					`);
 				});
-				data.slice(0, 3).forEach((trainer) => {
-					quickStats.insertAdjacentHTML("beforeend", `
-						<div class="flex items-center justify-between p-4 bg-surface-variant/10 rounded-lg hover:bg-surface-variant/20 transition-all cursor-pointer">
-							<div>
-								<p class="font-bold text-sm">${trainer.name || "N/A"}</p>
-								<p class="text-[10px] text-outline-variant uppercase">${trainer.email || "N/A"}</p>
-							</div>
-							<span class="material-symbols-outlined text-primary-fixed text-sm" data-icon="arrow_forward_ios">arrow_forward_ios</span>
-						</div>
-					`);
-				});
+				renderTrainerQuickStats();
 			} catch (err) {
 				console.error("Trainer Error:", err);
 			}
@@ -603,7 +599,97 @@
 		loadDashboard();
 		loadBatches();
 		loadTrainers();
+		
+		//let expanded = false;
+		
+		function renderTrainerQuickStats() {
+		    const quickStats = document.getElementById("trainerQuickStats");
+		    quickStats.innerHTML = "";
+
+		    // Estimate how many trainers fit
+		    const boxHeight = quickStats.clientHeight;
+		    const itemHeight = 70; // approx height per trainer
+		    const count = Math.floor(boxHeight / itemHeight) || 1;
+
+		    const list = trainerData.slice(0, 3);
+
+		    list.forEach((trainer) => {
+		        quickStats.insertAdjacentHTML("beforeend", `
+		            <div class="flex items-center justify-between p-4 bg-surface-variant/10 rounded-lg">
+		                <div>
+		                    <p class="font-bold text-sm">${trainer.name || "N/A"}</p>
+		                    <p class="text-[10px] text-outline-variant uppercase">${trainer.email || "N/A"}</p>
+		                </div>
+		                <span class="material-symbols-outlined text-primary-fixed text-sm">arrow_forward_ios</span>
+		            </div>
+		        `);
+		    });
+		}
+
+		
+		
+		function openTrainerModal() {
+		    const modal = document.getElementById("trainerModal");
+		    const list = document.getElementById("modalTrainerList");
+
+		    list.innerHTML = "";
+
+		    trainerData.forEach((trainer) => {
+		        list.insertAdjacentHTML("beforeend", `
+		            <div class="p-4 bg-[#3f484a] rounded-lg border border-[#4f5a5c] hover:bg-[#4a5456] transition-all">
+		                <p class="font-bold text-sm text-[#9df0f4]">
+		                    ${trainer.name || "N/A"}
+		                </p>
+		                <p class="text-xs text-[#bfc8cb]">
+		                    ${trainer.email || "N/A"}
+		                </p>
+		            </div>
+		        `);
+		    });
+
+		    modal.classList.remove("hidden");
+		    modal.classList.add("flex");
+		}
+
+		function closeTrainerModal() {
+		    const modal = document.getElementById("trainerModal");
+		    modal.classList.add("hidden");
+		}
+
+		function closeTrainerModal() {
+		    const modal = document.getElementById("trainerModal");
+		    modal.classList.add("hidden");
+		}
+		
 	</script>
+	
+	<div id="trainerModal"
+	     class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+
+	    <div class="bg-[#2d3133] w-[500px] max-h-[600px] rounded-xl p-6 shadow-2xl text-[#9df0f4]">
+
+	        <!-- Header -->
+	        <div class="flex justify-between items-center mb-4">
+	            <h2 class="font-headline text-xl font-bold text-[#9df0f4]">
+	                Trainer Directory
+	            </h2>
+	            <button onclick="closeTrainerModal()" 
+	                class="text-red-400 hover:text-red-600 text-lg font-bold">
+	                ✕
+	            </button>
+	        </div>
+
+	        <!-- Trainer List -->
+	        <div id="modalTrainerList" 
+	             class="space-y-3 overflow-y-auto max-h-[450px] pr-2">
+
+	            <!-- Trainers will be injected here -->
+
+	        </div>
+
+	    </div>
+	</div>
+	
 </body>
 
 </html>
