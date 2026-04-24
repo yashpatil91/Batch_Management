@@ -216,12 +216,25 @@
     </div>
   </div>
 
-  <!-- NEW: Lab No -->
+  <!-- Lab No / Notes -->
   <div class="space-y-1.5">
-    <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">Lab No</label>
-    <input id="batchLabNo" type="text"
-      class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface"
-      placeholder="e.g. Lab-2"/>
+    <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">
+      Lab No
+    </label>
+
+    <select id="batchLabNo"
+      class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-outline-variant"
+      onchange="this.classList.remove('text-outline-variant'); this.classList.add('text-on-surface')">
+
+      <option value="" disabled selected hidden>Select Lab</option>
+
+      <option value="Lab-01" class="text-black">Lab-01</option>
+      <option value="Lab-02" class="text-black">Lab-02</option>
+      <option value="Lab-03" class="text-black">Lab-03</option>
+      <option value="Lab-04" class="text-black">Lab-04</option>
+      <option value="Lab-05" class="text-black">Lab-05</option>
+
+    </select>
   </div>
 
  
