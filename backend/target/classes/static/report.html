@@ -88,22 +88,76 @@
 		}
 	</script>
 	<style>
-		.material-symbols-outlined {
-			font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-		}
+	/* 🔥 AUTO GLOW BORDER (always animated) */
+	.glow-card {
+	  position: relative;
+	  border-radius: 0.75rem;
+	  overflow: hidden;
+	  z-index: 0;
+	}
 
-		.custom-scrollbar::-webkit-scrollbar {
-			width: 4px;
-		}
+	.glow-card::before {
+	  content: "";
+	  position: absolute;
+	  inset: -1px;
+	  border-radius: inherit;
+	  background: linear-gradient(
+	    120deg,
+	    #0d7377,
+	    #9df0f4,
+	    #0d7377,
+	    #0d7377
+	  );
+	  background-size: 300% 300%;
+	  animation: borderMove 4s linear infinite;
+	  z-index: -1;
+	}
 
-		.custom-scrollbar::-webkit-scrollbar-track {
-			background: transparent;
-		}
+	/* Inner background fix */
+	.glow-card::after {
+	  content: "";
+	  position: absolute;
+	  inset: 1px;
+	  background: #ffffff;
+	  border-radius: inherit;
+	  z-index: -1;
+	}
 
-		.custom-scrollbar::-webkit-scrollbar-thumb {
-			background: #00595c;
-			border-radius: 10px;
-		}
+	/* 🎬 Border animation */
+	@keyframes borderMove {
+	  0% { background-position: 0% 50%; }
+	  100% { background-position: 300% 50%; }
+	}
+
+	/* ✨ Floating animation (subtle auto movement) */
+	.auto-float {
+	  animation: floatCard 4s ease-in-out infinite;
+	}
+
+	@keyframes floatCard {
+	  0%, 100% { transform: translateY(0px); }
+	  50% { transform: translateY(-6px); }
+	}
+
+	/* ✨ Fade on load */
+	.fade-in {
+	  animation: fadeIn 0.6s ease forwards;
+	}
+
+	@keyframes fadeIn {
+	  from { opacity: 0; transform: translateY(10px);}
+	  to { opacity: 1; transform: translateY(0);}
+	}
+
+	/* 🔥 Table row subtle animation (no hover needed) */
+	.table-row {
+	  animation: rowFade 0.5s ease forwards;
+	}
+
+	@keyframes rowFade {
+	  from { opacity: 0; transform: translateX(-10px); }
+	  to { opacity: 1; transform: translateX(0); }
+	}
 	</style>
 </head>
 
@@ -158,16 +212,11 @@
 		<header
 			class="bg-slate-50/80 backdrop-blur-xl sticky top-0 z-40 flex justify-between items-center w-full px-8 py-4 shadow-sm">
 			<div class="flex items-center gap-4">
-				<h2 class="text-xl font-headline font-bold text-slate-900 tracking-tight">System Reports</h2>
+				<h2 class="text-xl font-headline font-bold text-slate-900 tracking-tight">SYSTEM REPORTS</h2>
 			</div>
 			<div class="flex items-center gap-6">
 				<!-- Date Range Picker Mock -->
-				<div
-					class="flex items-center gap-3 bg-surface-container-low px-4 py-2 rounded-xl text-on-surface-variant text-sm font-medium border border-outline-variant/20 hover:bg-surface-container-high transition-colors cursor-pointer">
-					<span class="material-symbols-outlined text-[20px]" data-icon="calendar_today">calendar_today</span>
-					<span>Oct 01, 2023 - Oct 31, 2023</span>
-					<span class="material-symbols-outlined text-[18px]" data-icon="expand_more">expand_more</span>
-				</div>
+				
 				<div class="flex items-center gap-4 border-l border-outline-variant/30 pl-6">
 					<button class="p-2 rounded-full text-slate-500 hover:bg-slate-200/50 active:scale-95 duration-150">
 						<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
@@ -184,30 +233,11 @@
 		</header>
 		<div class="p-8 space-y-8 max-w-[1600px] mx-auto">
 			<!-- Quick Actions & Generation -->
-			<section
-				class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-surface-container-low p-6 rounded-xl border border-outline-variant/10">
-				<div>
-					<h3 class="text-lg font-headline font-bold text-on-surface">Generate Intelligence</h3>
-					<p class="text-sm text-on-surface-variant">Create customized data extracts for deeper analysis.</p>
-				</div>
-				<div class="flex items-center gap-3">
-					<div
-						class="flex items-center bg-surface-container-lowest rounded-lg border border-outline-variant/30 p-1">
-						<button class="px-4 py-2 text-xs font-bold text-primary bg-primary/10 rounded-md">PDF</button>
-						<button
-							class="px-4 py-2 text-xs font-bold text-on-surface-variant hover:bg-surface-container-low rounded-md">EXCEL</button>
-					</div>
-					<button
-						class="flex items-center gap-2 bg-primary-container text-on-primary-container px-6 py-3 rounded-xl font-headline font-bold shadow-sm hover:opacity-90 active:scale-95 transition-all">
-						<span class="material-symbols-outlined text-[20px]" data-icon="add_chart">add_chart</span>
-						Generate New Custom Report
-					</button>
-				</div>
-			</section>
+		
 			<!-- Analytics Cards (KPIs) -->
 			<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 				<!-- KPI 1 -->
-				<div class="bg-surface-container-lowest p-6 rounded-xl transition-all hover:shadow-md group">
+				<div class="bg-surface-container-lowest p-6 rounded-xl glow-card hover-lift fade-in group">
 					<div class="flex justify-between items-start mb-4">
 						<div class="p-2 bg-primary/10 rounded-lg text-primary">
 							<span class="material-symbols-outlined" data-icon="task_alt">task_alt</span>
@@ -220,7 +250,7 @@
 					<h4 id="totalBatches" class="text-3xl font-display font-extrabold text-on-surface">0</h4>
 				</div>
 				<!-- KPI 2 -->
-				<div class="bg-surface-container-lowest p-6 rounded-xl transition-all hover:shadow-md">
+				<div class="bg-surface-container-lowest p-6 rounded-xl glow-card hover-lift fade-in group">
 					<div class="flex justify-between items-start mb-4">
 						<div class="p-2 bg-secondary/10 rounded-lg text-secondary">
 							<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
@@ -235,7 +265,7 @@
 							class="text-lg text-on-surface-variant font-normal">%</span></h4>
 				</div>
 				<!-- KPI 3 -->
-				<div class="bg-surface-container-lowest p-6 rounded-xl transition-all hover:shadow-md">
+				<div class="bg-surface-container-lowest p-6 rounded-xl glow-card hover-lift fade-in group">
 					<div class="flex justify-between items-start mb-4">
 						<div class="p-2 bg-primary-container/20 rounded-lg text-primary-container">
 							<span class="material-symbols-outlined" data-icon="military_tech">military_tech</span>
@@ -256,7 +286,7 @@
 					</div>
 				</div>
 				<!-- KPI 4 -->
-				<div class="bg-surface-container-lowest p-6 rounded-xl transition-all hover:shadow-md">
+				<div class="bg-surface-container-lowest p-6 rounded-xl glow-card hover-lift fade-in group">
 					<div class="flex justify-between items-start mb-4">
 						<div class="p-2 bg-surface-container-high rounded-lg text-on-surface">
 							<span class="material-symbols-outlined" data-icon="schedule">schedule</span>
@@ -272,7 +302,7 @@
 			<section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
 				<!-- Monthly Enrollment Trends (Line Chart Mockup) -->
-				<div class="lg:col-span-2 bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10">
+				<div class="lg:col-span-2 bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10 glow-card hover-lift fade-in">
 					<div class="flex justify-between items-end mb-10">
 						<div>
 							<h3>Monthly Enrollment Trends</h3>
@@ -281,16 +311,7 @@
 							<p class="text-sm text-on-surface-variant">User registration volume for current fiscal year
 							</p>
 						</div>
-						<div class="flex gap-4">
-							<div class="flex items-center gap-2">
-								<div class="w-3 h-3 rounded-full bg-primary-container"></div>
-								<span class="text-xs font-bold text-on-surface-variant">2023</span>
-							</div>
-							<div class="flex items-center gap-2">
-								<div class="w-3 h-3 rounded-full bg-surface-variant"></div>
-								<span class="text-xs font-bold text-on-surface-variant">2022</span>
-							</div>
-						</div>
+						
 					</div>
 					<!-- Chart Mockup -->
 					<div style="height:420px; display:flex; justify-content:center; align-items:center;">
@@ -301,7 +322,7 @@
 
 				</div>
 				<!-- Batch Success Rate (Bar Chart Mockup) -->
-				<div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10">
+				<div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10 glow-card hover-lift fade-in">
 					<div class="mb-6">
 						<h3 class="text-xl font-headline font-bold text-on-surface">Batch Progress Overview</h3>
 						<p class="text-sm text-on-surface-variant">Live progress of all batches</p>
@@ -313,8 +334,7 @@
 				</div>
 			</section>
 			<!-- Recent Reports Table -->
-			<section
-				class="bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/10 shadow-sm">
+			<section class="bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/10 shadow-sm glow-card fade-in">
 				<div class="p-6 border-b border-outline-variant/10 flex justify-between items-center">
 					<h3 class="text-lg font-headline font-bold text-on-surface">Recent Reports</h3>
 					<div onclick="window.location.href='HistoryPage.html'"
@@ -327,7 +347,7 @@
 				<div class="overflow-x-auto">
 					<table class="w-full text-left border-collapse">
 						<thead class="bg-surface-container-low">
-							<tr>
+							<tr class="table-row">
 								<th
 									class="px-6 py-4 text-[10px] font-label font-bold uppercase tracking-widest text-outline">
 									Report Name</th>
@@ -354,10 +374,10 @@
 			</section>
 		</div>
 		<!-- Footer / Credits (Subtle) -->
-		<footer class="p-8 border-t border-outline-variant/10 text-center">
+		<!--<footer class="p-8 border-t border-outline-variant/10 text-center">
 			<p class="text-xs text-on-surface-variant font-medium">Precision Ledger Batch Management System © 2023.
 				Generated by Corporate Analytics Engine.</p>
-		</footer>
+		</footer>-->
 	</main>
 	<!-- FAB (Suppressed on Details/Reports but kept here for potential global interaction if needed, hidden by default per rules) -->
 	<button

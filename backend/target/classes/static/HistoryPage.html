@@ -87,6 +87,103 @@
     body {
       min-height: max(884px, 100dvh);
     }
+	
+
+	/* ===== 🔥 APPLY ONLY TO CARDS / BOXES ===== */
+	.glow-card {
+	  position: relative;
+	  border-radius: 10px;
+	  background: #ffffff;
+	  z-index: 0;
+	}
+
+	/* 🌈 Animated Border */
+	.glow-card::before {
+	  content: "";
+	  position: absolute;
+	  inset: -1px;
+	  border-radius: 14px;
+	  background: linear-gradient(120deg, #00f0ff, #0d7377, #81d4d8, #00f0ff);
+	  background-size: 300%;
+	  animation: glowMove 4s linear infinite;
+	  z-index: -2;
+	}
+
+	/* 🧱 Inner layer (important fix) */
+	.glow-card::after {
+	  content: "";
+	  position: absolute;
+	  inset: 1px;
+	  background: #ffffff;
+	  border-radius: 10px;
+	  z-index: -1;
+	}
+
+	/* ✨ Animation */
+	@keyframes glowMove {
+	  0% { background-position: 0% }
+	  100% { background-position: 300% }
+	}
+
+	/* ===== KPI Number Animation ===== */
+	#historyTotalCycles,
+	#historyAvgDuration {
+	  font-size: 28px;
+	  font-weight: bold;
+	  color: #0d7377;
+	  animation: popNumber 0.6s ease;
+	}
+
+	@keyframes popNumber {
+	  0% { transform: scale(0.7); opacity: 0.5; }
+	  100% { transform: scale(1); opacity: 1; }
+	}
+
+	/* ===== Table Hover ===== */
+	tbody tr {
+	  transition: all 0.3s ease;
+	}
+	tbody tr:hover {
+	  background-color: rgba(13,115,119,0.08);
+	  transform: scale(1.01);
+	}
+
+	/* ===== Button Animation ===== */
+	button {
+	  transition: all 0.3s ease;
+	}
+	button:hover {
+	  transform: translateY(-2px);
+	  box-shadow: 0 10px 25px rgba(13,115,119,0.25);
+	}
+
+	/* ===== Sidebar Hover ===== */
+	aside a {
+	  position: relative;
+	  overflow: hidden;
+	}
+	aside a::before {
+	  content: "";
+	  position: absolute;
+	  left: 0;
+	  top: 0;
+	  height: 100%;
+	  width: 0%;
+	  background: rgba(157,240,244,0.1);
+	  transition: 0.3s;
+	}
+	aside a:hover::before {
+	  width: 100%;
+	}
+
+	/* ===== Header Hover ===== */
+	header {
+	  transition: all 0.3s ease;
+	}
+	header:hover {
+	  box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+	}
+	
   </style>
   </head>
 <body class="bg-background text-on-background min-h-screen flex">
@@ -125,15 +222,12 @@
 <!-- Top App Bar -->
 <header class="flex justify-between items-center w-full px-8 py-4 bg-[#f8f9fb] sticky top-0 z-30">
 <div class="flex items-center gap-4">
-<span class="material-symbols-outlined text-[#0d7377]">menu</span>
+
 <h1 class="text-lg font-bold tracking-tighter text-[#191c1e] font-headline uppercase">Precision Ledger</h1>
 </div>
 <div class="flex items-center gap-6">
 <div class="relative group">
-<button class="flex items-center gap-2 font-['Manrope'] text-sm tracking-wide uppercase text-[#40484b] hover:text-[#0d7377] transition-colors">
-                        Archive
-                        <span class="material-symbols-outlined text-xs">expand_more</span>
-</button>
+
 </div>
 <button onclick="logout()" class="font-['Manrope'] text-sm tracking-wide uppercase text-[#0d7377] font-bold hover:bg-[#c9e9ea] px-3 py-1 rounded transition-all">
                     Logout
@@ -144,15 +238,15 @@
 <section class="px-8 pt-8 pb-4">
 <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
 <div>
-<h2 class="font-headline text-5xl font-extrabold text-on-surface tracking-tight mb-2">Batch History</h2>
+<h2 class="font-headline text-3xl font-extrabold text-on-surface tracking-tight mb-2">BATCH HISTORY</h2>
 <p class="font-body text-on-surface-variant max-w-lg">Comprehensive ledger of all concluded instructional cycles and operational metrics for system compliance.</p>
 </div>
 <div class="flex items-center gap-4">
-<div class="bg-surface-container-lowest p-4 rounded-xl shadow-black/5 flex flex-col items-end min-w-[120px]">
+<div class="bg-surface-container-lowest p-4 rounded-xl shadow-black/5 flex flex-col items-end min-w-[120px] glow-card">
 <span class="font-label text-[10px] uppercase tracking-widest text-outline">Total Cycles</span>
 <span id="historyTotalCycles" class="font-headline text-3xl font-bold text-primary">0</span>
 </div>
-<div class="bg-surface-container-lowest p-4 rounded-xl shadow-black/5 flex flex-col items-end min-w-[120px]">
+<div class="bg-surface-container-lowest p-4 rounded-xl shadow-black/5 flex flex-col items-end min-w-[120px] glow-card">
 <span class="font-label text-[10px] uppercase tracking-widest text-outline">Avg. Duration</span>
 <span id="historyAvgDuration" class="font-headline text-3xl font-bold text-primary">0d</span>
 </div>
@@ -161,7 +255,7 @@
 </section>
 <!-- Filters Section -->
 <section class="px-8 py-6">
-<div class="bg-surface-container-lowest rounded-xl p-6 flex flex-wrap items-center justify-between gap-4 border border-outline-variant/10">
+<div class="bg-surface-container-lowest rounded-xl p-6 flex flex-wrap items-center justify-between gap-4 glow-card">
 <div class="flex items-center gap-4">
 <div class="flex flex-col gap-1">
 <label class="font-label text-[11px] font-semibold text-outline uppercase tracking-wider">Temporal filter</label>
@@ -179,15 +273,12 @@
 </div>
 </div>
 </div>
-<button class="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-full font-headline font-bold text-sm hover:opacity-90 transition-all active:scale-95 shadow-lg shadow-primary/20">
-<span class="material-symbols-outlined text-sm">download</span>
-                    Export Ledger
-                </button>
+
 </div>
 </section>
 <!-- Data Ledger Table -->
 <section class="px-8 pb-12">
-<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm border border-outline-variant/5">
+<div class="bg-surface-container-lowest rounded-xl p-6 flex flex-wrap items-center justify-between gap-4 glow-card">
 <table class="w-full text-left border-collapse">
 <thead class="bg-surface-container-high">
 <tr>
@@ -202,66 +293,11 @@
 <tbody id="historyTableBody" class="font-body text-sm divide-y divide-surface-container-low"></tbody>
 </table>
 <!-- Pagination/Footer -->
-<div class="bg-surface-container-low p-4 flex items-center justify-between border-t border-outline-variant/10">
-<span class="text-xs font-medium text-on-surface-variant">Showing 1 to 5 of 142 historical records</span>
-<div class="flex gap-2">
-<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-surface-container-high transition-colors">
-<span class="material-symbols-outlined text-sm">chevron_left</span>
-</button>
-<button class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-white font-bold text-xs">1</button>
-<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-surface-container-high transition-colors text-xs">2</button>
-<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-surface-container-high transition-colors text-xs">3</button>
-<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-surface-container-high transition-colors">
-<span class="material-symbols-outlined text-sm">chevron_right</span>
-</button>
-</div>
-</div>
+
 </div>
 </section>
 <!-- Insights Summary (Bento-style Cards) -->
-<section class="px-8 pb-20 grid grid-cols-1 md:grid-cols-3 gap-6">
-<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/10 shadow-sm relative overflow-hidden">
-<div class="relative z-10">
-<h4 class="font-label text-[10px] uppercase tracking-widest text-outline mb-4">Historical Efficiency</h4>
-<div class="flex items-baseline gap-2 mb-2">
-<span class="font-headline text-4xl font-bold text-on-surface tracking-tighter">94%</span>
-<span class="text-primary text-xs font-bold">+2.4%</span>
-</div>
-<p class="font-body text-xs text-on-surface-variant leading-relaxed">System-wide completion rate across all 2023 archived batches.</p>
-</div>
-<div class="absolute -right-4 -bottom-4 opacity-5 pointer-events-none">
-<span class="material-symbols-outlined text-[120px]">show_chart</span>
-</div>
-</div>
-<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/10 shadow-sm relative overflow-hidden">
-<div class="relative z-10">
-<h4 class="font-label text-[10px] uppercase tracking-widest text-outline mb-4">Lead Trainer Impact</h4>
-<div class="flex items-center gap-4 mb-4">
-<img class="w-10 h-10 rounded-full border-2 border-primary/20" data-alt="professional portrait of an expert woman trainer in a sleek corporate environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTsBdrWOKMGFW1otQhZ4NtnF-a_JSUU4O-DM47srGzfXOtYDPQVPByZKjbfmrEZGOpGMW2UN1ZdoEq4jQKHiLxF2RvagiKMW0Liz021KYVCWyIlzqn7LA4Mp5m29dCt5MFewzidliRwk_Xhppe7NeByYzW_uhYLBupYFPrwC-1aY9YkUu8hfm_EwTjGdq9MTUBmnVFlNWIM10A0V72VikX0c-fEoK3KADxIuR0pNN7lRU14yEPBMi0LmWV8LyjiucG2HwbxCmfbdTs"/>
-<div>
-<p class="font-headline text-sm font-bold text-on-surface">Sarah Jenkins</p>
-<p class="font-body text-[10px] text-outline">24 Cycles Managed</p>
-</div>
-</div>
-<div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
-<div class="h-full bg-gradient-to-r from-primary to-primary-container w-[85%]"></div>
-</div>
-</div>
-</div>
-<div class="bg-primary p-6 rounded-xl shadow-lg shadow-primary/20 relative overflow-hidden">
-<div class="relative z-10 text-white">
-<h4 class="font-label text-[10px] uppercase tracking-widest text-on-primary-container opacity-80 mb-4">Storage Compliance</h4>
-<div class="flex items-center gap-3 mb-2">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">verified</span>
-<span class="font-headline text-2xl font-bold tracking-tight">Fully Encrypted</span>
-</div>
-<p class="font-body text-[11px] text-on-primary-container opacity-90 leading-relaxed">All archived logs meet ISO-27001 data persistence standards.</p>
-</div>
-<div class="absolute -right-6 -top-6 text-white/10 pointer-events-none">
-<span class="material-symbols-outlined text-[140px]">lock</span>
-</div>
-</div>
-</section>
+
 </main>
 <!-- Contextual FAB (Hidden on history list as per suppression rule, but included logic for placement awareness) -->
 <!-- Suppression Logic: Suppress on Detail/History screens as focus is on reading. -->
