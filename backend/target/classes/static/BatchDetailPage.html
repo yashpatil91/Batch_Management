@@ -257,27 +257,41 @@
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
   <!-- Batch List Section (LEFT) -->
-  <div class="lg:col-span-8 space-y-6">
+  <div id="batchSection" class="lg:col-span-8 space-y-6">
 
-    <div class="flex justify-between items-end">
-      <h2 class="text-2xl font-headline font-bold text-on-surface">
-        ACTIVE ASSIGNMENTS
-      </h2>
+	<div class="flex justify-between items-end">
+	  <h2 class="text-2xl font-headline font-bold text-on-surface">
+	    ACTIVE ASSIGNMENTS
+	  </h2>
 
-      <button onclick="window.location.href='/HistoryPage.html'"
-        class="text-primary font-label text-sm font-semibold flex items-center gap-1 hover:underline">
-        View History
-        <span class="material-symbols-outlined text-sm">arrow_forward</span>
-      </button>
-    </div>
+	  <div class="flex gap-4">
 
-    <!-- Batch Cards -->
-    <div id="adminBatchCards" class="grid gap-6"></div>
+	   
+	    <button onclick="window.location.href='/HistoryPage.html'"
+	      class="text-primary text-sm font-semibold flex items-center gap-1 hover:underline">
+	      View History
+	      <span class="material-symbols-outlined text-sm">arrow_forward</span>
+	    </button>
 
+	  </div>
+	</div>
+
+	<div id="adminBatchCards" class="grid grid-cols-1 gap-6"></div>
+
+	<!-- 🔥 NEW BUTTON BELOW BATCHES -->
+	<div class="flex justify-center mt-4">
+	  <button id="toggleViewBtn"
+	    class="bg-primary-container text-on-primary-container py-3 px-6 rounded-lg font-headline font-bold text-sm tracking-tight hover:opacity-90 active:scale-[0.98] transition-all flex items-center gap-2">
+	    
+	    <span class="material-symbols-outlined text-lg">expand_more</span>
+	    View All
+
+	  </button>
+	</div>
   </div>
 
   <!-- Creation Form Section (RIGHT) -->
-  <div class="lg:col-span-4 top-28">
+  <div id="formSection" class="lg:col-span-4 top-28">
 
     <div class="bg-surface-container-lowest p-8 rounded-xl shadow-xl shadow-black/5 border border-outline-variant/10 card-animate glow-border">
 
@@ -331,10 +345,27 @@
           </div>
         </div>
 
-        <div class="space-y-1.5">
-          <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">Lab No / Notes</label>
-          <input id="batchLabInput" class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface placeholder:text-outline-variant" placeholder="e.g. Lab-2"/>
-        </div>
+		<div class="space-y-1.5">
+		  <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">
+		    Lab No / Notes
+		  </label>
+
+		  <select id="batchLabInput"
+		    class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-outline-variant"
+		    onchange="this.classList.remove('text-outline-variant'); this.classList.add('text-on-surface')">
+
+		    <!-- Placeholder (light color comes from select) -->
+		    <option value="" disabled selected hidden>Select Lab</option>
+
+		    <!-- Options (force dark color) -->
+		    <option value="Lab-01" class="text-black">Lab-01</option>
+		    <option value="Lab-02" class="text-black">Lab-02</option>
+		    <option value="Lab-03" class="text-black">Lab-03</option>
+		    <option value="Lab-04" class="text-black">Lab-04</option>
+		    <option value="Lab-05" class="text-black">Lab-05</option>
+
+		  </select>
+		</div>
 
         <button class="w-full bg-primary-container text-on-primary-container py-3 rounded-lg font-headline font-bold text-sm tracking-tight hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2" type="submit">
           <span class="material-symbols-outlined text-lg">add_circle</span>
@@ -399,14 +430,22 @@ async function loadAdminBatches() {
 	const allBatches = await res.json();
 
 	// ✅ FILTER OUT COMPLETED
-	const batches = allBatches.filter(
-	  (b) => (b.progress ?? 0) < 100 && String(b.status).toUpperCase() !== "COMPLETED"
+	let showAll = window.showAllBatches || false;
+
+	// remove completed
+	const filtered = allBatches.filter(
+	  b => (b.progress ?? 0) < 100 &&
+	       String(b.status).toUpperCase() !== "COMPLETED"
 	);
 
-    const total = batches.length;
-    const completed = batches.filter(
-      (b) => String(b.status).toUpperCase() === "COMPLETED"
-    ).length;
+	// show 3 OR all
+	const batches = showAll ? filtered : filtered.slice(0, 3);
+
+	const total = filtered.length;
+
+	const completed = allBatches.filter(
+	  (b) => String(b.status).toUpperCase() === "COMPLETED"
+	).length;
 
     const avg = total
       ? Math.round(
@@ -567,6 +606,44 @@ document
 setLoggedInName();
 loadAdminBatches();
 loadTrainerOptions();
+
+const toggleBtn = document.getElementById("toggleViewBtn");
+
+toggleBtn.addEventListener("click", () => {
+
+  window.showAllBatches = !window.showAllBatches;
+
+  const batchSection = document.getElementById("batchSection");
+  const formSection = document.getElementById("formSection");
+  const grid = document.getElementById("adminBatchCards");
+
+  if (window.showAllBatches) {
+    // VIEW ALL
+    toggleBtn.innerHTML = `
+      <span class="material-symbols-outlined text-lg">expand_less</span>
+      View Less
+    `;
+
+    formSection.style.display = "none";
+
+    batchSection.classList.remove("lg:col-span-8");
+    batchSection.classList.add("lg:col-span-12");
+
+  } else {
+    // BACK
+    toggleBtn.innerHTML = `
+      <span class="material-symbols-outlined text-lg">expand_more</span>
+      View All
+    `;
+
+    formSection.style.display = "block";
+
+    batchSection.classList.remove("lg:col-span-12");
+    batchSection.classList.add("lg:col-span-8");
+  }
+
+  loadAdminBatches();
+});
 </script>
 </body>
 </html>
