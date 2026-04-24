@@ -515,6 +515,36 @@
 
 	    </div>
 	</div>
+	
+	
+	<div id="trainerModal"
+		     class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+
+		    <div class="bg-[#2d3133] w-[500px] max-h-[600px] rounded-xl p-6 shadow-2xl text-[#9df0f4]">
+
+		        <!-- Header -->
+		        <div class="flex justify-between items-center mb-4">
+		            <h2 class="font-headline text-xl font-bold text-[#9df0f4]">
+		                Trainer Directory
+		            </h2>
+		            <button onclick="closeTrainerModal()" 
+		                class="text-red-400 hover:text-red-600 text-lg font-bold">
+		                ✕
+		            </button>
+		        </div>
+
+		        <!-- Trainer List -->
+		        <div id="modalTrainerList" 
+		             class="space-y-3 overflow-y-auto max-h-[450px] pr-2">
+
+		            <!-- Trainers will be injected here -->
+
+		        </div>
+
+		    </div>
+		</div>
+		
+	
 	<script>
 		
 		//let showAll = false;
@@ -708,32 +738,6 @@
 		
 	</script>
 	
-	<div id="trainerModal"
-	     class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
-
-	    <div class="bg-[#2d3133] w-[500px] max-h-[600px] rounded-xl p-6 shadow-2xl text-[#9df0f4]">
-
-	        <!-- Header -->
-	        <div class="flex justify-between items-center mb-4">
-	            <h2 class="font-headline text-xl font-bold text-[#9df0f4]">
-	                Trainer Directory
-	            </h2>
-	            <button onclick="closeTrainerModal()" 
-	                class="text-red-400 hover:text-red-600 text-lg font-bold">
-	                ✕
-	            </button>
-	        </div>
-
-	        <!-- Trainer List -->
-	        <div id="modalTrainerList" 
-	             class="space-y-3 overflow-y-auto max-h-[450px] pr-2">
-
-	            <!-- Trainers will be injected here -->
-
-	        </div>
-
-	    </div>
-	</div>
 	
 </body>
 
