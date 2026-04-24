@@ -163,49 +163,69 @@
 
 <body class="bg-surface text-on-surface font-body antialiased">
 	<!-- Sidebar Navigation Shell -->
-	
-	
+	<!-- Navigation Drawer (SideNav) -->
 	<aside
-			class="fixed left-0 top-0 bottom-0 z-40 flex flex-col h-screen w-64 bg-[#2d3133] shadow-xl shadow-black/10 font-['Inter'] text-sm font-medium">
-			<div class="p-8">
-				<h1 class="text-lg font-bold tracking-tighter text-[#f8f9fb]">PRECISION LEDGER</h1>
-			</div>
-			<nav class="flex-1 px-0">
-				<a class="border-l-4 border-[#9df0f4] bg-[#3f484a] text-[#9df0f4] py-3 px-6 flex items-center gap-3 transition-all"
-					href="/dashboard.html">
-					<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-					Dashboard
-				</a>
-				<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
-					href="/BatchDetailPage.html">
-					<span class="material-symbols-outlined" data-icon="Layers">layers</span>
-					Batch Management
-				</a>
-				<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
-					href="/TrainerManagmentpage.html">
-					<span class="material-symbols-outlined" data-icon="groups">groups</span>
-					Trainer Directory
-				</a>
-				<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
-					href="/report.html">
-					<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
-					Reports
-				</a>
-			</nav>
-			<div class="p-6 mt-auto bg-[#3f484a]/20">
-				<div class="flex items-center gap-3">
-					<img alt="Admin User Avatar" class="w-10 h-10 rounded-full object-cover"
-						data-alt="Professional portrait of a male administrator in a modern office setting with soft background lighting"
-						src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpmhAnvMerJrMPWPd8DCzd0yvcNpBt9GhKK92qTMcmQcXyAJ-vClCObmCFDCA4trCZLYuHsOFYLA0pn_D3_jQO-JYy5DD6TGUGwXf1sod6zy67yils_sAqt74fDEdfZd-yfxtCdWjXwq9ccZItEvEzViceUIlQXZ3s_t_x6GwQFjMaULs33j7_dj_mCfZoFPrLUtYWval97nQI-Bv94K9g85e7LuQLBz9zEy2ZpRss7ePXW4Gy2YL9IKWfPJr45MAODBkUZyXzjIQQ" />
-					<div class="overflow-hidden">
-						<p class="text-[#9df0f4] truncate font-semibold">Lead Administrator</p>
-						<p class="text-[#bfc8cb] text-xs truncate">System Controller</p>
-					</div>
+		class="fixed left-0 top-0 bottom-0 z-40 flex flex-col h-screen w-64 bg-[#2d3133] shadow-xl shadow-black/10 font-['Inter'] text-sm font-medium">
+
+		<div class="p-8">
+			<h1 class="text-lg font-bold tracking-tighter text-[#f8f9fb]">
+				PRECISION LEDGER
+			</h1>
+		</div>
+
+		<nav class="flex-1 px-0">
+
+			<!-- Dashboard -->
+			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
+				href="/dashboard.html">
+				<span class="material-symbols-outlined">dashboard</span>
+				Dashboard
+			</a>
+
+			<!-- Batch -->
+			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
+				href="/BatchDetailPage.html">
+				<span class="material-symbols-outlined">layers</span>
+				Batch Management
+			</a>
+
+			<!-- Trainer -->
+			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
+				href="/TrainerManagmentpage.html">
+				<span class="material-symbols-outlined">groups</span>
+				Trainer Directory
+			</a>
+
+			<!-- ✅ Reports (ACTIVE) -->
+			<a class="border-l-4 border-[#9df0f4] bg-[#3f484a] text-[#9df0f4] py-3 px-6 flex items-center gap-3 transition-all"
+				href="/report.html">
+				<span class="material-symbols-outlined">analytics</span>
+				Reports
+			</a>
+
+			<!-- 🆕 History -->
+			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
+				href="/HistoryPage.html">
+				<span class="material-symbols-outlined">history</span>
+				History
+			</a>
+
+		</nav>
+
+		<!-- User Section -->
+		<div class="p-6 mt-auto bg-[#3f484a]/20">
+			<div class="flex items-center gap-3">
+				<img class="w-10 h-10 rounded-full object-cover"
+					src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpmhAnvMerJrMPWPd8DCzd0yvcNpBt9GhKK92qTMcmQcXyAJ-vClCObmCFDCA4trCZLYuHsOFYLA0pn_D3_jQO-JYy5DD6TGUGwXf1sod6zy67yils_sAqt74fDEdfZd-yfxtCdWjXwq9ccZItEvEzViceUIlQXZ3s_t_x6GwQFjMaULs33j7_dj_mCfZoFPrLUtYWval97nQI-Bv94K9g85e7LuQLBz9zEy2ZpRss7ePXW4Gy2YL9IKWfPJr45MAODBkUZyXzjIQQ" />
+
+				<div class="overflow-hidden">
+					<p class="text-[#9df0f4] truncate font-semibold">Lead Administrator</p>
+					<p class="text-[#bfc8cb] text-xs truncate">System Controller</p>
 				</div>
 			</div>
-		</aside>
-	
-	
+		</div>
+
+	</aside>
 	<!-- Main Content Canvas -->
 	<main class="ml-64 min-h-screen">
 		<!-- Top Navigation Bar -->

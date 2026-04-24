@@ -188,34 +188,68 @@
   </head>
 <body class="bg-background text-on-background min-h-screen flex">
 <!-- Navigation Drawer -->
-<aside class="fixed left-0 top-0 bottom-0 z-40 flex flex-col bg-[#2d3133] h-screen w-64 shadow-xl shadow-black/10">
-<div class="p-8 flex flex-col items-start gap-4">
-<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-[#9df0f4]">
-<img alt="Admin User Avatar" class="w-full h-full object-cover" data-alt="professional portrait of a male system administrator in a minimal studio setting with soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfZzQnDG1IRe58bT-QwKwc0KFGIm5bhtvmKwnyn7hv2MWEPOsWxSnIv6euCn68SM5sAKvI9ifEu9En1tqOvfojInOCyWNi6Fkhj6mWphxy7xrrYJ9R5mUOJXZRedTLoc2ZMH-xHSVd6b9glxzugcgZU2RVp_6XTBXq0lp5-uqpV0jJCw4In9ujMrkB4MiEw2IPUJxCUlh5ZAUOP8BS1kAObwz8MZbAgdso918WxbIMiqirw2FyxboBwjEBmiBhynDkuupokNq_h_Eq"/>
-</div>
-<div class="flex flex-col">
-<span class="font-headline text-[#9df0f4] font-bold text-sm leading-tight">Lead Administrator</span>
-<span class="font-body text-[#bfc8cb] text-xs">System Controller</span>
-</div>
-</div>
-<nav class="flex-1 mt-4">
-<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 font-['Inter'] text-sm font-medium hover:bg-[#3f484a] hover:text-white transition-all" href="/dashboard.html">
-<span class="material-symbols-outlined">dashboard</span>
-                Dashboard
-            </a>
-<a class="border-l-4 border-[#9df0f4] bg-[#3f484a] text-[#9df0f4] py-3 px-6 flex items-center gap-3 font-['Inter'] text-sm font-medium transition-all" href="/HistoryPage.html">
-<span class="material-symbols-outlined">layers</span>
-                Batch Management
-            </a>
-<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 font-['Inter'] text-sm font-medium hover:bg-[#3f484a] hover:text-white transition-all" href="/TrainerManagmentpage.html">
-<span class="material-symbols-outlined">groups</span>
-                Trainer Directory
-            </a>
-<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 font-['Inter'] text-sm font-medium hover:bg-[#3f484a] hover:text-white transition-all" href="#">
-<span class="material-symbols-outlined">analytics</span>
-                Reports
-            </a>
-</nav>
+<!-- Navigation Drawer (SideNav) -->
+<aside
+	class="fixed left-0 top-0 bottom-0 z-40 flex flex-col h-screen w-64 bg-[#2d3133] shadow-xl shadow-black/10 font-['Inter'] text-sm font-medium">
+
+	<div class="p-8">
+		<h1 class="text-lg font-bold tracking-tighter text-[#f8f9fb]">
+			PRECISION LEDGER
+		</h1>
+	</div>
+
+	<nav class="flex-1 px-0">
+
+		<!-- Dashboard -->
+		<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
+			href="/dashboard.html">
+			<span class="material-symbols-outlined">dashboard</span>
+			Dashboard
+		</a>
+
+		<!-- Batch -->
+		<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
+			href="/BatchDetailPage.html">
+			<span class="material-symbols-outlined">layers</span>
+			Batch Management
+		</a>
+
+		<!-- Trainer -->
+		<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
+			href="/TrainerManagmentpage.html">
+			<span class="material-symbols-outlined">groups</span>
+			Trainer Directory
+		</a>
+
+		<!-- Reports -->
+		<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
+			href="/report.html">
+			<span class="material-symbols-outlined">analytics</span>
+			Reports
+		</a>
+
+		<!-- ✅ History (ACTIVE) -->
+		<a class="border-l-4 border-[#9df0f4] bg-[#3f484a] text-[#9df0f4] py-3 px-6 flex items-center gap-3 transition-all"
+			href="/HistoryPage.html">
+			<span class="material-symbols-outlined">history</span>
+			History
+		</a>
+
+	</nav>
+
+	<!-- User Section -->
+	<div class="p-6 mt-auto bg-[#3f484a]/20">
+		<div class="flex items-center gap-3">
+			<img class="w-10 h-10 rounded-full object-cover"
+				src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpmhAnvMerJrMPWPd8DCzd0yvcNpBt9GhKK92qTMcmQcXyAJ-vClCObmCFDCA4trCZLYuHsOFYLA0pn_D3_jQO-JYy5DD6TGUGwXf1sod6zy67yils_sAqt74fDEdfZd-yfxtCdWjXwq9ccZItEvEzViceUIlQXZ3s_t_x6GwQFjMaULs33j7_dj_mCfZoFPrLUtYWval97nQI-Bv94K9g85e7LuQLBz9zEy2ZpRss7ePXW4Gy2YL9IKWfPJr45MAODBkUZyXzjIQQ" />
+
+			<div class="overflow-hidden">
+				<p class="text-[#9df0f4] truncate font-semibold">Lead Administrator</p>
+				<p class="text-[#bfc8cb] text-xs truncate">System Controller</p>
+			</div>
+		</div>
+	</div>
+
 </aside>
 <!-- Main Content Canvas -->
 <main class="flex-1 ml-64 min-h-screen bg-surface-container-low">
