@@ -199,17 +199,22 @@
 <div class="flex items-center gap-4">
 <div class="flex flex-col gap-1">
 <label class="font-label text-[11px] font-semibold text-outline uppercase tracking-wider">Temporal filter</label>
-<select class="bg-surface-container-low border-none rounded-lg text-sm font-medium py-2.5 px-4 focus:ring-2 focus:ring-primary/20 appearance-none pr-10 relative cursor-pointer min-w-[160px]">
-<option>Year: 2023</option>
-<option>Year: 2022</option>
-<option>Year: 2021</option>
+<select  id ="yearFilter"" class="bg-surface-container-low border-none rounded-lg text-sm font-medium py-2.5 px-4 focus:ring-2 focus:ring-primary/20 appearance-none pr-10 relative cursor-pointer min-w-[160px]">
+<option value="">All Years</option>
+<option value="2026">Year: 2026</option>
+<option value="2025">Year: 2025</option>
+<option value="2024">Year: 2024</option>
+<option value="2023">Year: 2023</option>
+<option value="2022">Year: 2022</option>
+<option value="2021">Year: 2021</option>
+
 </select>
 </div>
 <div class="flex flex-col gap-1">
 <label class="font-label text-[11px] font-semibold text-outline uppercase tracking-wider">Search Ledger</label>
 <div class="relative">
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
-<input class="bg-surface-container-low border-none rounded-lg text-sm font-medium py-2.5 pl-10 pr-4 focus:ring-2 focus:ring-primary/20 w-64" placeholder="Search batch or trainer..." type="text"/>
+<input id ="searchInput"class="bg-surface-container-low border-none rounded-lg text-sm font-medium py-2.5 pl-10 pr-4 focus:ring-2 focus:ring-primary/20 w-64" placeholder="Search batch or trainer..." type="text"/>
 </div>
 </div>
 </div>
@@ -300,134 +305,193 @@
 <!-- Contextual FAB (Hidden on history list as per suppression rule, but included logic for placement awareness) -->
 <!-- Suppression Logic: Suppress on Detail/History screens as focus is on reading. -->
 <script>
-const API_BASE_URL = "http://localhost:8080";
-const token = localStorage.getItem("token");
-const role = localStorage.getItem("role");
-const tableBody = document.getElementById("historyTableBody");
+	const API_BASE_URL = "http://localhost:8080";
+	const token = localStorage.getItem("token");
+	const role = localStorage.getItem("role");
 
-if (!token) {
-  window.location.href = "index.html";
-}
-if (!role || role !== "ADMIN") {
-  window.location.href = role === "TRAINER" ? "Trainerdashboard.html" : "index.html";
-}
+	const tableBody = document.getElementById("historyTableBody");
+	const yearFilter = document.getElementById("yearFilter");
+	const searchInput = document.getElementById("searchInput");
 
-function logout() {
-  localStorage.clear();
-  window.location.href = "index.html";
-}
+	let allBatches = []; // store full data
 
-function setLoggedInName() {
-  const name = localStorage.getItem("name");
-  if (!name) return;
-  const targets = document.querySelectorAll("span.font-headline.text-\\[\\#9df0f4\\]");
-  targets.forEach(node => node.textContent = name);
-}
+	// 🔐 Auth Check
+	if (!token) window.location.href = "index.html";
+	if (!role || role !== "ADMIN") {
+	  window.location.href = role === "TRAINER"
+	    ? "Trainerdashboard.html"
+	    : "index.html";
+	}
 
-function formatDate(value) {
-  if (!value) return "N/A";
-  const parsed = new Date(value);
-  return Number.isNaN(parsed.getTime()) ? value : parsed.toLocaleDateString();
-}
+	// 🚪 Logout
+	function logout() {
+	  localStorage.clear();
+	  window.location.href = "index.html";
+	}
 
-function duration(start, end) {
-  if (!start || !end) return "N/A";
-  const days = Math.max(0, Math.round((new Date(end) - new Date(start)) / (1000 * 60 * 60 * 24)));
-  return `${days} Days`;
-}
+	// 👤 Set Name
+	function setLoggedInName() {
+	  const name = localStorage.getItem("name");
+	  if (!name) return;
+	  const targets = document.querySelectorAll("span.font-headline.text-\\[\\#9df0f4\\]");
+	  targets.forEach(node => node.textContent = name);
+	}
 
+	// 📅 Format Date
+	function formatDate(value) {
+	  if (!value) return "N/A";
+	  const d = new Date(value);
+	  return isNaN(d) ? value : d.toLocaleDateString();
+	}
 
-// 🔥 MAIN LOAD FUNCTION
-async function loadHistory() {
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/admin/batches`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+	// ⏱ Duration
+	function duration(start, end) {
+	  if (!start || !end) return "N/A";
+	  const days = Math.max(0,
+	    Math.round((new Date(end) - new Date(start)) / (1000 * 60 * 60 * 24))
+	  );
+	  return `${days} Days`;
+	}
 
-    if (!res.ok) throw new Error("Unable to load history");
+	/////////////////////////////////////////////////////////
+	// 🔥 MAIN FETCH
+	/////////////////////////////////////////////////////////
+	async function loadHistory() {
+	  try {
+	    const res = await fetch(`${API_BASE_URL}/api/admin/batches`, {
+	      headers: { Authorization: `Bearer ${token}` }
+	    });
 
-    const batches = await res.json();
+	    if (!res.ok) throw new Error("Failed to load batches");
 
-    // 🔥 STORE DATA FOR REPORT PAGE (IMPORTANT)
-    localStorage.setItem("batchHistoryData", JSON.stringify(batches));
+	    const data = await res.json();
 
-    // Filter closed batches
-    const closed = batches.filter(item =>
-      (item.status || "").toUpperCase() !== "ONGOING"
-    );
+	    // store all data
+	    allBatches = data;
 
-    const records = closed.length ? closed : batches;
+	    applyFilters(); // render initially
 
-    tableBody.innerHTML = "";
+	  } catch (err) {
+	    console.error("Error:", err);
+	  }
+	}
 
-    if (!records.length) {
-      document.getElementById("historyTotalCycles").innerText = "0";
-      document.getElementById("historyAvgDuration").innerText = "0d";
-      return;
-    }
+	/////////////////////////////////////////////////////////
+	// 🔥 FILTER LOGIC (YEAR + SEARCH)
+	/////////////////////////////////////////////////////////
+	function getYearFromDate(dateStr) {
+	  if (!dateStr) return null;
 
-    // 🔥 CALCULATIONS
-    let totalDuration = 0;
+	  const d = new Date(dateStr);
+	  return isNaN(d) ? null : d.getFullYear().toString();
+	}
+	function applyFilters() {
 
-    records.forEach(item => {
-      if (item.startDate && item.endDate) {
-        totalDuration += Math.max(0,
-          Math.round((new Date(item.endDate) - new Date(item.startDate)) / (1000 * 60 * 60 * 24))
-        );
-      }
-    });
+	  const selectedYear = yearFilter.value;
+	  const searchText = searchInput.value.toLowerCase();
 
-    const avgDuration = Math.round(totalDuration / records.length);
+	  let filtered = allBatches;
 
-    document.getElementById("historyTotalCycles").innerText = records.length;
-    document.getElementById("historyAvgDuration").innerText = avgDuration + "d";
+	  // ❌ remove ongoing (history page logic)
+	  filtered = filtered.filter(b =>
+	    (b.status || "").toUpperCase() !== "ONGOING"
+	  );
 
+	  if (selectedYear) {
+	    filtered = filtered.filter(b => {
+	      const year = getYearFromDate(b.startDate);
 
-    // 🔥 TABLE RENDER
-    records.forEach(item => {
-      tableBody.insertAdjacentHTML("beforeend", `
-        <tr class="hover:bg-secondary-container/30 transition-colors group">
-          <td class="px-6 py-5">
-            <span class="font-semibold text-on-surface">${item.domainName || "N/A"}</span>
-          </td>
+	      // DEBUG (remove later)
+	      console.log("Date:", b.startDate, "Year:", year);
 
-          <td class="px-6 py-5">
-            <span class="text-on-surface-variant">${item.trainerName || "Unassigned"}</span>
-          </td>
+	      return year == selectedYear; // use == not ===
+	    });
+	  }
 
-          <td class="px-6 py-5 text-on-surface-variant">
-            ${formatDate(item.startDate)}
-          </td>
+	  // 🔍 SEARCH FILTER
+	  if (searchText) {
+	    filtered = filtered.filter(b =>
+	      (b.domainName || "").toLowerCase().includes(searchText) ||
+	      (b.trainerName || "").toLowerCase().includes(searchText)
+	    );
+	  }
 
-          <td class="px-6 py-5 text-on-surface-variant">
-            ${formatDate(item.endDate)}
-          </td>
+	  renderTable(filtered);
+	}
 
-          <td class="px-6 py-5">
-            <span class="bg-surface-container-low px-2.5 py-1 rounded-md text-[12px] font-medium text-primary">
-              ${duration(item.startDate, item.endDate)}
-            </span>
-          </td>
+	
+	// 🔥 TABLE RENDER
+	
+	function renderTable(records) {
 
-          <td class="px-6 py-5 text-right">
-            <span class="text-[11px] font-bold uppercase tracking-tighter 
-              ${item.status === "ONGOING" ? "text-yellow-700 bg-yellow-100" : "text-green-700 bg-green-100"} 
-              px-2 py-0.5 rounded">
-              ${item.status || "N/A"}
-            </span>
-          </td>
-        </tr>
-      `);
-    });
+	  tableBody.innerHTML = "";
 
-  } catch (error) {
-    console.error("History Error:", error);
-  }
-}
+	  if (!records.length) {
+	    document.getElementById("historyTotalCycles").innerText = "0";
+	    document.getElementById("historyAvgDuration").innerText = "0d";
+	    return;
+	  }
 
+	  let totalDuration = 0;
 
-// 🔥 INIT
-setLoggedInName();
-loadHistory();
+	  records.forEach(item => {
+
+	    if (item.startDate && item.endDate) {
+	      totalDuration += Math.max(0,
+	        Math.round((new Date(item.endDate) - new Date(item.startDate)) / (1000 * 60 * 60 * 24))
+	      );
+	    }
+
+	    tableBody.insertAdjacentHTML("beforeend", `
+	      <tr class="hover:bg-secondary-container/30 transition-colors">
+	        
+	        <td class="px-6 py-5 font-semibold">
+	          ${item.domainName || "N/A"}
+	        </td>
+
+	        <td class="px-6 py-5">
+	          ${item.trainerName || "Unassigned"}
+	        </td>
+
+	        <td class="px-6 py-5">
+	          ${formatDate(item.startDate)}
+	        </td>
+
+	        <td class="px-6 py-5">
+	          ${formatDate(item.endDate)}
+	        </td>
+
+	        <td class="px-6 py-5">
+	          <span class="bg-surface-container-low px-2 py-1 rounded text-primary text-xs font-medium">
+	            ${duration(item.startDate, item.endDate)}
+	          </span>
+	        </td>
+
+	        <td class="px-6 py-5 text-right">
+	          <span class="text-xs font-bold px-2 py-1 rounded
+	            ${item.status === "ONGOING"
+	              ? "bg-yellow-100 text-yellow-700"
+	              : "bg-green-100 text-green-700"}">
+	            ${item.status || "N/A"}
+	          </span>
+	        </td>
+
+	      </tr>
+	    `);
+	  });
+
+	  const avg = Math.round(totalDuration / records.length);
+
+	  document.getElementById("historyTotalCycles").innerText = records.length;
+	  document.getElementById("historyAvgDuration").innerText = avg + "d";
+	}
+
+	
+	yearFilter.addEventListener("change", applyFilters);
+	searchInput.addEventListener("input", applyFilters);
+
+	
+	setLoggedInName();
+	loadHistory();
 </script>
 </body></html>
