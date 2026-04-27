@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -75,4 +76,49 @@ public class TrainerController {
     ) {
         return ResponseEntity.ok(trainerService.updateTopicStatus(authentication.getName(), topicId, request));
     }
+    
+    
+  
+    @DeleteMapping("/topics/{topicId}")
+    public ResponseEntity<?> deleteTopic(
+            @PathVariable Long topicId,
+            Authentication authentication
+    ) {
+        trainerService.deleteTopic(authentication.getName(), topicId);
+        return ResponseEntity.ok().build();
+    }
+    
+    @PutMapping("/topics/{topicId}/title")
+    public ResponseEntity<?> updateTopicTitle(
+            @PathVariable Long topicId,
+            @RequestBody TopicCreateRequest request,
+            Authentication authentication
+    ) {
+        return ResponseEntity.ok(
+            trainerService.updateTopicTitle(authentication.getName(), topicId, request)
+        );
+    }
+    
+  ///adding things from here
+    @PutMapping("/batches/{id}")
+    public ResponseEntity<BatchResponse> updateBatch(
+            @PathVariable Long id,
+            @Valid @RequestBody BatchRequest request,
+            Authentication authentication
+    ) {
+        return ResponseEntity.ok(
+            trainerService.updateBatch(authentication.getName(), id, request)
+        );
+    }
+    // to delete a batch from trainer dashboard
+    @DeleteMapping("/batches/{id}")
+    public ResponseEntity<?> deleteBatch(
+            @PathVariable Long id,
+            Authentication authentication
+    ) {
+        trainerService.deleteBatch(authentication.getName(), id);
+        return ResponseEntity.ok("Batch deleted successfully");
+    }
+
+    
 }

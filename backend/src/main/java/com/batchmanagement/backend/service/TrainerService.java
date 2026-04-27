@@ -113,17 +113,21 @@ public class TrainerService {
 
     private void recalculateProgress(Batch batch) {
         long total = batchTopicRepository.countByBatch(batch);
+
         if (total == 0) {
             batch.setProgress(0);
-            batch.setStatus(BatchStatus.ONGOING);
             batchRepository.save(batch);
             return;
         }
 
         long completed = batchTopicRepository.countByBatchAndCompletedTrue(batch);
+
         int progress = (int) Math.round((completed * 100.0) / total);
+
         batch.setProgress(progress);
-        batch.setStatus(progress == 100 ? BatchStatus.COMPLETED : BatchStatus.ONGOING);
+
+        // ❌ DO NOT change status here
+
         batchRepository.save(batch);
     }
 
@@ -155,4 +159,72 @@ public class TrainerService {
                 .filter(user -> user.getRole() == Role.TRAINER)
                 .orElseThrow(() -> new ResourceNotFoundException("Trainer not found"));
     }
+    ///adding things from here
+    
+    public void deleteTopic(String trainerEmail, Long topicId) {
+
+        BatchTopic topic = batchTopicRepository.findById(topicId)
+                .orElseThrow(() -> new ResourceNotFoundException("Topic not found"));
+
+        Batch batch = findTrainerBatch(trainerEmail, topic.getBatch().getId());
+
+        batchTopicRepository.delete(topic);
+
+        recalculateProgress(batch);
+    }
+    
+    public TopicResponse updateTopicTitle(String trainerEmail, Long topicId, TopicCreateRequest request) {
+
+        BatchTopic topic = batchTopicRepository.findById(topicId)
+                .orElseThrow(() -> new ResourceNotFoundException("Topic not found"));
+
+        Batch batch = findTrainerBatch(trainerEmail, topic.getBatch().getId());
+
+        topic.setTitle(request.getTitle());
+
+        BatchTopic saved = batchTopicRepository.save(topic);
+
+        return toTopicResponse(saved);
+    }
+    
+    
+    ///doing extra stuff, just in case for error handling
+    
+    public BatchResponse updateBatch(String trainerEmail, Long batchId, BatchRequest request) {
+
+        // Find batch + validate trainer
+        Batch batch = findTrainerBatch(trainerEmail, batchId);
+
+        // Update fields
+        batch.setDomainName(request.getDomainName());
+        batch.setStartDate(request.getStartDate());
+        batch.setEndDate(request.getEndDate());
+        batch.setTime(request.getTime());
+        batch.setLabNo(request.getLabNo());
+        batch.setNoOfStudents(request.getNoOfStudents());
+
+        // ❌ DO NOT touch:
+        // batch.setProgress(...)
+        // batch.setStatus(...)
+
+        // Save
+        Batch updated = batchRepository.save(batch);
+
+        return BatchMapper.toResponse(updated);
+    }
+    
+    public void deleteBatch(String trainerEmail, Long batchId) {
+
+        // Validate trainer + batch ownership
+        Batch batch = findTrainerBatch(trainerEmail, batchId);
+
+        // 🔥 IMPORTANT: delete topics first (to avoid FK error)
+        batchTopicRepository.deleteAll(
+            batchTopicRepository.findByBatch(batch)
+        );
+
+        // Delete batch
+        batchRepository.delete(batch);
+    }
+    
 }
