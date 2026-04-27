@@ -396,7 +396,26 @@
 				<div class="xl:col-span-2 bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm">
 					<div class="px-8 py-6 flex justify-between items-center border-b border-surface-container-low">
 						<h3 class="font-headline text-xl font-bold text-on-surface">Active Batch Trajectory</h3>
-	
+						<div class="flex flex-col gap-1">
+				
+						<select  id ="yearFilter"" class="bg-surface-container-low border-none rounded-lg text-sm font-medium py-2.5 px-4 focus:ring-2 focus:ring-primary/20 appearance-none pr-10 relative cursor-pointer min-w-[160px]">
+						<option value="">All Years</option>
+						<option value="2026">Year: 2026</option>
+						<option value="2025">Year: 2025</option>
+						<option value="2024">Year: 2024</option>
+						<option value="2023">Year: 2023</option>
+						<option value="2022">Year: 2022</option>
+						<option value="2021">Year: 2021</option>
+
+						</select>
+						</div>
+						<div class="flex flex-col gap-1">
+						
+						<div class="relative">
+						<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+						<input id ="searchInput"class="bg-surface-container-low border-none rounded-lg text-sm font-medium py-2.5 pl-10 pr-4 focus:ring-2 focus:ring-primary/20 w-64" placeholder="Search batch or trainer..." type="text"/>
+						</div>
+						</div>
 					</div>
 					<div class="overflow-x-auto">
 						<table class="w-full text-left">
@@ -412,8 +431,6 @@
 							</thead>
 							<tbody id="batchTableBody" class="divide-y-0">
 							</tbody>
-
-
 
 
 						</table>
@@ -447,6 +464,8 @@
 							<th class="px-8 py-4 font-semibold">Trainer Profile</th>
 							<th class="px-6 py-4 font-semibold">Assigned Batches</th>
 							<th class="px-6 py-4 font-semibold">Contact</th>
+							<!-- NEW STATUS COLUMN -->
+							<th class="px-6 py-4 font-semibold">Trainer Status</th>
 							<th class="px-6 py-4 text-center font-semibold">Management</th>
 						</tr>
 					</thead>
@@ -659,41 +678,142 @@
 			}
 		}
 
+		// ================= LOAD TRAINERS WITH SORTED ACTIVE BATCH COUNT =================
 		async function loadTrainers() {
-			try {
-				const res = await fetch(`${API_BASE_URL}/api/admin/trainers`, {headers: authHeaders()});
-				if (!res.ok) throw new Error("Failed to load trainers");
-				const data = await res.json();
-				trainerData = data;
-				const trainerBody = document.getElementById("trainerPerformanceBody");
-				const quickStats = document.getElementById("trainerQuickStats");
-				trainerBody.innerHTML = "";
-				quickStats.innerHTML = "";
-				data.forEach((trainer) => {
-					trainerBody.insertAdjacentHTML("beforeend", `
-						<tr class="hover:bg-secondary-container transition-all">
-							<td class="px-8 py-5">
-								<div class="font-bold text-on-surface">${trainer.name || "N/A"}</div>
-								<div class="text-xs text-on-surface-variant">Trainer</div>
-							</td>
-							<td class="px-6 py-5">
-							    <div class="flex flex-wrap gap-1">
-							        <span class="text-[10px] font-bold px-2 py-0.5 bg-primary-fixed text-on-primary-fixed-variant rounded">
-							            ${trainer.totalBatches} Batches
-							        </span>
-							    </div>
-							</td>
-							<td class="px-6 py-5 text-sm text-on-surface-variant">${trainer.email || "N/A"}</td>
-							<td class="px-6 py-5 text-right">
-								<span class="text-xs font-semibold text-on-surface-variant">Live</span>
-							</td>
-						</tr>
-					`);
-				});
-				renderTrainerQuickStats();
-			} catch (err) {
-				console.error("Trainer Error:", err);
-			}
+		  try {
+		    /* ===== FETCH TRAINERS ===== */
+		    const trainerRes = await fetch(`${API_BASE_URL}/api/admin/trainers`, {
+		      headers: authHeaders()
+		    });
+
+		    if (!trainerRes.ok) throw new Error("Failed to load trainers");
+
+		    const trainers = await trainerRes.json();
+
+		    /* ===== FETCH BATCHES ===== */
+		    const batchRes = await fetch(`${API_BASE_URL}/api/admin/batches`, {
+		      headers: authHeaders()
+		    });
+
+		    if (!batchRes.ok) throw new Error("Failed to load batches");
+
+		    const batches = await batchRes.json();
+
+		    const trainerBody = document.getElementById("trainerPerformanceBody");
+		    const quickStats = document.getElementById("trainerQuickStats");
+
+		    trainerBody.innerHTML = "";
+		    quickStats.innerHTML = "";
+
+		    /* ===== CALCULATE ACTIVE BATCH COUNT ===== */
+		    const trainersWithBatchCount = trainers.map((trainer) => {
+		      const activeBatchCount = batches.filter(
+		        (batch) =>
+		          batch.trainerId === trainer.id &&
+		          (batch.progress ?? 0) < 100 &&
+		          String(batch.status).toUpperCase() !== "COMPLETED"
+		      ).length;
+
+		      return {
+		        ...trainer,
+		        activeBatchCount
+		      };
+		    });
+
+		    /* ===== SORT DESCENDING (HIGHEST FIRST) ===== */
+		    trainersWithBatchCount.sort(
+		      (a, b) => b.activeBatchCount - a.activeBatchCount
+		    );
+
+		    trainerData = trainersWithBatchCount;
+
+		    /* ===== RENDER TRAINERS ===== */
+		    trainersWithBatchCount.forEach((trainer) => {
+		      trainerBody.insertAdjacentHTML(
+		        "beforeend",
+		        `
+		        <tr class="hover:bg-secondary-container transition-all">
+
+		          <!-- Trainer Profile -->
+		          <td class="px-8 py-5">
+		            <div class="font-bold text-on-surface">
+		              ${trainer.name || "N/A"}
+		            </div>
+		            <div class="text-xs text-on-surface-variant">
+		              Trainer
+		            </div>
+		          </td>
+
+		          <!-- Active Assigned Batches -->
+		          <td class="px-6 py-5">
+		            <div class="flex flex-wrap gap-1">
+		              <span class="text-[10px] font-bold px-2 py-0.5 bg-primary-fixed text-on-primary-fixed-variant rounded">
+		                ${trainer.activeBatchCount} Batches
+		              </span>
+		            </div>
+		          </td>
+
+		          <!-- Contact -->
+		          <td class="px-6 py-5 text-sm text-on-surface-variant">
+		            ${trainer.email || "N/A"}
+		          </td>
+
+		          <!-- Trainer Status -->
+		          <td class="px-6 py-5">
+		            <select
+		              class="bg-surface-container-low border-none rounded-lg px-3 py-2 text-sm font-medium text-on-surface focus:ring-2 focus:ring-primary-fixed"
+		              onchange="updateTrainerStatus(${trainer.id}, this.value)"
+		            >
+		              <option value="ACTIVE" ${
+		                trainer.status === "ACTIVE" ? "selected" : ""
+		              }>
+		                Active
+		              </option>
+
+		              <option value="INACTIVE" ${
+		                trainer.status === "INACTIVE" ? "selected" : ""
+		              }>
+		                Inactive
+		              </option>
+		            </select>
+		          </td>
+
+				  <!-- Management -->
+				  <td class="px-6 py-5 text-center">
+				    <select
+				      class="bg-surface-container-low border-none rounded-lg px-3 py-2 text-sm font-medium text-on-surface focus:ring-2 focus:ring-primary-fixed"
+				      onchange="updateTrainerAvailability(${trainer.id}, this.value)"
+				    >
+				      <option value="LIVE" ${
+				        trainer.availability === "LIVE" ? "selected" : ""
+				      }>
+				        Live
+				      </option>
+
+				      <option value="BUSY" ${
+				        trainer.availability === "BUSY" ? "selected" : ""
+				      }>
+				        Busy
+				      </option>
+
+				      <option value="ON_LEAVE" ${
+				        trainer.availability === "ON_LEAVE" ? "selected" : ""
+				      }>
+				        On Leave
+				      </option>
+				    </select>
+				  </td>
+
+		        </tr>
+		        `
+		      );
+		    });
+
+		    renderTrainerQuickStats();
+
+		  } catch (err) {
+		    console.error("Trainer Error:", err);
+		  }
 		}
 
 		
@@ -762,7 +882,221 @@
 		    const modal = document.getElementById("trainerModal");
 		    modal.classList.add("hidden");
 		}
+		/* =========================
+		   DASHBOARD ACTIVE BATCH FILTER
+		   Search by:
+		   - Batch Name (domainName)
+		   - Trainer Name
+		   - Year (from startDate)
+		========================= */
+
+		const yearFilter = document.getElementById("yearFilter");
+		const searchInput = document.getElementById("searchInput");
+		const tableBody = document.getElementById("batchTableBody");
+
+		let allBatches = []; // Filled from API
+
+		// =========================
+		// GET YEAR FROM DATE
+		// =========================
+		function getYearFromDate(dateStr) {
+		    if (!dateStr) return null;
+
+		    const d = new Date(dateStr);
+		    return isNaN(d) ? null : d.getFullYear().toString();
+		}
+
+		// =========================
+		// APPLY FILTERS
+		// =========================
+		function applyDashboardFilters() {
+
+		    const selectedYear = yearFilter.value;
+		    const searchText = searchInput.value.toLowerCase().trim();
+
+		    let filtered = allBatches;
+
+		    // Only ACTIVE / ONGOING batches
+		    filtered = filtered.filter(batch =>
+		        (batch.status || "").toUpperCase() === "ONGOING"
+		    );
+
+		    // YEAR FILTER
+		    if (selectedYear) {
+		        filtered = filtered.filter(batch => {
+		            const year = getYearFromDate(batch.startDate);
+		            return year == selectedYear;
+		        });
+		    }
+
+		    // SEARCH FILTER
+		    if (searchText) {
+		        filtered = filtered.filter(batch =>
+		            (batch.domainName || "").toLowerCase().includes(searchText) ||
+		            (batch.trainerName || "").toLowerCase().includes(searchText)
+		        );
+		    }
+
+		    renderDashboardTable(filtered);
+		}
+
+		// =========================
+		// FIXED DASHBOARD PROGRESS
+		// Use syllabus/topics progress instead of date progress
+		// =========================
+
+		// =========================
+		// FIXED PROGRESS CALCULATION
+		// Supports multiple backend field names
+		// =========================
+		function calculateBatchProgress(batch) {
+
+		    /* Possible backend fields:
+		       totalTopics
+		       syllabusCount
+		       totalSyllabus
+		       totalItems
+		       topicCount
+
+		       completedTopics
+		       completedCount
+		       completedSyllabus
+		       completedItems
+		       progress
+		    */
+
+		    const totalTopics =
+		        batch.totalTopics ??
+		        batch.syllabusCount ??
+		        batch.totalSyllabus ??
+		        batch.totalItems ??
+		        batch.topicCount ??
+		        0;
+
+		    const completedTopics =
+		        batch.completedTopics ??
+		        batch.completedCount ??
+		        batch.completedSyllabus ??
+		        batch.completedItems ??
+		        null;
+
+		    // If backend already provides exact progress
+		    if (batch.progress !== undefined && batch.progress !== null) {
+		        return Math.max(0, Math.min(100, Number(batch.progress)));
+		    }
+
+		    // If no syllabus exists
+		    if (!totalTopics || totalTopics <= 0) {
+		        return 0;
+		    }
+
+		    // If completed topics exist
+		    if (completedTopics !== null) {
+		        return Math.max(
+		            0,
+		            Math.min(
+		                100,
+		                Math.round((completedTopics / totalTopics) * 100)
+		            )
+		        );
+		    }
+
+		    return 0;
+		}
 		
+		// =========================
+		// RENDER DASHBOARD TABLE
+		// =========================
+		function renderDashboardTable(records) {
+
+		    tableBody.innerHTML = "";
+
+		    if (!records.length) {
+		        tableBody.innerHTML = `
+		            <tr>
+		                <td colspan="5" class="text-center py-10 text-outline">
+		                    No active batches found
+		                </td>
+		            </tr>
+		        `;
+		        return;
+		    }
+
+			records.forEach(batch => {
+
+			    let progress = calculateBatchProgress(batch);
+
+			    tableBody.insertAdjacentHTML("beforeend", `
+			        <tr class="hover:bg-secondary-container/30 transition-colors">
+
+			            <td class="px-8 py-5 font-semibold text-on-surface">
+			                ${batch.domainName || "N/A"}
+			            </td>
+
+			            <td class="px-6 py-5 text-on-surface-variant">
+			                ${batch.trainerName || "Unassigned"}
+			            </td>
+
+			            <td class="px-6 py-5 text-on-surface-variant">
+			                ${formatDate(batch.startDate)}
+			            </td>
+
+			            <td class="px-6 py-5">
+			                <span class="px-3 py-1 rounded-full text-xs font-bold
+			                    ${batch.status === "ONGOING"
+			                        ? "bg-green-100 text-green-700"
+			                        : "bg-gray-100 text-gray-700"}">
+			                    ${batch.status || "N/A"}
+			                </span>
+			            </td>
+
+			            <td class="px-6 py-5">
+			                <div class="w-full bg-surface-container-high rounded-full h-2 overflow-hidden">
+			                    <div class="h-full bg-primary rounded-full"
+			                         style="width:${progress}%">
+			                    </div>
+			                </div>
+			                <span class="text-xs font-medium text-outline mt-1 inline-block">
+			                    ${progress}%
+			                </span>
+			            </td>
+
+			        </tr>
+			    `);
+			});
+
+			}
+		// =========================
+		// EVENT LISTENERS
+		// =========================
+		yearFilter.addEventListener("change", applyDashboardFilters);
+		searchInput.addEventListener("input", applyDashboardFilters);
+
+		// =========================
+		// LOAD DASHBOARD DATA
+		// =========================
+		async function loadDashboardBatches() {
+		    try {
+		        const res = await fetch(`${API_BASE_URL}/api/admin/batches`, {
+		            headers: authHeaders()
+		        });
+
+		        if (!res.ok) throw new Error("Failed to load batches");
+
+		        allBatches = await res.json();
+
+		        applyDashboardFilters();
+
+		    } catch (err) {
+		        console.error("Dashboard batch loading error:", err);
+		    }
+		}
+
+		// =========================
+		// INIT
+		// =========================
+		setLoggedInName();
+		loadDashboardBatches();
 	</script>
 	
 	

@@ -394,15 +394,26 @@ const API_BASE_URL = "http://localhost:8080";
 const token = localStorage.getItem("token");
 const role = localStorage.getItem("role");
 
+/* ================= AUTH ================= */
+function authHeaders() {
+  return {
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
+    "Content-Type": "application/json"
+  };
+}
+
 if (!token) window.location.href = "index.html";
-if (!role || role !== "ADMIN")
-  window.location.href = role === "TRAINER" ? "Trainerdashboard.html" : "index.html";
+if (!role || role !== "ADMIN") {
+  window.location.href =
+    role === "TRAINER" ? "Trainerdashboard.html" : "index.html";
+}
 
 function logout() {
   localStorage.clear();
   window.location.href = "index.html";
 }
 
+/* ================= HELPERS ================= */
 function formatDate(v) {
   if (!v) return "N/A";
   const d = new Date(v);
@@ -412,44 +423,52 @@ function formatDate(v) {
 function setLoggedInName() {
   const name = localStorage.getItem("name");
   if (!name) return;
+
   const targets = document.querySelectorAll(
     "h3.text-\\[\\#9df0f4\\].font-semibold.text-xs.leading-tight"
   );
+
   targets.forEach((node) => (node.textContent = name));
+}
+
+function formatTime(t) {
+  if (!t) return "";
+  const [h, m] = t.split(":").map(Number);
+  const period = h >= 12 ? "PM" : "AM";
+  const hour = ((h + 11) % 12 + 1).toString().padStart(2, "0");
+  return `${hour}:${m.toString().padStart(2, "0")} ${period}`;
 }
 
 /* ================= LOAD BATCHES ================= */
 async function loadAdminBatches() {
   try {
     const res = await fetch(`${API_BASE_URL}/api/admin/batches`, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: authHeaders()
     });
 
     if (!res.ok) throw new Error("Failed to load batches");
 
-	const allBatches = await res.json();
+    const allBatches = await res.json();
 
-	// ✅ FILTER OUT COMPLETED
-	let showAll = window.showAllBatches || false;
+    let showAll = window.showAllBatches || false;
 
-	// remove completed
-	const filtered = allBatches.filter(
-	  b => (b.progress ?? 0) < 100 &&
-	       String(b.status).toUpperCase() !== "COMPLETED"
-	);
+    const filtered = allBatches.filter(
+      (b) =>
+        (b.progress ?? 0) < 100 &&
+        String(b.status).toUpperCase() !== "COMPLETED"
+    );
 
-	// show 3 OR all
-	const batches = showAll ? filtered : filtered.slice(0, 3);
+    const batches = showAll ? filtered : filtered.slice(0, 3);
 
-	const total = filtered.length;
+    const total = filtered.length;
 
-	const completed = allBatches.filter(
-	  (b) => String(b.status).toUpperCase() === "COMPLETED"
-	).length;
+    const completed = allBatches.filter(
+      (b) => String(b.status).toUpperCase() === "COMPLETED"
+    ).length;
 
     const avg = total
       ? Math.round(
-          batches.reduce((a, b) => a + (b.progress ?? 0), 0) / total
+          filtered.reduce((a, b) => a + (b.progress ?? 0), 0) / total
         )
       : 0;
 
@@ -461,9 +480,7 @@ async function loadAdminBatches() {
       .map(
         (batch) => `
       <div class="bg-surface-container-lowest p-6 rounded-xl group transition-all hover:translate-y-[-2px]">
-
         <div class="flex justify-between items-start mb-6">
-
           <div>
             <h3 class="text-xl font-headline font-bold text-on-surface">
               ${batch.domainName || "Untitled Batch"}
@@ -501,124 +518,193 @@ async function loadAdminBatches() {
             <div class="bg-gradient-to-r from-primary to-primary-container h-full rounded-full"
                  style="width:${batch.progress ?? 0}%"></div>
           </div>
+
           <span class="font-headline font-bold text-lg text-primary">
             ${batch.progress ?? 0}%
           </span>
         </div>
-
       </div>
     `
       )
       .join("");
   } catch (e) {
-    console.error(e);
+    console.error("Load batches error:", e);
   }
 }
 
 /* ================= LOAD TRAINERS ================= */
 async function loadTrainerOptions() {
-  const res = await fetch(`${API_BASE_URL}/api/admin/trainers`, {
-    headers: { Authorization: `Bearer ${token}` }
-  });
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/admin/trainers`, {
+      headers: authHeaders()
+    });
 
-  if (!res.ok) throw new Error("Failed to load trainers");
+    if (!res.ok) throw new Error("Failed to load trainers");
 
-  const trainers = await res.json();
-  const select = document.getElementById("trainerSelectInput");
+    const trainers = await res.json();
+    const select = document.getElementById("trainerSelectInput");
 
-  select.innerHTML = `<option value="">Select trainer...</option>`;
+    select.innerHTML = `<option value="">Select trainer...</option>`;
 
-  trainers.forEach((trainer) => {
-    select.insertAdjacentHTML(
-      "beforeend",
-      `<option value="${trainer.id}">${trainer.name} (${trainer.email})</option>`
-    );
-  });
+    trainers.forEach((trainer) => {
+      select.insertAdjacentHTML(
+        "beforeend",
+        `<option value="${trainer.id}">
+          ${trainer.name} (${trainer.email})
+        </option>`
+      );
+    });
+  } catch (e) {
+    console.error("Trainer load error:", e);
+  }
 }
 
-/* ================= FORM SUBMIT ================= */
+/* ================= SINGLE FORM SUBMIT ================= */
 document
   .getElementById("assignBatchForm")
-  .addEventListener("submit", async (event) => {
+  .addEventListener("submit", async function (event) {
     event.preventDefault();
 
     const batchNameRaw = document.getElementById("batchNameInput").value.trim();
-    const batchName = batchNameRaw.toLowerCase();
-
     const trainerId = Number(
-      document.getElementById("trainerSelectInput").value || 0
+      document.getElementById("trainerSelectInput").value
     );
 
     const startDate = document.getElementById("batchStartDateInput").value;
     const endDate = document.getElementById("batchEndDateInput").value;
 
-    const labNo =
-      document.getElementById("batchLabInput").value.trim() || "Lab-1";
-
-    const noOfStudents =
-      parseInt(document.getElementById("noOfStudents").value, 10) || 0;
-
     const startTime = document.getElementById("batchStartTime").value;
     const endTime = document.getElementById("batchEndTime").value;
 
-    const formatTime = (t) => {
-      if (!t) return "";
-      const [h, m] = t.split(":").map(Number);
-      const period = h >= 12 ? "PM" : "AM";
-      const hour = ((h + 11) % 12 + 1).toString().padStart(2, "0");
-      return `${hour}:${m.toString().padStart(2, "0")} ${period}`;
-    };
+    const noOfStudents = parseInt(
+      document.getElementById("noOfStudents").value,
+      10
+    );
 
-    const timeRange = `${formatTime(startTime)} - ${formatTime(endTime)}`;
+    const labNo = document.getElementById("batchLabInput").value;
 
-    if (!batchName || !trainerId) return;
+    /* ===== BASIC VALIDATION ===== */
+    if (
+      !batchNameRaw ||
+      !trainerId ||
+      !startDate ||
+      !endDate ||
+      !startTime ||
+      !endTime ||
+      !labNo ||
+      !noOfStudents
+    ) {
+      alert("Please fill all required fields.");
+      return;
+    }
+
+    if (startTime >= endTime) {
+      alert("End time must be later than start time.");
+      return;
+    }
 
     try {
-      const createRes = await fetch(`${API_BASE_URL}/api/admin/batches`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          domainName: batchNameRaw,
-          startDate,
-          endDate,
-          time: timeRange,
-          labNo,
-          noOfStudents,
-          progress: 0,
-          trainerId
-        })
+      /* ===== FETCH EXISTING BATCHES ===== */
+      const response = await fetch(`${API_BASE_URL}/api/admin/batches`, {
+        headers: authHeaders()
       });
 
-      if (!createRes.ok) throw new Error("Batch create failed");
+      if (!response.ok)
+        throw new Error("Failed to fetch existing batches.");
 
-      event.target.reset();
+      const existingBatches = await response.json();
+
+      const newStart = new Date(`${startDate}T${startTime}`);
+      const newEnd = new Date(`${endDate}T${endTime}`);
+
+      /* ===== CONFLICT CHECK ===== */
+      for (const batch of existingBatches) {
+        if (!batch.time) continue;
+
+        const [existingStartTime, existingEndTime] = batch.time
+          .split(" - ")
+          .map((t) => {
+            const [time, modifier] = t.split(" ");
+            let [hours, minutes] = time.split(":").map(Number);
+
+            if (modifier === "PM" && hours !== 12) hours += 12;
+            if (modifier === "AM" && hours === 12) hours = 0;
+
+            return `${hours.toString().padStart(2, "0")}:${minutes
+              .toString()
+              .padStart(2, "0")}`;
+          });
+
+        const existingStart = new Date(
+          `${batch.startDate}T${existingStartTime}`
+        );
+
+        const existingEnd = new Date(
+          `${batch.endDate}T${existingEndTime}`
+        );
+
+        const isTimeConflict =
+          newStart < existingEnd && newEnd > existingStart;
+
+        if (batch.trainerId == trainerId && isTimeConflict) {
+          alert("Trainer is not available at this time.");
+          return;
+        }
+
+        if (batch.labNo === labNo && isTimeConflict) {
+          alert("This lab is not available at this time.");
+          return;
+        }
+      }
+
+      /* ===== CREATE BATCH ===== */
+      const timeRange = `${formatTime(startTime)} - ${formatTime(endTime)}`;
+
+      const batchData = {
+        domainName: batchNameRaw,
+        startDate,
+        endDate,
+        time: timeRange,
+        labNo,
+        noOfStudents,
+        progress: 0,
+        trainerId
+      };
+
+      const createResponse = await fetch(
+        `${API_BASE_URL}/api/admin/batches`,
+        {
+          method: "POST",
+          headers: authHeaders(),
+          body: JSON.stringify(batchData)
+        }
+      );
+
+      if (!createResponse.ok) {
+        const errorText = await createResponse.text();
+        throw new Error(errorText || "Batch creation failed.");
+      }
+
+      alert("Batch created successfully!");
+      document.getElementById("assignBatchForm").reset();
+
       loadAdminBatches();
-
-    } catch (e) {
-      console.error(e);
-      alert(e.message);
+    } catch (error) {
+      console.error("Batch Creation Error:", error);
+      alert(error.message || "Something went wrong.");
     }
   });
 
-setLoggedInName();
-loadAdminBatches();
-loadTrainerOptions();
-
+/* ================= TOGGLE VIEW ================= */
 const toggleBtn = document.getElementById("toggleViewBtn");
 
 toggleBtn.addEventListener("click", () => {
-
   window.showAllBatches = !window.showAllBatches;
 
   const batchSection = document.getElementById("batchSection");
   const formSection = document.getElementById("formSection");
-  const grid = document.getElementById("adminBatchCards");
 
   if (window.showAllBatches) {
-    // VIEW ALL
     toggleBtn.innerHTML = `
       <span class="material-symbols-outlined text-lg">expand_less</span>
       View Less
@@ -628,9 +714,7 @@ toggleBtn.addEventListener("click", () => {
 
     batchSection.classList.remove("lg:col-span-8");
     batchSection.classList.add("lg:col-span-12");
-
   } else {
-    // BACK
     toggleBtn.innerHTML = `
       <span class="material-symbols-outlined text-lg">expand_more</span>
       View All
@@ -644,6 +728,11 @@ toggleBtn.addEventListener("click", () => {
 
   loadAdminBatches();
 });
+
+/* ================= INITIALIZE ================= */
+setLoggedInName();
+loadAdminBatches();
+loadTrainerOptions();
 </script>
 </body>
 </html>
