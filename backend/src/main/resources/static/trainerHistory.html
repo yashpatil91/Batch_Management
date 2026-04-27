@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Precision Ledger - Batch History</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-fixed": "#c9e9ea",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#930019",
+                    "surface-container-highest": "#e0e3e5",
+                    "on-secondary-container": "#4c696b",
+                    "on-error-container": "#93000a",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-container": "#c9e9ea",
+                    "surface-variant": "#e0e3e5",
+                    "tertiary-fixed": "#ffdad8",
+                    "on-primary-fixed": "#002021",
+                    "inverse-primary": "#81d4d8",
+                    "primary": "#00595c",
+                    "surface-container": "#eceef0",
+                    "primary-fixed": "#9df0f4",
+                    "on-secondary-fixed-variant": "#2f4c4d",
+                    "secondary-fixed-dim": "#adccce",
+                    "surface-container-high": "#e6e8ea",
+                    "outline-variant": "#bec9c9",
+                    "on-error": "#ffffff",
+                    "inverse-on-surface": "#eff1f3",
+                    "background": "#f8f9fb",
+                    "tertiary": "#a4001d",
+                    "outline": "#6e7979",
+                    "on-primary": "#ffffff",
+                    "on-surface-variant": "#3e4949",
+                    "on-tertiary-container": "#ffe1df",
+                    "on-background": "#191c1e",
+                    "inverse-surface": "#2d3133",
+                    "on-tertiary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "on-primary-container": "#a2f5f9",
+                    "tertiary-container": "#ca1f2f",
+                    "on-tertiary-fixed": "#410006",
+                    "on-surface": "#191c1e",
+                    "surface": "#f8f9fb",
+                    "on-secondary-fixed": "#002021",
+                    "surface-bright": "#f8f9fb",
+                    "on-primary-fixed-variant": "#004f52",
+                    "tertiary-fixed-dim": "#ffb3af",
+                    "surface-tint": "#00696d",
+                    "primary-fixed-dim": "#81d4d8",
+                    "primary-container": "#0d7377",
+                    "error-container": "#ffdad6",
+                    "secondary": "#466365",
+                    "surface-dim": "#d8dadc",
+                    "surface-container-low": "#f2f4f6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        .headline-font { font-family: 'Manrope', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+	
+
+	/* ===== 🔥 APPLY ONLY TO CARDS / BOXES ===== */
+	.glow-card {
+	  position: relative;
+	  border-radius: 10px;
+	  background: #ffffff;
+	  z-index: 0;
+	}
+
+	/* 🌈 Animated Border */
+	.glow-card::before {
+	  content: "";
+	  position: absolute;
+	  inset: -1px;
+	  border-radius: 14px;
+	  background: linear-gradient(120deg, #00f0ff, #0d7377, #81d4d8, #00f0ff);
+	  background-size: 300%;
+	  animation: glowMove 4s linear infinite;
+	  z-index: -2;
+	}
+
+	/* 🧱 Inner layer (important fix) */
+	.glow-card::after {
+	  content: "";
+	  position: absolute;
+	  inset: 1px;
+	  background: #ffffff;
+	  border-radius: 10px;
+	  z-index: -1;
+	}
+
+	/* ✨ Animation */
+	@keyframes glowMove {
+	  0% { background-position: 0% }
+	  100% { background-position: 300% }
+	}
+
+	/* ===== KPI Number Animation ===== */
+	#historyTotalCycles,
+	#historyAvgDuration {
+	  font-size: 28px;
+	  font-weight: bold;
+	  color: #0d7377;
+	  animation: popNumber 0.6s ease;
+	}
+
+	@keyframes popNumber {
+	  0% { transform: scale(0.7); opacity: 0.5; }
+	  100% { transform: scale(1); opacity: 1; }
+	}
+
+	/* ===== Table Hover ===== */
+	tbody tr {
+	  transition: all 0.3s ease;
+	}
+	tbody tr:hover {
+	  background-color: rgba(13,115,119,0.08);
+	  transform: scale(1.01);
+	}
+
+	/* ===== Button Animation ===== */
+	button {
+	  transition: all 0.3s ease;
+	}
+	button:hover {
+	  transform: translateY(-2px);
+	  box-shadow: 0 10px 25px rgba(13,115,119,0.25);
+	}
+
+	/* ===== Sidebar Hover ===== */
+	aside a {
+	  position: relative;
+	  overflow: hidden;
+	}
+	aside a::before {
+	  content: "";
+	  position: absolute;
+	  left: 0;
+	  top: 0;
+	  height: 100%;
+	  width: 0%;
+	  background: rgba(157,240,244,0.1);
+	  transition: 0.3s;
+	}
+	aside a:hover::before {
+	  width: 100%;
+	}
+
+	/* ===== Header Hover ===== */
+	header {
+	  transition: all 0.3s ease;
+	}
+	header:hover {
+	  box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+	}
+	
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex">
+<!-- Navigation Drawer -->
+<!-- Navigation Drawer (SideNav) -->
+<aside class="fixed left-0 top-0 bottom-0 z-40 flex flex-col docked h-screen w-64 bg-[#2d3133] shadow-xl shadow-black/10 font-['Inter'] text-sm font-medium">
+<div class="p-8 flex items-center gap-4 border-b border-[#3f484a]/30">
+<div class="h-10 w-10 rounded-xl overflow-hidden">
+<img alt="Admin User Avatar" class="w-full h-full object-cover" data-alt="Professional portrait of a middle-aged male administrator in a clean office setting with soft natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAW-LOtZm_nSqbnM0xTdTrkaCiee-hw8kJAEiYMGdAQ4meZOLVE6F4wEAmysloFULpiZp3v8Is_xa2DIIDjFEZKCV72pdA9nsp4cKBAXXInvVaSiarRsZaD_Al_l2bqjcbme_DFQr54OtpIzgvah84RKmPxSxLW-kYSEWeOW4UdXjFekrhAiZjEVqNX8Ta3AD-tVXuMsol-QFMmtZbudDC1znQp-nw53LTP4CaLQj6aiWjc4eFpxuxFrJs6bZisCnZtsXsjNAbj9BgA"/>
+</div>
+<div>
+<h3 class="text-[#9df0f4] font-semibold text-xs leading-tight">Lead Administrator</h3>
+<p class="text-[#bfc8cb] text-[10px] uppercase tracking-wider">System Controller</p>
+</div>
+</div>
+<nav class="flex-1 py-6">
+	<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
+	   href="Trainerdashboard.html">
+	  <span class="material-symbols-outlined">dashboard</span>
+	  <span>Dashboard</span>
+	</a>
+
+<!-- History -->
+<a class="border-l-4 border-[#9df0f4] bg-[#3f484a] text-[#9df0f4] py-3 px-6 flex items-center gap-3 transition-all"
+   href="trainerHistory.html">
+  <span class="material-symbols-outlined">history</span>
+  <span>History</span>
+</a>
+
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 ml-64 min-h-screen bg-surface-container-low">
+<!-- Top App Bar -->
+<header class="flex justify-between items-center w-full px-8 py-4 bg-[#f8f9fb] sticky top-0 z-30">
+<div class="flex items-center gap-4">
+
+<h1 class="text-lg font-bold tracking-tighter text-[#191c1e] font-headline uppercase">Precision Ledger</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group">
+
+</div>
+<button onclick="logout()" class="font-['Manrope'] text-sm tracking-wide uppercase text-[#0d7377] font-bold hover:bg-[#c9e9ea] px-3 py-1 rounded transition-all">
+                    Logout
+                </button>
+</div>
+</header>
+<!-- Page Header & Stats -->
+<section class="px-8 pt-8 pb-4">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<h2 class="font-headline text-3xl font-extrabold text-on-surface tracking-tight mb-2">BATCH HISTORY</h2>
+<p class="font-body text-on-surface-variant max-w-lg">Comprehensive ledger of all concluded instructional cycles and operational metrics for system compliance.</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="bg-surface-container-lowest p-4 rounded-xl shadow-black/5 flex flex-col items-end min-w-[120px] glow-card">
+<span class="font-label text-[10px] uppercase tracking-widest text-outline">Total Cycles</span>
+<span id="historyTotalCycles" class="font-headline text-3xl font-bold text-primary">0</span>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl shadow-black/5 flex flex-col items-end min-w-[120px] glow-card">
+<span class="font-label text-[10px] uppercase tracking-widest text-outline">Avg. Duration</span>
+<span id="historyAvgDuration" class="font-headline text-3xl font-bold text-primary">0d</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Filters Section -->
+<section class="px-8 py-6">
+<div class="bg-surface-container-lowest rounded-xl p-6 flex flex-wrap items-center justify-between gap-4 glow-card">
+<div class="flex items-center gap-4">
+<div class="flex flex-col gap-1">
+<label class="font-label text-[11px] font-semibold text-outline uppercase tracking-wider">Temporal filter</label>
+<select  id ="yearFilter" class="bg-surface-container-low border-none rounded-lg text-sm font-medium py-2.5 px-4 focus:ring-2 focus:ring-primary/20 appearance-none pr-10 relative cursor-pointer min-w-[160px]">
+<option value="">All Years</option>
+<option value="2026">Year: 2026</option>
+<option value="2025">Year: 2025</option>
+<option value="2024">Year: 2024</option>
+<option value="2023">Year: 2023</option>
+<option value="2022">Year: 2022</option>
+<option value="2021">Year: 2021</option>
+
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label text-[11px] font-semibold text-outline uppercase tracking-wider">Search Ledger</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+<input id ="searchInput"class="bg-surface-container-low border-none rounded-lg text-sm font-medium py-2.5 pl-10 pr-4 focus:ring-2 focus:ring-primary/20 w-64" placeholder="Search batch or trainer..." type="text"/>
+</div>
+</div>
+</div>
+
+</div>
+</section>
+<!-- Data Ledger Table -->
+<section class="px-8 pb-12">
+<div class="bg-surface-container-lowest rounded-xl p-6 flex flex-wrap items-center justify-between gap-4 glow-card">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-high">
+<tr>
+<th class="px-6 py-4 font-label text-[11px] font-bold text-outline uppercase tracking-[0.1em]">Batch Name</th>
+<th class="px-6 py-4 font-label text-[11px] font-bold text-outline uppercase tracking-[0.1em]">Trainer</th>
+<th class="px-6 py-4 font-label text-[11px] font-bold text-outline uppercase tracking-[0.1em]">Start Date</th>
+<th class="px-6 py-4 font-label text-[11px] font-bold text-outline uppercase tracking-[0.1em]">End Date</th>
+<th class="px-6 py-4 font-label text-[11px] font-bold text-outline uppercase tracking-[0.1em]">Duration</th>
+<th class="px-6 py-4 font-label text-[11px] font-bold text-outline uppercase tracking-[0.1em] text-right">Status</th>
+</tr>
+</thead>
+<tbody id="historyTableBody" class="font-body text-sm divide-y divide-surface-container-low"></tbody>
+</table>
+<!-- Pagination/Footer -->
+
+</div>
+</section>
+<!-- Insights Summary (Bento-style Cards) -->
+
+</main>
+<!-- Contextual FAB (Hidden on history list as per suppression rule, but included logic for placement awareness) -->
+<!-- Suppression Logic: Suppress on Detail/History screens as focus is on reading. -->
+<script>
+	const API_BASE_URL = "http://localhost:8080";
+	const token = localStorage.getItem("token");
+	const role = localStorage.getItem("role");
+
+	const tableBody = document.getElementById("historyTableBody");
+	const yearFilter = document.getElementById("yearFilter");
+	const searchInput = document.getElementById("searchInput");
+
+	let allBatches = []; // store full data
+
+	// 🔐 Auth Check
+	if (!token) window.location.href = "index.html";
+	if (!role || role !== "TRAINER") {
+	  window.location.href = "index.html";
+	}
+
+	// 🚪 Logout
+	function logout() {
+	  localStorage.clear();
+	  window.location.href = "index.html";
+	}
+
+	// 👤 Set Name
+	function setLoggedInName() {
+	  const name = localStorage.getItem("name");
+	  const el = document.getElementById("trainerName");
+	  if (el && name) el.textContent = name;
+	}
+
+	// 📅 Format Date
+	function formatDate(value) {
+	  if (!value) return "N/A";
+	  const d = new Date(value);
+	  return isNaN(d) ? value : d.toLocaleDateString();
+	}
+
+	// ⏱ Duration
+	function duration(start, end) {
+	  if (!start || !end) return "N/A";
+	  const days = Math.max(0,
+	    Math.round((new Date(end) - new Date(start)) / (1000 * 60 * 60 * 24))
+	  );
+	  return `${days} Days`;
+	}
+
+	/////////////////////////////////////////////////////////
+	// 🔥 MAIN FETCH
+	/////////////////////////////////////////////////////////
+	async function loadHistory() {
+	  try {
+	    const res = await fetch(`${API_BASE_URL}/api/trainer/batches`, {
+	      headers: { Authorization: `Bearer ${token}` }
+	    });
+
+	    if (!res.ok) throw new Error("Failed to load batches");
+
+	    const data = await res.json();
+
+	    // store all data
+	    allBatches = data;
+
+	    applyFilters(); // render initially
+
+	  } catch (err) {
+	    console.error("Error:", err);
+	  }
+	}
+
+	/////////////////////////////////////////////////////////
+	// 🔥 FILTER LOGIC (YEAR + SEARCH)
+	/////////////////////////////////////////////////////////
+	function getYearFromDate(dateStr) {
+	  if (!dateStr) return null;
+
+	  const d = new Date(dateStr);
+	  return isNaN(d) ? null : d.getFullYear().toString();
+	}
+	function applyFilters() {
+
+	  const selectedYear = yearFilter.value;
+	  const searchText = searchInput.value.toLowerCase();
+
+	  let filtered = [...allBatches];
+
+	  // ❌ remove ongoing (history page logic)
+	  filtered = filtered.filter(b =>
+	    (b.status || "").toUpperCase() === "COMPLETED"
+	  );
+
+	  if (selectedYear) {
+	    filtered = filtered.filter(b => {
+	      const year = getYearFromDate(b.startDate);
+
+	      
+
+	      return year == selectedYear; // use == not ===
+	    });
+	  }
+
+	  // 🔍 SEARCH FILTER
+	  if (searchText) {
+	    filtered = filtered.filter(b =>
+	      (b.domainName || "").toLowerCase().includes(searchText) ||
+	      (b.trainerName || "").toLowerCase().includes(searchText)
+	    );
+	  }
+
+	  renderTable(filtered);
+	}
+
+	
+	// 🔥 TABLE RENDER
+	
+	function renderTable(records) {
+
+	  tableBody.innerHTML = "";
+
+	  if (!records.length) {
+
+		let message = "No completed batches yet.";
+
+		if (yearFilter.value && searchInput.value) {
+		  message = "No batches match your filters.";
+		} 
+		else if (searchInput.value) {
+		  message = "No matching batches found.";
+		} 
+		else if (yearFilter.value) {
+		  message = "No batches found for selected year.";
+		}
+
+		tableBody.innerHTML = `
+		<tr>
+		  <td colspan="6" class="text-center py-16">
+		    <div class="flex flex-col items-center gap-2 text-gray-500">
+		      <span class="material-symbols-outlined text-4xl">inbox</span>
+		      <p class="font-semibold">${message}</p>
+		    </div>
+		  </td>
+		</tr>
+		`;
+
+	    document.getElementById("historyTotalCycles").innerText = "0";
+	    document.getElementById("historyAvgDuration").innerText = "0d";
+
+	    return;
+	  }
+
+	  let totalDuration = 0;
+
+	  let html = "";
+
+	  records.forEach(item => {
+
+	    if (item.startDate && item.endDate) {
+	      totalDuration += Math.max(0,
+	        Math.round((new Date(item.endDate) - new Date(item.startDate)) / (1000 * 60 * 60 * 24))
+	      );
+	    }
+
+	    html += `
+	      <tr class="hover:bg-secondary-container/30 transition-colors">
+	        
+	        <td class="px-6 py-5 font-semibold">
+	          ${item.domainName || "N/A"}
+	        </td>
+
+	        <td class="px-6 py-5">
+	          ${item.trainerName || "Unassigned"}
+	        </td>
+
+	        <td class="px-6 py-5">
+	          ${formatDate(item.startDate)}
+	        </td>
+
+	        <td class="px-6 py-5">
+	          ${formatDate(item.endDate)}
+	        </td>
+
+	        <td class="px-6 py-5">
+	          <span class="bg-surface-container-low px-2 py-1 rounded text-primary text-xs font-medium">
+	            ${duration(item.startDate, item.endDate)}
+	          </span>
+	        </td>
+
+	        <td class="px-6 py-5 text-right">
+	          <span class="text-xs font-bold px-2 py-1 rounded bg-green-100 text-green-700">
+	            COMPLETED
+	          </span>
+	        </td>
+
+	      </tr>
+	    `;
+	  });
+
+	  tableBody.innerHTML = html;
+
+	  const avg = Math.round(totalDuration / records.length);
+
+	  document.getElementById("historyTotalCycles").innerText = records.length;
+	  document.getElementById("historyAvgDuration").innerText = avg + "d";
+	}
+
+	
+	yearFilter.addEventListener("change", applyFilters);
+	searchInput.addEventListener("input", applyFilters);
+
+	
+	setLoggedInName();
+	loadHistory();
+</script>
+</body></html>
