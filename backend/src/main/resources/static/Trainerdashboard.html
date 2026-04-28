@@ -1,800 +1,1128 @@
 <!DOCTYPE html>
 
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "secondary-fixed": "#c9e9ea",
-                        "on-secondary": "#ffffff",
-                        "on-tertiary-fixed-variant": "#930019",
-                        "surface-container-highest": "#e0e3e5",
-                        "on-secondary-container": "#4c696b",
-                        "on-error-container": "#93000a",
-                        "surface-container-lowest": "#ffffff",
-                        "secondary-container": "#c9e9ea",
-                        "surface-variant": "#e0e3e5",
-                        "tertiary-fixed": "#ffdad8",
-                        "on-primary-fixed": "#002021",
-                        "inverse-primary": "#81d4d8",
-                        "primary": "#00595c",
-                        "surface-container": "#eceef0",
-                        "primary-fixed": "#9df0f4",
-                        "on-secondary-fixed-variant": "#2f4c4d",
-                        "secondary-fixed-dim": "#adccce",
-                        "surface-container-high": "#e6e8ea",
-                        "outline-variant": "#bec9c9",
-                        "on-error": "#ffffff",
-                        "inverse-on-surface": "#eff1f3",
-                        "background": "#f8f9fb",
-                        "tertiary": "#a4001d",
-                        "outline": "#6e7979",
-                        "on-primary": "#ffffff",
-                        "on-surface-variant": "#3e4949",
-                        "on-tertiary-container": "#ffe1df",
-                        "on-background": "#191c1e",
-                        "inverse-surface": "#2d3133",
-                        "on-tertiary": "#ffffff",
-                        "error": "#ba1a1a",
-                        "on-primary-container": "#a2f5f9",
-                        "tertiary-container": "#ca1f2f",
-                        "on-tertiary-fixed": "#410006",
-                        "on-surface": "#191c1e",
-                        "surface": "#f8f9fb",
-                        "on-secondary-fixed": "#002021",
-                        "surface-bright": "#f8f9fb",
-                        "on-primary-fixed-variant": "#004f52",
-                        "tertiary-fixed-dim": "#ffb3af",
-                        "surface-tint": "#00696d",
-                        "primary-fixed-dim": "#81d4d8",
-                        "primary-container": "#0d7377",
-                        "error-container": "#ffdad6",
-                        "secondary": "#466365",
-                        "surface-dim": "#d8dadc",
-                        "surface-container-low": "#f2f4f6"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.125rem",
-                        "lg": "0.25rem",
-                        "xl": "0.5rem",
-                        "full": "0.75rem"
-                    },
-                    "fontFamily": {
-                        "headline": ["Manrope"],
-                        "body": ["Inter"],
-                        "label": ["Inter"]
-                    }
-                },
-            },
-        }
-    </script>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(24px);
-        }
-    </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-	
-  </style>
-  </head>
+<html class="light" lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@300;400;500;600&amp;display=swap"
+		rel="stylesheet" />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+		rel="stylesheet" />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+		rel="stylesheet" />
+	<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+	<script id="tailwind-config">
+		tailwind.config = {
+			darkMode: "class",
+			theme: {
+				extend: {
+					"colors": {
+						"secondary-fixed": "#c9e9ea",
+						"on-secondary": "#ffffff",
+						"on-tertiary-fixed-variant": "#930019",
+						"surface-container-highest": "#e0e3e5",
+						"on-secondary-container": "#4c696b",
+						"on-error-container": "#93000a",
+						"surface-container-lowest": "#ffffff",
+						"secondary-container": "#c9e9ea",
+						"surface-variant": "#e0e3e5",
+						"tertiary-fixed": "#ffdad8",
+						"on-primary-fixed": "#002021",
+						"inverse-primary": "#81d4d8",
+						"primary": "#00595c",
+						"surface-container": "#eceef0",
+						"primary-fixed": "#9df0f4",
+						"on-secondary-fixed-variant": "#2f4c4d",
+						"secondary-fixed-dim": "#adccce",
+						"surface-container-high": "#e6e8ea",
+						"outline-variant": "#bec9c9",
+						"on-error": "#ffffff",
+						"inverse-on-surface": "#eff1f3",
+						"background": "#f8f9fb",
+						"tertiary": "#a4001d",
+						"outline": "#6e7979",
+						"on-primary": "#ffffff",
+						"on-surface-variant": "#3e4949",
+						"on-tertiary-container": "#ffe1df",
+						"on-background": "#191c1e",
+						"inverse-surface": "#2d3133",
+						"on-tertiary": "#ffffff",
+						"error": "#ba1a1a",
+						"on-primary-container": "#a2f5f9",
+						"tertiary-container": "#ca1f2f",
+						"on-tertiary-fixed": "#410006",
+						"on-surface": "#191c1e",
+						"surface": "#f8f9fb",
+						"on-secondary-fixed": "#002021",
+						"surface-bright": "#f8f9fb",
+						"on-primary-fixed-variant": "#004f52",
+						"tertiary-fixed-dim": "#ffb3af",
+						"surface-tint": "#00696d",
+						"primary-fixed-dim": "#81d4d8",
+						"primary-container": "#0d7377",
+						"error-container": "#ffdad6",
+						"secondary": "#466365",
+						"surface-dim": "#d8dadc",
+						"surface-container-low": "#f2f4f6"
+					},
+					"borderRadius": {
+						"DEFAULT": "0.125rem",
+						"lg": "0.25rem",
+						"xl": "0.5rem",
+						"full": "0.75rem"
+					},
+					"fontFamily": {
+						"headline": ["Manrope"],
+						"body": ["Inter"],
+						"label": ["Inter"]
+					}
+				},
+			},
+		}
+	</script>
+	<style>
+		.material-symbols-outlined {
+			font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+		}
+
+		.glass-panel {
+			background: rgba(255, 255, 255, 0.8);
+			backdrop-filter: blur(24px);
+		}
+	</style>
+	<style>
+		body {
+			min-height: max(884px, 100dvh);
+		}
+	</style>
+</head>
+
 <body class="bg-surface font-body text-on-surface antialiased">
-<!-- NavigationDrawer -->
-<aside class="fixed left-0 top-0 bottom-0 z-40 flex flex-col docked h-screen w-64 bg-[#2d3133] shadow-xl shadow-black/10 font-['Inter'] text-sm font-medium">
-<div class="p-8 flex items-center gap-4 border-b border-[#3f484a]/30">
-<div class="h-10 w-10 rounded-xl overflow-hidden">
-<img alt="Admin User Avatar" class="w-full h-full object-cover" data-alt="Professional portrait of a middle-aged male administrator in a clean office setting with soft natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAW-LOtZm_nSqbnM0xTdTrkaCiee-hw8kJAEiYMGdAQ4meZOLVE6F4wEAmysloFULpiZp3v8Is_xa2DIIDjFEZKCV72pdA9nsp4cKBAXXInvVaSiarRsZaD_Al_l2bqjcbme_DFQr54OtpIzgvah84RKmPxSxLW-kYSEWeOW4UdXjFekrhAiZjEVqNX8Ta3AD-tVXuMsol-QFMmtZbudDC1znQp-nw53LTP4CaLQj6aiWjc4eFpxuxFrJs6bZisCnZtsXsjNAbj9BgA"/>
-</div>
-<div>
-<h3 class="text-[#9df0f4] font-semibold text-xs leading-tight">Lead Administrator</h3>
-<p class="text-[#bfc8cb] text-[10px] uppercase tracking-wider">System Controller</p>
-</div>
-</div>
-<nav class="flex-1 py-6">
-<a class="border-l-4 border-[#9df0f4] bg-[#3f484a] text-[#9df0f4] py-3 px-6 flex items-center gap-3 transition-all" href="/Trainerdashboard.html">
-<span class="material-symbols-outlined">dashboard</span>
-<span>Dashboard</span>
-</a>
+	<!-- NavigationDrawer -->
+	<aside
+		class="fixed left-0 top-0 bottom-0 z-40 flex flex-col docked h-screen w-64 bg-[#2d3133] shadow-xl shadow-black/10 font-['Inter'] text-sm font-medium">
+		<div class="p-8 flex items-center gap-4 border-b border-[#3f484a]/30">
+			<div class="h-10 w-10 rounded-xl overflow-hidden">
+				<img alt="Admin User Avatar" class="w-full h-full object-cover"
+					data-alt="Professional portrait of a middle-aged male administrator in a clean office setting with soft natural light"
+					src="https://lh3.googleusercontent.com/aida-public/AB6AXuAW-LOtZm_nSqbnM0xTdTrkaCiee-hw8kJAEiYMGdAQ4meZOLVE6F4wEAmysloFULpiZp3v8Is_xa2DIIDjFEZKCV72pdA9nsp4cKBAXXInvVaSiarRsZaD_Al_l2bqjcbme_DFQr54OtpIzgvah84RKmPxSxLW-kYSEWeOW4UdXjFekrhAiZjEVqNX8Ta3AD-tVXuMsol-QFMmtZbudDC1znQp-nw53LTP4CaLQj6aiWjc4eFpxuxFrJs6bZisCnZtsXsjNAbj9BgA" />
+			</div>
+			<div>
+				<h3 class="text-[#9df0f4] font-semibold text-xs leading-tight">Lead Administrator</h3>
+				<p class="text-[#bfc8cb] text-[10px] uppercase tracking-wider">System Controller</p>
+			</div>
+		</div>
+		<nav class="flex-1 py-6">
+			<a class="border-l-4 border-[#9df0f4] bg-[#3f484a] text-[#9df0f4] py-3 px-6 flex items-center gap-3 transition-all"
+				href="/Trainerdashboard.html">
+				<span class="material-symbols-outlined">dashboard</span>
+				<span>Dashboard</span>
+			</a>
 
-<!-- History -->
-<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all" href="/trainerHistory.html">
-  <span class="material-symbols-outlined">history</span>
-  <span>History</span>
-</a>
+			<!-- History -->
+			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
+				href="/trainerHistory.html">
+				<span class="material-symbols-outlined">history</span>
+				<span>History</span>
+			</a>
 
-</nav>
-</aside>
-<main class="ml-64 min-h-screen">
-<!-- TopAppBar -->
-<header class="sticky top-0 z-30 flex justify-between items-center w-full px-8 py-4 bg-[#f8f9fb] dark:bg-[#191c1e]">
-<div class="flex items-center gap-4">
-<span class="material-symbols-outlined text-[#0d7377] dark:text-[#9df0f4]">menu</span>
-<h1 class="text-lg font-bold tracking-tighter text-[#191c1e] dark:text-[#f8f9fb] font-headline">Precision Ledger</h1>
-</div>
-<div class="flex items-center gap-6">
-<button onclick="logout()" class="font-['Manrope'] text-sm tracking-wide uppercase text-[#0d7377] font-bold">Logout</button>
-</div>
-</header>
-<!-- Content Area -->
-<div class="p-8 bg-surface-container-low min-h-[calc(100vh-72px)]">
-<div class="max-w-7xl mx-auto space-y-8">
-<!-- KPI Section -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-<div class="bg-surface-container-lowest p-6 rounded-xl shadow-black/5 flex flex-col gap-2">
-<span class="text-on-surface-variant font-label text-[10px] uppercase tracking-widest font-bold">Active Batches</span>
-<span id="kpiTotal" class="text-4xl font-headline font-extrabold text-on-surface tracking-tighter">0</span>
-<div class="mt-2 w-full h-1 bg-surface-container-high rounded-full overflow-hidden">
-<div class="bg-primary h-full w-2/3"></div>
-</div>
-</div>
-<div class="bg-surface-container-lowest p-6 rounded-xl shadow-black/5 flex flex-col gap-2">
-<span class="text-on-surface-variant font-label text-[10px] uppercase tracking-widest font-bold">Completed This Month</span>
-<span id="kpiCompleted" class="text-4xl font-headline font-extrabold text-on-surface tracking-tighter">0</span>
-<div class="mt-2 w-full h-1 bg-surface-container-high rounded-full overflow-hidden">
-<div class="bg-secondary h-full w-1/3"></div>
-</div>
-</div>
-<div class="bg-surface-container-lowest p-6 rounded-xl shadow-black/5 flex flex-col gap-2">
-<span class="text-on-surface-variant font-label text-[10px] uppercase tracking-widest font-bold">Avg. Performance</span>
-<span id="kpiProgress" class="text-4xl font-headline font-extrabold text-on-surface tracking-tighter">0%</span>
-<div class="mt-2 w-full h-1 bg-surface-container-high rounded-full overflow-hidden">
-<div class="bg-primary h-full w-[92%]"></div>
-</div>
-</div>
-</div>
-<!-- Main Layout Grid -->
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-<!-- Batch List Section -->
-<div class="lg:col-span-8 space-y-6">
-<div class="flex justify-between items-end">
-<h2 class="text-2xl font-headline font-bold text-on-surface">Active Assignments</h2>
+		</nav>
+	</aside>
+	<main class="ml-64 min-h-screen">
+		<!-- TopAppBar -->
+		<header
+			class="sticky top-0 z-30 flex justify-between items-center w-full px-8 py-4 bg-[#f8f9fb] dark:bg-[#191c1e]">
+			<div class="flex items-center gap-4">
+				<span class="material-symbols-outlined text-[#0d7377] dark:text-[#9df0f4]">menu</span>
+				<h1 class="text-lg font-bold tracking-tighter text-[#191c1e] dark:text-[#f8f9fb] font-headline">
+					Precision Ledger</h1>
+			</div>
+			<div class="flex items-center gap-6">
+				<button onclick="logout()"
+					class="font-['Manrope'] text-sm tracking-wide uppercase text-[#0d7377] font-bold">Logout</button>
+			</div>
+		</header>
+		<!-- Content Area -->
+		<div class="p-8 bg-surface-container-low min-h-[calc(100vh-72px)]">
+			<div class="max-w-7xl mx-auto space-y-8">
+				<!-- KPI Section -->
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+					<div class="bg-surface-container-lowest p-6 rounded-xl shadow-black/5 flex flex-col gap-2">
+						<span
+							class="text-on-surface-variant font-label text-[10px] uppercase tracking-widest font-bold">Active
+							Batches</span>
+						<span id="kpiTotal"
+							class="text-4xl font-headline font-extrabold text-on-surface tracking-tighter">0</span>
+						<div class="mt-2 w-full h-1 bg-surface-container-high rounded-full overflow-hidden">
+							<div class="bg-primary h-full w-2/3"></div>
+						</div>
+					</div>
+					<div class="bg-surface-container-lowest p-6 rounded-xl shadow-black/5 flex flex-col gap-2">
+						<span
+							class="text-on-surface-variant font-label text-[10px] uppercase tracking-widest font-bold">Completed
+							This Month</span>
+						<span id="kpiCompleted"
+							class="text-4xl font-headline font-extrabold text-on-surface tracking-tighter">0</span>
+						<div class="mt-2 w-full h-1 bg-surface-container-high rounded-full overflow-hidden">
+							<div class="bg-secondary h-full w-1/3"></div>
+						</div>
+					</div>
+					<div class="bg-surface-container-lowest p-6 rounded-xl shadow-black/5 flex flex-col gap-2">
+						<span
+							class="text-on-surface-variant font-label text-[10px] uppercase tracking-widest font-bold">Avg.
+							Performance</span>
+						<span id="kpiProgress"
+							class="text-4xl font-headline font-extrabold text-on-surface tracking-tighter">0%</span>
+						<div class="mt-2 w-full h-1 bg-surface-container-high rounded-full overflow-hidden">
+							<div class="bg-primary h-full w-[92%]"></div>
+						</div>
+					</div>
+				</div>
+				<!-- Main Layout Grid -->
+				<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+					<!-- Batch List Section -->
+					<div class="lg:col-span-8 space-y-6">
+						<div class="flex justify-between items-end">
+							<h2 class="text-2xl font-headline font-bold text-on-surface">Active Assignments</h2>
 
-</div>
-<!-- Batch Cards -->
-<div id="trainerBatchCards" class="grid gap-6"></div>
-</div>
-<!-- Creation Form Section -->
-<div class="lg:col-span-4 top-28">
-<div class="bg-surface-container-lowest p-8 rounded-xl shadow-xl shadow-black/5 border border-outline-variant/10">
-<div class="mb-6">
-<h2 class="text-xl font-headline font-bold text-on-surface">Create New Batch</h2>
-<p class="text-xs text-on-surface-variant font-label mt-1">Configure parameters for a new training cycle.</p>
-</div>
+						</div>
+						<!-- Batch Cards -->
+						<div id="trainerBatchCards" class="grid gap-6"></div>
+					</div>
+					<!-- Creation Form Section -->
+					<div class="lg:col-span-4 top-28">
+						<div
+							class="bg-surface-container-lowest p-8 rounded-xl shadow-xl shadow-black/5 border border-outline-variant/10">
+							<div class="mb-6">
+								<h2 class="text-xl font-headline font-bold text-on-surface">Create New Batch</h2>
+								<p class="text-xs text-on-surface-variant font-label mt-1">Configure parameters for a
+									new training cycle.</p>
+							</div>
 
 
-<form id="createBatchForm" class="space-y-5">
+							<form id="createBatchForm" class="space-y-5">
 
-  <!-- Batch Name -->
-  <div class="space-y-1.5">
-    <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">Batch Name</label>
-    <input id="batchDomainName" type="text"
-      class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface"
-      placeholder="e.g. Fullstack Dev 2024"/>
-  </div>
+								<!-- Batch Name -->
+								<div class="space-y-1.5">
+									<label
+										class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">Batch
+										Name</label>
+									<input id="batchDomainName" type="text"
+										class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface"
+										placeholder="e.g. Fullstack Dev 2024" />
+								</div>
 
-  <!-- Dates -->
-  <div class="grid grid-cols-2 gap-4">
-    <div class="space-y-1.5">
-      <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">Start Date</label>
-      <input id="batchStartDate" type="date"
-        class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface"/>
-    </div>
-    <div class="space-y-1.5">
-      <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">End Date</label>
-      <input id="batchEndDate" type="date"
-        class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface"/>
-    </div>
-  </div>
+								<!-- Dates -->
+								<div class="grid grid-cols-2 gap-4">
+									<div class="space-y-1.5">
+										<label
+											class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">Start
+											Date</label>
+										<input id="batchStartDate" type="date"
+											class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface" />
+									</div>
+									<div class="space-y-1.5">
+										<label
+											class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">End
+											Date</label>
+										<input id="batchEndDate" type="date"
+											class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface" />
+									</div>
+								</div>
 
-  <!-- NEW: Students -->
-  <div class="space-y-1.5">
-    <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">No. of Students</label>
-    <input id="batchStudents" type="number" min="1"
-      class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface"
-      placeholder="e.g. 30"/>
-  </div>
+								<!-- NEW: Students -->
+								<div class="space-y-1.5">
+									<label
+										class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">No.
+										of Students</label>
+									<input id="batchStudents" type="number" min="1"
+										class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface"
+										placeholder="e.g. 30" />
+								</div>
 
-  <!-- NEW: Timing -->
-  <div class="grid grid-cols-2 gap-4">
-    <div class="space-y-1.5">
-      <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">Start Time</label>
-      <input id="batchStartTime" type="time"
-        class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface"/>
-    </div>
-    <div class="space-y-1.5">
-      <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">End Time</label>
-      <input id="batchEndTime" type="time"
-        class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface"/>
-    </div>
-  </div>
+								<!-- NEW: Timing -->
+								<div class="grid grid-cols-2 gap-4">
+									<div class="space-y-1.5">
+										<label
+											class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">Start
+											Time</label>
+										<input id="batchStartTime" type="time"
+											class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface" />
+									</div>
+									<div class="space-y-1.5">
+										<label
+											class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">End
+											Time</label>
+										<input id="batchEndTime" type="time"
+											class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface" />
+									</div>
+								</div>
 
-  <!-- Lab No / Notes -->
-  <div class="space-y-1.5">
-    <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">
-      Lab No
-    </label>
+								<!-- Lab No / Notes -->
+								<div class="space-y-1.5">
+									<label
+										class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">
+										Lab No
+									</label>
 
-    <select id="batchLabNo"
-      class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-outline-variant"
-      onchange="this.classList.remove('text-outline-variant'); this.classList.add('text-on-surface')">
+									<select id="batchLabNo"
+										class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-outline-variant"
+										onchange="this.classList.remove('text-outline-variant'); this.classList.add('text-on-surface')">
 
-      <option value="" disabled selected hidden>Select Lab</option>
+										<option value="" disabled selected hidden>Select Lab</option>
 
-      <option value="Lab-01" class="text-black">Lab-01</option>
-      <option value="Lab-02" class="text-black">Lab-02</option>
-      <option value="Lab-03" class="text-black">Lab-03</option>
-      <option value="Lab-04" class="text-black">Lab-04</option>
-      <option value="Lab-05" class="text-black">Lab-05</option>
+										<option value="Lab-01" class="text-black">Lab-01</option>
+										<option value="Lab-02" class="text-black">Lab-02</option>
+										<option value="Lab-03" class="text-black">Lab-03</option>
+										<option value="Lab-04" class="text-black">Lab-04</option>
+										<option value="Lab-05" class="text-black">Lab-05</option>
 
-    </select>
-  </div>
+									</select>
+								</div>
 
- 
-  <!-- Submit -->
-  <button type="submit"
-    class="w-full bg-primary-container text-on-primary-container py-3 rounded-lg font-headline font-bold text-sm tracking-tight hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
-    <span class="material-symbols-outlined text-lg">add_circle</span>
-    Initialize Batch
-  </button>
 
-</form>
-<div class="mt-8 pt-8 border-t border-surface-container-high">
-<div class="relative rounded-lg overflow-hidden h-32 group">
-<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Group of students collaborating around a computer screen in a bright minimalist workspace" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgj7jYQ3IhGPjwkEY4hoKp_ay1ih1iQwGtwm10bSLoaw_xdBxnvQZuoKmxeXy1dDs_eduCI0cud8krWU_FJWNzrTCTePgcrT26iM4Sz5AlYqbcyST4hqFuUs3Jzg9pPXjZSWLV6Aq7V9YtKYC8k7FRGXaWJthr8U0_cIKvev30w5vXltAHX6Zlfcyri8m6lTuMtUWnPiFEeH6Pd-Upau7JqWpOcMU9wvQ5uWD0Q_RBijkY0hzc12fmpQixst9qiSxOspDT2fUitw2-"/>
-<div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex items-end p-4">
-<p class="text-white text-[10px] font-label font-bold uppercase">Training Resources Hub</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
+								<!-- Submit -->
+								<button type="submit"
+									class="w-full bg-primary-container text-on-primary-container py-3 rounded-lg font-headline font-bold text-sm tracking-tight hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+									<span class="material-symbols-outlined text-lg">add_circle</span>
+									Initialize Batch
+								</button>
 
-<div id="editModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
-
-  <div class="w-[420px]">
-
-    <div class="bg-white p-6 rounded-xl shadow-xl">
-
-      <h2 class="text-lg font-bold mb-4">Update Batch</h2>
-
-	  <form id="editBatchForm" class="space-y-5">
-
-	    <!-- Batch Name -->
-	    <div class="space-y-1.5">
-	      <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">Batch Name</label>
-	      <input id="editDomainName" type="text"
-	        class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface"
-	        placeholder="e.g. Fullstack Dev 2024"/>
-	    </div>
-
-	    <!-- Dates -->
-	    <div class="grid grid-cols-2 gap-4">
-	      <div class="space-y-1.5">
-	        <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">Start Date</label>
-	        <input id="editStartDate" type="date"
-	          class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface"/>
-	      </div>
-	      <div class="space-y-1.5">
-	        <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">End Date</label>
-	        <input id="editEndDate" type="date"
-	          class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface"/>
-	      </div>
-	    </div>
-
-	    <!-- Students -->
-	    <div class="space-y-1.5">
-	      <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">No. of Students</label>
-	      <input id="editStudents" type="number" min="1"
-	        class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface"/>
-	    </div>
-
-	    <!-- Timing -->
-	    <div class="grid grid-cols-2 gap-4">
-	      <div class="space-y-1.5">
-	        <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">Start Time</label>
-	        <input id="editStartTime" type="time"
-	          class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface"/>
-	      </div>
-	      <div class="space-y-1.5">
-	        <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">End Time</label>
-	        <input id="editEndTime" type="time"
-	          class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface"/>
-	      </div>
-	    </div>
-
-	    <!-- Lab -->
-	    <div class="space-y-1.5">
-	      <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">
-	        Lab No
-	      </label>
-
-	      <select id="editLabNo"
-	        class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-outline-variant"
-	        onchange="this.classList.remove('text-outline-variant'); this.classList.add('text-on-surface')">
-
-	        <option value="" disabled hidden>Select Lab</option>
-
-	        <option value="Lab-01" class="text-black">Lab-01</option>
-	        <option value="Lab-02" class="text-black">Lab-02</option>
-	        <option value="Lab-03" class="text-black">Lab-03</option>
-	        <option value="Lab-04" class="text-black">Lab-04</option>
-	        <option value="Lab-05" class="text-black">Lab-05</option>
-
-	      </select>
-	    </div>
-		
-		<div class="flex gap-2">
-		  <button type="button"
-		    onclick="closeEditModal()"
-		    class="flex-1 border border-outline py-3 rounded-lg text-sm font-bold">
-		    Cancel
-		  </button>
-
-		  <button type="submit"
-		    class="flex-1 bg-primary-container text-on-primary-container py-3 rounded-lg font-bold text-sm flex items-center justify-center gap-2">
-		    <span class="material-symbols-outlined text-lg">edit</span>
-		    Update Details
-		  </button>
+							</form>
+							<div class="mt-8 pt-8 border-t border-surface-container-high">
+								<div class="relative rounded-lg overflow-hidden h-32 group">
+									<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+										data-alt="Group of students collaborating around a computer screen in a bright minimalist workspace"
+										src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgj7jYQ3IhGPjwkEY4hoKp_ay1ih1iQwGtwm10bSLoaw_xdBxnvQZuoKmxeXy1dDs_eduCI0cud8krWU_FJWNzrTCTePgcrT26iM4Sz5AlYqbcyST4hqFuUs3Jzg9pPXjZSWLV6Aq7V9YtKYC8k7FRGXaWJthr8U0_cIKvev30w5vXltAHX6Zlfcyri8m6lTuMtUWnPiFEeH6Pd-Upau7JqWpOcMU9wvQ5uWD0Q_RBijkY0hzc12fmpQixst9qiSxOspDT2fUitw2-" />
+									<div
+										class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex items-end p-4">
+										<p class="text-white text-[10px] font-label font-bold uppercase">Training
+											Resources Hub</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 
-	  </form>
-    </div>
+		<div id="editModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
 
-  </div>
+			<div class="w-[420px]">
 
-</div>
-</main>
-<script>
-	let isEditMode = false;
-	let editingBatchId = null;
-const API_BASE_URL = "";
-const token = localStorage.getItem("token");
-const role = localStorage.getItem("role");
-if (!token) window.location.href = "index.html";
-if (!role || role !== "TRAINER") window.location.href = role === "ADMIN" ? "dashboard.html" : "index.html";
+				<div class="bg-white p-6 rounded-xl shadow-xl">
 
-function logout() { localStorage.clear(); window.location.href = "index.html"; }
-function formatDate(v){ if(!v) return "N/A"; const d = new Date(v); return Number.isNaN(d.getTime()) ? v : d.toLocaleDateString(); }
-function setLoggedInName() {
-  const name = localStorage.getItem("name");
-  if (!name) return;
-  const targets = document.querySelectorAll("h3.text-\\[\\#9df0f4\\].font-semibold.text-xs.leading-tight");
-  targets.forEach((node) => { node.textContent = name; });
-}
+					<h2 class="text-lg font-bold mb-4">Update Batch</h2>
 
-function createCard(batch) {
-  const progress = batch.progress ?? 0;
+					<form id="editBatchForm" class="space-y-5">
 
-  return `<div class="bg-surface-container-lowest p-6 rounded-xl group transition-all hover:translate-y-[-2px]">
+						<!-- Batch Name -->
+						<div class="space-y-1.5">
+							<label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">Batch
+								Name</label>
+							<input id="editDomainName" type="text"
+								class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface"
+								placeholder="e.g. Fullstack Dev 2024" />
+						</div>
 
-    <!-- HEADER -->
-    <div class="flex justify-between items-start mb-6">
-      <div>
-        <div class="flex items-center gap-2 mb-1">
-          <span class="w-2 h-2 rounded-full bg-primary ${progress < 100 ? "animate-pulse" : ""}"></span>
-          <span class="text-[10px] font-bold text-primary uppercase tracking-widest">
-            ${batch.status || "ONGOING"}
-          </span>
-        </div>
+						<!-- Dates -->
+						<div class="grid grid-cols-2 gap-4">
+							<div class="space-y-1.5">
+								<label
+									class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">Start
+									Date</label>
+								<input id="editStartDate" type="date"
+									class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface" />
+							</div>
+							<div class="space-y-1.5">
+								<label
+									class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">End
+									Date</label>
+								<input id="editEndDate" type="date"
+									class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface" />
+							</div>
+						</div>
 
-        <h3 class="text-xl font-headline font-bold text-on-surface">
-          ${batch.domainName || "Untitled Batch"}
-        </h3>
+						<!-- Students -->
+						<div class="space-y-1.5">
+							<label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">No.
+								of Students</label>
+							<input id="editStudents" type="number" min="1"
+								class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface" />
+						</div>
 
-        <p class="text-sm text-on-surface-variant line-clamp-1 mt-1">
-          ${batch.labNo || "Lab allocation pending"}
-        </p>
-      </div>
+						<!-- Timing -->
+						<div class="grid grid-cols-2 gap-4">
+							<div class="space-y-1.5">
+								<label
+									class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">Start
+									Time</label>
+								<input id="editStartTime" type="time"
+									class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface" />
+							</div>
+							<div class="space-y-1.5">
+								<label
+									class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">End
+									Time</label>
+								<input id="editEndTime" type="time"
+									class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface" />
+							</div>
+						</div>
 
-      <div class="text-right">
-        <span class="block text-xs font-label text-outline uppercase tracking-wider">
-          Timeline
-        </span>
-        <span class="text-sm font-medium text-on-surface">
-          ${formatDate(batch.startDate)} - ${formatDate(batch.endDate)}
-        </span>
-      </div>
-    </div>
+						<!-- Lab -->
+						<div class="space-y-1.5">
+							<label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">
+								Lab No
+							</label>
 
-    <!-- BODY -->
-    <div class="space-y-4">
+							<select id="editLabNo"
+								class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-outline-variant"
+								onchange="this.classList.remove('text-outline-variant'); this.classList.add('text-on-surface')">
 
-      <!-- PROGRESS -->
-      <div class="flex items-center gap-4">
-        <div class="flex-1 h-3 bg-surface-container-high rounded-full overflow-hidden">
-          <div class="bg-gradient-to-r from-primary to-primary-container h-full rounded-full" style="width:${progress}%"></div>
-        </div>
-        <span class="font-headline font-bold text-lg text-primary">${progress}%</span>
-      </div>
+								<option value="" disabled hidden>Select Lab</option>
 
-      <!-- ADD TOPIC -->
-      <div class="flex gap-2">
-        <input id="topic-input-${batch.id}" 
-          class="flex-1 bg-surface-container-low border-none rounded-lg text-xs p-2" 
-          placeholder="Add topic/syllabus item">
+								<option value="Lab-01" class="text-black">Lab-01</option>
+								<option value="Lab-02" class="text-black">Lab-02</option>
+								<option value="Lab-03" class="text-black">Lab-03</option>
+								<option value="Lab-04" class="text-black">Lab-04</option>
+								<option value="Lab-05" class="text-black">Lab-05</option>
 
-        <button onclick="addTopic(${batch.id})" 
-          class="bg-primary text-on-primary px-3 py-2 rounded-lg text-xs font-bold">
-          Add Topic
-        </button>
-      </div>
+							</select>
+						</div>
 
-      <!-- TOPICS -->
-      <div id="topics-${batch.id}" 
-        class="space-y-2 text-xs text-on-surface-variant">
-        Loading topics...
-      </div>
+						<div class="flex gap-2">
+							<button type="button" onclick="closeEditModal()"
+								class="flex-1 border border-outline py-3 rounded-lg text-sm font-bold">
+								Cancel
+							</button>
 
-      <!-- BATCH ACTIONS (BOTTOM RIGHT) -->
-	  <div class="flex justify-between items-center pt-4 border-t border-surface-container-high">
+							<button type="submit"
+								class="flex-1 bg-primary-container text-on-primary-container py-3 rounded-lg font-bold text-sm flex items-center justify-center gap-2">
+								<span class="material-symbols-outlined text-lg">edit</span>
+								Update Details
+							</button>
+						</div>
 
-	    <!-- LEFT: Complete -->
-		<button 
-		  onclick="completeBatch(${batch.id})"
-		  class="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold rounded-md bg-primary text-white hover:opacity-90 transition">
-		  <span class="material-symbols-outlined text-sm">check_circle</span>
-		  Complete
-		</button>
+					</form>
+				</div>
 
-	    <!-- RIGHT: Edit + Delete -->
-	    <div class="flex gap-2">
-			<button 
-			  onclick="openEditForm(${batch.id}, '${batch.domainName}', '${batch.startDate}', '${batch.endDate}', '${batch.time}', '${batch.labNo}', ${batch.noOfStudents})"
-			  class="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold rounded-md border border-outline text-on-surface hover:bg-surface-container-high transition">
-			  <span class="material-symbols-outlined text-sm">edit</span>
-			  Edit
-			</button>
-			
-			<button 
-			  onclick="deleteBatch(${batch.id})"
-			  class="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold rounded-md bg-error text-white hover:opacity-90 transition"><span class="material-symbols-outlined text-sm">delete</span>
-	        Delete
-	      </button>
+			</div>
 
-	    </div>
+		</div>
+	</main>
+	
+	
+	<script>
+		let isEditMode = false;
+		let editingBatchId = null;
+		let trainerData = [];
 
-	  </div>
+		const API_BASE_URL = "";
+		const token = localStorage.getItem("token");
+		const role = localStorage.getItem("role");
 
-    </div>
+		// ----------------------------
+		// AUTH CHECK
+		// ----------------------------
+		if (!token) window.location.href = "index.html";
+		if (!role || role !== "TRAINER") {
+		  window.location.href = role === "ADMIN" ? "dashboard.html" : "index.html";
+		}
 
-  </div>`;
-}
+		// ----------------------------
+		// BASIC HELPERS
+		// ----------------------------
+		function logout() {
+		  localStorage.clear();
+		  window.location.href = "index.html";
+		}
 
-async function loadTopics(batchId) {
-  const container = document.getElementById(`topics-${batchId}`);
-  if (!container) return;
-  const res = await fetch(`${API_BASE_URL}/api/trainer/batches/${batchId}/topics`, {
-    headers: { Authorization: `Bearer ${token}` }
-  });
-  if (!res.ok) {
-    container.innerHTML = "Unable to load topics.";
-    return;
-  }
-  const topics = await res.json();
-  if (!topics.length) {
-    container.innerHTML = "No topics yet. Add one to start progress.";
-    return;
-  }
-  container.innerHTML = topics.map(topic => `
-    <div class="flex items-center justify-between gap-2">
+		function formatDate(v) {
+		  if (!v) return "N/A";
+		  const d = new Date(v);
+		  return Number.isNaN(d.getTime()) ? v : d.toLocaleDateString();
+		}
 
-      <!-- LEFT SIDE -->
-      <label class="flex items-center gap-2 cursor-pointer">
-        <input type="checkbox" ${topic.completed ? "checked" : ""} 
-          onchange="toggleTopic(${topic.id}, this.checked)">
-        <span class="${topic.completed ? "line-through text-outline" : ""}">
-          ${topic.title}
-        </span>
-      </label>
+		function setLoggedInName() {
+		  const name = localStorage.getItem("name");
+		  if (!name) return;
+		  const targets = document.querySelectorAll(
+		    "h3.text-\\[\\#9df0f4\\].font-semibold.text-xs.leading-tight"
+		  );
+		  targets.forEach(node => {
+		    node.textContent = name;
+		  });
+		}
 
-      <!-- RIGHT SIDE BUTTONS -->
-	  <div class="flex gap-2 items-center">
+		// ----------------------------
+		// TIME UTILITIES
+		// ----------------------------
+		function convertTo24(t) {
+		  if (!t) return "";
+		  t = t.trim();
 
-	    
+		  if (t.includes("AM") || t.includes("PM")) {
+		    const [timePart, modifier] = t.split(" ");
+		    let [hours, minutes] = timePart.split(":");
 
-		  <!-- Edit -->
-		  <button 
-		    onclick="editTopic(${topic.id}, '${topic.title.replace(/'/g, "\\'")}')"
-		    class="p-2 rounded-lg hover:bg-secondary/20 transition transform hover:scale-110"
-		    title="Edit">
-		    <span class="material-symbols-outlined text-lg text-secondary">
-		      edit
-		    </span>
-		  </button>
+		    if (modifier === "PM" && hours !== "12") {
+		      hours = String(parseInt(hours) + 12);
+		    }
+		    if (modifier === "AM" && hours === "12") {
+		      hours = "00";
+		    }
+		    return `${hours.padStart(2, "0")}:${minutes}`;
+		  }
 
-		  <!-- Delete -->
-		  <button 
-		    onclick="deleteTopic(${topic.id})"
-		    class="p-2 rounded-lg hover:bg-error/20 transition transform hover:scale-110"
-		    title="Delete">
-		    <span class="material-symbols-outlined text-lg text-error">
-		      delete
-		    </span>
-		  </button>
+		  return t;
+		}
 
+		function timeToMinutes(time) {
+		  const [hours, mins] = convertTo24(time).split(":").map(Number);
+		  return hours * 60 + mins;
+		}
+
+		// ----------------------------
+		// TIME CONFLICT CHECK (declared ONCE)
+		// ----------------------------
+		function isTimeConflict(start1, end1, start2, end2) {
+		  const s1 = timeToMinutes(start1);
+		  const e1 = timeToMinutes(end1);
+		  const s2 = timeToMinutes(start2);
+		  const e2 = timeToMinutes(end2);
+		  return s1 < e2 && e1 > s2;
+		}
+
+		// ----------------------------
+		// DATE OVERLAP CHECK (safe string + Date comparison)
+		// ----------------------------
+		function hasDateOverlap(startDate, endDate, batchStartDate, batchEndDate) {
+		  // Normalize to Date objects to avoid string comparison pitfalls
+		  const newStart  = new Date(startDate);
+		  const newEnd    = new Date(endDate);
+		  const bStart    = new Date(batchStartDate);
+		  const bEnd      = new Date(batchEndDate);
+		  return newStart <= bEnd && newEnd >= bStart;
+		}
+
+		// ----------------------------
+		// TRAINER CONFLICT CHECK
+		// Used for both CREATE and EDIT (excludes current batch during edit)
+		// ----------------------------
+		function hasTrainerConflict(startDate, endDate, startTime, endTime) {
+		  for (const batch of trainerData) {
+
+		    // Skip same batch during edit — use loose == to handle number/string mismatch from API
+		    if (editingBatchId != null && String(batch.id) === String(editingBatchId)) continue;
+
+		    // Ignore completed batches
+		    if (String(batch.status).toUpperCase() === "COMPLETED") continue;
+
+		    // Date overlap check
+		    if (!hasDateOverlap(startDate, endDate, batch.startDate, batch.endDate)) continue;
+
+		    // Must have a valid time range
+		    if (!batch.time || !batch.time.includes("-")) continue;
+
+		    const [existingStart, existingEnd] = batch.time.split("-").map(t => convertTo24(t.trim()));
+
+		    if (isTimeConflict(startTime, endTime, existingStart, existingEnd)) {
+		      return true;
+		    }
+		  }
+		  return false;
+		}
+
+		// ----------------------------
+		// LAB CONFLICT CHECK
+		// Used for both CREATE and EDIT (excludes current batch during edit)
+		// ----------------------------
+		function hasLabConflict(startDate, endDate, startTime, endTime, selectedLab) {
+		  // Normalize the selected lab (e.g. "Lab-1" → "Lab-01")
+		  const normalizeLabNo = lab =>
+		    lab
+		      .replace("Lab-1", "Lab-01")
+		      .replace("Lab-2", "Lab-02")
+		      .replace("Lab-3", "Lab-03")
+		      .replace("Lab-4", "Lab-04")
+		      .replace("Lab-5", "Lab-05");
+
+		  const normalizedSelected = normalizeLabNo(selectedLab);
+
+		  for (const batch of trainerData) {
+
+		    // Skip same batch during edit — string coercion guards against number/string API mismatch
+		    if (editingBatchId != null && String(batch.id) === String(editingBatchId)) continue;
+
+		    // Ignore completed batches
+		    if (String(batch.status).toUpperCase() === "COMPLETED") continue;
+
+		    // Date overlap check
+		    if (!hasDateOverlap(startDate, endDate, batch.startDate, batch.endDate)) continue;
+
+		    // Must have a valid time range
+		    if (!batch.time || !batch.time.includes("-")) continue;
+
+		    const [existingStart, existingEnd] = batch.time.split("-").map(t => convertTo24(t.trim()));
+
+		    if (!isTimeConflict(startTime, endTime, existingStart, existingEnd)) continue;
+
+		    // Check if lab matches
+		    const batchLab = normalizeLabNo(batch.labNo || "");
+		    if (batchLab === normalizedSelected) {
+		      return true;
+		    }
+		  }
+		  return false;
+		}
+
+		// ----------------------------
+		// GET OCCUPIED LABS (for dropdown filtering)
+		// Excludes current batch during edit
+		// ----------------------------
+		function getOccupiedLabs(startDate, endDate, startTime, endTime) {
+		  const normalizeLabNo = lab =>
+		    lab
+		      .replace("Lab-1", "Lab-01")
+		      .replace("Lab-2", "Lab-02")
+		      .replace("Lab-3", "Lab-03")
+		      .replace("Lab-4", "Lab-04")
+		      .replace("Lab-5", "Lab-05");
+
+		  return trainerData
+		    .filter(batch => {
+		      if (editingBatchId != null && String(batch.id) === String(editingBatchId)) return false;
+		      if (String(batch.status).toUpperCase() === "COMPLETED") return false;
+		      if (!hasDateOverlap(startDate, endDate, batch.startDate, batch.endDate)) return false;
+		      if (!batch.time || !batch.time.includes("-")) return false;
+
+		      const [existingStart, existingEnd] = batch.time.split("-").map(t => convertTo24(t.trim()));
+		      return isTimeConflict(startTime, endTime, existingStart, existingEnd);
+		    })
+		    .map(batch => normalizeLabNo(batch.labNo || ""));
+		}
+
+		// ----------------------------
+		// CREATE BATCH FORM SUBMIT
+		// ----------------------------
+		document.getElementById("createBatchForm").addEventListener("submit", async (event) => {
+		  event.preventDefault();
+
+		  const domainName    = document.getElementById("batchDomainName").value.trim();
+		  const startDate     = document.getElementById("batchStartDate").value;
+		  const endDate       = document.getElementById("batchEndDate").value;
+		  const startTime     = document.getElementById("batchStartTime").value;
+		  const endTime       = document.getElementById("batchEndTime").value;
+		  const selectedLab   = document.getElementById("batchLabNo").value;
+		  const noOfStudents  = document.getElementById("batchStudents").value;
+
+		  // Required field check
+		  if (!domainName || !startDate || !endDate || !startTime || !endTime || !selectedLab || !noOfStudents) {
+		    alert("Please fill all fields.");
+		    return;
+		  }
+
+		  // Trainer time conflict check
+		  if (hasTrainerConflict(startDate, endDate, startTime, endTime)) {
+		    alert("You already have another batch scheduled at this time. Please choose a different time.");
+		    return;
+		  }
+
+		  // Lab occupancy check
+		  if (hasLabConflict(startDate, endDate, startTime, endTime, selectedLab)) {
+		    alert("Selected lab is already occupied during this time. Please choose a different lab.");
+		    return;
+		  }
+
+		  const payload = {
+		    domainName,
+		    startDate,
+		    endDate,
+		    time: `${startTime} - ${endTime}`,
+		    labNo: selectedLab,
+		    noOfStudents,
+		    progress: 0
+		  };
+
+		  try {
+		    const res = await fetch(`${API_BASE_URL}/api/trainer/batches`, {
+		      method: "POST",
+		      headers: {
+		        Authorization: `Bearer ${token}`,
+		        "Content-Type": "application/json"
+		      },
+		      body: JSON.stringify(payload)
+		    });
+
+		    if (!res.ok) {
+		      const errorText = await res.text();
+		      throw new Error(errorText || "Failed to create batch");
+		    }
+
+		    alert("Batch created successfully!");
+		    event.target.reset();
+		    await loadTrainerDashboard();
+
+		  } catch (e) {
+		    console.error(e);
+		    alert("Unable to create batch: " + e.message);
+		  }
+		});
+
+		// ----------------------------
+		// AVAILABLE LABS FILTER (Edit modal)
+		// ----------------------------
+		async function updateAvailableLabs() {
+		  const startDate = document.getElementById("editStartDate").value;
+		  const endDate   = document.getElementById("editEndDate").value;
+		  const startTime = document.getElementById("editStartTime").value;
+		  const endTime   = document.getElementById("editEndTime").value;
+
+		  if (!startDate || !endDate || !startTime || !endTime) return;
+
+		  const allLabs      = ["Lab-01", "Lab-02", "Lab-03", "Lab-04", "Lab-05"];
+		  const occupiedLabs = getOccupiedLabs(startDate, endDate, startTime, endTime);
+		  const availableLabs = allLabs.filter(lab => !occupiedLabs.includes(lab));
+
+		  const labSelect = document.getElementById("editLabNo");
+		  labSelect.innerHTML = `<option value="" disabled hidden>Select Lab</option>`;
+
+		  availableLabs.forEach(lab => {
+		    labSelect.innerHTML += `<option value="${lab}" class="text-black">${lab}</option>`;
+		  });
+
+		  if (availableLabs.length === 0) {
+		    alert("No labs available for the selected time. Please choose a different time.");
+		  }
+		}
+
+		// ----------------------------
+		// CARD CREATION
+		// ----------------------------
+		function createCard(batch) {
+		  const progress = batch.progress ?? 0;
+
+		  return `
+		    <div class="bg-surface-container-lowest p-6 rounded-xl group transition-all hover:translate-y-[-2px]">
+
+		      <div class="flex justify-between items-start mb-6">
+		        <div>
+		          <div class="flex items-center gap-2 mb-1">
+		            <span class="w-2 h-2 rounded-full bg-primary ${progress < 100 ? "animate-pulse" : ""}"></span>
+		            <span class="text-[10px] font-bold text-primary uppercase tracking-widest">
+		              ${batch.status || "ONGOING"}
+		            </span>
+		          </div>
+
+		          <h3 class="text-xl font-headline font-bold text-on-surface">
+		            ${batch.domainName || "Untitled Batch"}
+		          </h3>
+
+		          <p class="text-sm text-on-surface-variant line-clamp-1 mt-1">
+		            ${batch.labNo || "Lab allocation pending"}
+		          </p>
+		        </div>
+
+		        <div class="text-right">
+		          <span class="block text-xs font-label text-outline uppercase tracking-wider">
+		            Timeline
+		          </span>
+		          <span class="text-sm font-medium text-on-surface">
+		            ${formatDate(batch.startDate)} - ${formatDate(batch.endDate)}
+		          </span>
+		        </div>
+		      </div>
+
+		      <div class="space-y-4">
+
+		        <div class="flex items-center gap-4">
+		          <div class="flex-1 h-3 bg-surface-container-high rounded-full overflow-hidden">
+		            <div class="bg-gradient-to-r from-primary to-primary-container h-full rounded-full" style="width:${progress}%"></div>
+		          </div>
+		          <span class="font-headline font-bold text-lg text-primary">${progress}%</span>
+		        </div>
+
+		        <div class="flex gap-2">
+		          <input id="topic-input-${batch.id}" 
+		            class="flex-1 bg-surface-container-low border-none rounded-lg text-xs p-2" 
+		            placeholder="Add topic/syllabus item">
+
+		          <button onclick="addTopic(${batch.id})" 
+		            class="bg-primary text-on-primary px-3 py-2 rounded-lg text-xs font-bold">
+		            Add Topic
+		          </button>
+		        </div>
+
+		        <div id="topics-${batch.id}" 
+		          class="space-y-2 text-xs text-on-surface-variant">
+		          Loading topics...
+		        </div>
+
+		        <div class="flex justify-between items-center pt-4 border-t border-surface-container-high">
+
+		          <button 
+		            onclick="completeBatch(${batch.id})"
+		            class="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold rounded-md bg-primary text-white">
+		            Complete
+		          </button>
+
+		          <div class="flex gap-2">
+		            <button 
+		              onclick="openEditForm(${batch.id}, '${batch.domainName}', '${batch.startDate}', '${batch.endDate}', '${batch.time}', '${batch.labNo}', ${batch.noOfStudents})"
+		              class="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold rounded-md border border-outline">
+		              Edit
+		            </button>
+
+		            <button 
+		              onclick="deleteBatch(${batch.id})"
+		              class="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold rounded-md bg-error text-white">
+		              Delete
+		            </button>
+		          </div>
+
+		        </div>
+		      </div>
+		    </div>
+		  `;
+		}
+
+		// ----------------------------
+		// TOPICS
+		// ----------------------------
+		async function loadTopics(batchId) {
+		  const container = document.getElementById(`topics-${batchId}`);
+		  if (!container) return;
+
+		  const res = await fetch(
+		    `${API_BASE_URL}/api/trainer/batches/${batchId}/topics`,
+		    { headers: { Authorization: `Bearer ${token}` } }
+		  );
+
+		  if (!res.ok) {
+		    container.innerHTML = "Unable to load topics.";
+		    return;
+		  }
+
+		  const topics = await res.json();
+
+		  if (!topics.length) {
+		    container.innerHTML = "No topics yet. Add one to start progress.";
+		    return;
+		  }
+
+		  container.innerHTML = topics.map(topic => `
+		    <div class="flex items-center justify-between gap-2">
+
+		      <label class="flex items-center gap-2 cursor-pointer">
+		        <input type="checkbox" ${topic.completed ? "checked" : ""} 
+		          onchange="toggleTopic(${topic.id}, this.checked)">
+		        <span class="${topic.completed ? "line-through text-outline" : ""}">
+		          ${topic.title}
+		        </span>
+		      </label>
+
+		      <div class="flex gap-2 items-center">
+		        <button 
+		          onclick="editTopic(${topic.id}, '${topic.title.replace(/'/g, "\\'")}')"
+		          class="p-2 rounded-lg hover:bg-secondary/20">
+		          <span class="material-symbols-outlined text-secondary">edit</span>
+		        </button>
+
+		        <button 
+		          onclick="deleteTopic(${topic.id})"
+		          class="p-2 rounded-lg hover:bg-error/20">
+		          <span class="material-symbols-outlined text-error">delete</span>
+		        </button>
+		      </div>
+		    </div>
+		  `).join("");
+		}
+
+		// ----------------------------
+		// ADD NEW TOPIC
+		// ----------------------------
+		async function addTopic(batchId) {
+		  const input = document.getElementById(`topic-input-${batchId}`);
+		  const title = input.value.trim();
+		  if (!title) return;
+
+		  const res = await fetch(`${API_BASE_URL}/api/trainer/batches/${batchId}/topics`, {
+		    method: "POST",
+		    headers: {
+		      Authorization: `Bearer ${token}`,
+		      "Content-Type": "application/json"
+		    },
+		    body: JSON.stringify({ title })
+		  });
+
+		  if (!res.ok) {
+		    alert("Unable to add topic: " + await res.text());
+		    return;
+		  }
+
+		  input.value = "";
+		  await loadTrainerDashboard();
+		}
+
+		// ----------------------------
+		// TOGGLE TOPIC COMPLETE
+		// ----------------------------
+		async function toggleTopic(topicId, completed) {
+		  const res = await fetch(`${API_BASE_URL}/api/trainer/topics/${topicId}`, {
+		    method: "PUT",
+		    headers: {
+		      Authorization: `Bearer ${token}`,
+		      "Content-Type": "application/json"
+		    },
+		    body: JSON.stringify({ completed })
+		  });
+
+		  if (!res.ok) {
+		    alert("Unable to update topic: " + await res.text());
+		    return;
+		  }
+
+		  await loadTrainerDashboard();
+		}
+
+		// ----------------------------
+		// DELETE TOPIC
+		// ----------------------------
+		async function deleteTopic(topicId) {
+		  if (!confirm("Are you sure you want to delete this topic?")) return;
+
+		  const res = await fetch(`${API_BASE_URL}/api/trainer/topics/${topicId}`, {
+		    method: "DELETE",
+		    headers: { Authorization: `Bearer ${token}` }
+		  });
+
+		  if (!res.ok) {
+		    alert("Unable to delete topic: " + await res.text());
+		    return;
+		  }
+
+		  await loadTrainerDashboard();
+		}
+
+		// ----------------------------
+		// EDIT TOPIC (prompt)
+		// ----------------------------
+		function editTopic(topicId, currentTitle) {
+		  const newTitle = prompt("Edit topic name:", currentTitle);
+		  if (!newTitle || newTitle.trim() === "" || newTitle === currentTitle) return;
+		  updateTopic(topicId, newTitle.trim());
+		}
+
+		// ----------------------------
+		// UPDATE TOPIC TITLE
+		// ----------------------------
+		async function updateTopic(topicId, title) {
+		  const res = await fetch(`${API_BASE_URL}/api/trainer/topics/${topicId}/title`, {
+		    method: "PUT",
+		    headers: {
+		      Authorization: `Bearer ${token}`,
+		      "Content-Type": "application/json"
+		    },
+		    body: JSON.stringify({ title })
+		  });
+
+		  if (!res.ok) {
+		    alert("Unable to update topic: " + await res.text());
+		    return;
+		  }
+
+		  await loadTrainerDashboard();
+		}
+
+		// ----------------------------
+		// DASHBOARD LOAD
+		// ----------------------------
+		async function loadTrainerDashboard() {
+		  try {
+		    const res = await fetch(`${API_BASE_URL}/api/trainer/batches`, {
+		      headers: { Authorization: `Bearer ${token}` }
+		    });
+
+		    if (!res.ok) throw new Error("Failed to load trainer batches");
+
+		    trainerData = await res.json();
+
+		    const total     = trainerData.length;
+		    const completed = trainerData.filter(b => String(b.status).toUpperCase() === "COMPLETED").length;
+		    const avg       = total
+		      ? Math.round(trainerData.reduce((a, b) => a + (b.progress ?? 0), 0) / total)
+		      : 0;
+
+		    document.getElementById("kpiTotal").innerText     = total;
+		    document.getElementById("kpiCompleted").innerText = completed;
+		    document.getElementById("kpiProgress").innerText  = `${avg}%`;
+
+		    const activeBatches = trainerData.filter(b => String(b.status).toUpperCase() !== "COMPLETED");
+
+		    document.getElementById("trainerBatchCards").innerHTML = activeBatches.map(createCard).join("");
+
+		    await Promise.all(activeBatches.map(batch => loadTopics(batch.id)));
+
+		  } catch (e) {
+		    console.error(e);
+		  }
+		}
+
+		// ----------------------------
+		// OPEN EDIT MODAL
+		// FIX: Set time fields BEFORE calling updateAvailableLabs
+		// ----------------------------
+		async function openEditForm(id, name, start, end, time, lab, students) {
+		  editingBatchId = id;
+
+		  document.getElementById("editDomainName").value = name     || "";
+		  document.getElementById("editStartDate").value  = start    || "";
+		  document.getElementById("editEndDate").value    = end      || "";
+		  document.getElementById("editStudents").value   = students || "";
+
+		  // Set time fields FIRST so updateAvailableLabs reads the correct values
+		  if (time && time.includes("-")) {
+		    const parts = time.split("-");
+		    document.getElementById("editStartTime").value = convertTo24(parts[0].trim());
+		    document.getElementById("editEndTime").value   = convertTo24(parts[1].trim());
+		  }
+
+		  // Now populate available labs (correct times are already set)
+		  await updateAvailableLabs();
+
+		  // After labs are populated, set the current lab as selected
+		  if (lab) {
+		    const fixedLab = lab
+		      .replace("Lab-1", "Lab-01")
+		      .replace("Lab-2", "Lab-02")
+		      .replace("Lab-3", "Lab-03")
+		      .replace("Lab-4", "Lab-04")
+		      .replace("Lab-5", "Lab-05");
+
+		    document.getElementById("editLabNo").value = fixedLab;
+		  }
+
+		  document.getElementById("editModal").classList.remove("hidden");
+		  document.getElementById("editModal").classList.add("flex");
+		}
+
+		// ----------------------------
+		// CLOSE EDIT MODAL
+		// ----------------------------
+		function closeEditModal() {
+		  editingBatchId = null;
+		  document.getElementById("editModal").classList.add("hidden");
+		  document.getElementById("editModal").classList.remove("flex");
+		}
+
+		// ----------------------------
+		// EDIT BATCH FORM SUBMIT
+		// FIX: Added lab conflict check (was missing entirely)
+		// ----------------------------
+		document.getElementById("editBatchForm").addEventListener("submit", async e => {
+		  e.preventDefault();
+
+		  const startDate   = document.getElementById("editStartDate").value;
+		  const endDate     = document.getElementById("editEndDate").value;
+		  const startTime   = document.getElementById("editStartTime").value;
+		  const endTime     = document.getElementById("editEndTime").value;
+		  const selectedLab = document.getElementById("editLabNo").value;
+
+		  // Trainer time conflict check (skips current batch automatically)
+		  if (hasTrainerConflict(startDate, endDate, startTime, endTime)) {
+		    alert("You already have another batch scheduled at this time. Please choose a different time.");
+		    return;
+		  }
+
+		  // Lab occupancy check (skips current batch automatically) — was MISSING before
+		  if (hasLabConflict(startDate, endDate, startTime, endTime, selectedLab)) {
+		    alert("Selected lab is already occupied during this time. Please choose a different lab.");
+		    return;
+		  }
+
+		  const payload = {
+		    domainName:   document.getElementById("editDomainName").value,
+		    startDate,
+		    endDate,
+		    noOfStudents: document.getElementById("editStudents").value,
+		    labNo:        selectedLab,
+		    time:         `${startTime} - ${endTime}`
+		  };
+
+		  try {
+		    const res = await fetch(
+		      `${API_BASE_URL}/api/trainer/batches/${editingBatchId}`,
+		      {
+		        method: "PUT",
+		        headers: {
+		          Authorization: `Bearer ${token}`,
+		          "Content-Type": "application/json"
+		        },
+		        body: JSON.stringify(payload)
+		      }
+		    );
+
+		    if (!res.ok) {
+		      alert("Update failed: " + await res.text());
+		      return;
+		    }
+
+		    alert("Batch updated successfully!");
+		    closeEditModal();
+		    await loadTrainerDashboard();
+
+		  } catch (err) {
+		    console.error(err);
+		    alert("Error updating batch");
+		  }
+		});
+
+		// ----------------------------
+		// DELETE BATCH
+		// ----------------------------
+		async function deleteBatch(batchId) {
+		  if (!confirm("Are you sure you want to delete this batch?")) return;
+
+		  try {
+		    const res = await fetch(`${API_BASE_URL}/api/trainer/batches/${batchId}`, {
+		      method: "DELETE",
+		      headers: { Authorization: `Bearer ${token}` }
+		    });
+
+		    if (!res.ok) {
+		      alert("Delete failed: " + await res.text());
+		      return;
+		    }
+
+		    alert("Batch deleted successfully!");
+		    await loadTrainerDashboard();
+
+		  } catch (err) {
+		    console.error(err);
+		    alert("Error deleting batch");
+		  }
+		}
+
+		// ----------------------------
+		// LIVE LAB UPDATE ON EDIT FIELD CHANGE
+		// ----------------------------
+		["editStartDate", "editEndDate", "editStartTime", "editEndTime"].forEach(id => {
+		  document.getElementById(id).addEventListener("change", updateAvailableLabs);
+		});
+
+		// ----------------------------
+		// INITIAL LOAD
+		// ----------------------------
+		setLoggedInName();
+		loadTrainerDashboard();
+	</script>
 	
 
-	  </div>
+</body>
 
-    </div>
-  `).join("");
-}
-
-async function addTopic(batchId) {
-  const input = document.getElementById(`topic-input-${batchId}`);
-  const title = input.value.trim();
-  if (!title) return;
-  const res = await fetch(`${API_BASE_URL}/api/trainer/batches/${batchId}/topics`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ title })
-  });
-  if (!res.ok) {
-    const text = await res.text();
-    alert("Unable to add topic: " + text);
-    return;
-  }
-  input.value = "";
-  await loadTrainerDashboard();
-}
-
-async function toggleTopic(topicId, completed) {
-  const res = await fetch(`${API_BASE_URL}/api/trainer/topics/${topicId}`, {
-    method: "PUT",
-    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ completed })
-  });
-  if (!res.ok) {
-    const text = await res.text();
-    alert("Unable to update topic: " + text);
-    return;
-  }
-  await loadTrainerDashboard();
-}
-
-async function loadTrainerDashboard() {
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/trainer/batches`, { headers: { Authorization: `Bearer ${token}` } });
-    if (!res.ok) throw new Error("Failed to load trainer batches");
-    const batches = await res.json();
-    const total = batches.length;
-    const completed = batches.filter(b => String(b.status).toUpperCase() === "COMPLETED").length;
-    const avg = total ? Math.round(batches.reduce((a, b) => a + (b.progress ?? 0), 0) / total) : 0;
-    document.getElementById("kpiTotal").innerText = total;
-    document.getElementById("kpiCompleted").innerText = completed;
-    document.getElementById("kpiProgress").innerText = `${avg}%`;
-	const activeBatches = batches.filter(b =>
-	  String(b.status).toUpperCase() !== "COMPLETED"
-	);
-
-	document.getElementById("trainerBatchCards").innerHTML =
-	  activeBatches.map(createCard).join("");
-
-	await Promise.all(activeBatches.map(batch => loadTopics(batch.id)));
-  } catch (e) { console.error(e); }
-}
-
-document.getElementById("createBatchForm").addEventListener("submit", async (event) => {
-  event.preventDefault();
-  const domainName = document.getElementById("batchDomainName").value.trim();
-  const startDate = document.getElementById("batchStartDate").value;
-  const endDate = document.getElementById("batchEndDate").value;
-  if (!domainName || !startDate || !endDate) return;
-  const payload = { domainName, startDate, endDate, time: "09:00 AM - 11:00 AM", labNo: "Lab-1", noOfStudents: 25, progress: 0 };
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/trainer/batches`, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-    if (!res.ok) {
-      const errorText = await res.text();
-      throw new Error(errorText || "Failed to create batch");
-    }
-    event.target.reset();
-    await loadTrainerDashboard();
-  } catch (e) { console.error(e); alert("Unable to create batch: " + e.message); }
-});
-
-setLoggedInName();
-loadTrainerDashboard();
-
-async function deleteTopic(topicId) {
-  const confirmDelete = confirm("Are you sure you want to delete this topic?");
-  if (!confirmDelete) return;
-
-  const res = await fetch(`${API_BASE_URL}/api/trainer/topics/${topicId}`, {
-    method: "DELETE",
-    headers: { Authorization: `Bearer ${token}` }
-  });
-
-  if (!res.ok) {
-    const text = await res.text();
-    alert("Unable to delete topic: " + text);
-    return;
-  }
-
-  await loadTrainerDashboard();
-}
-
-function editTopic(topicId, currentTitle) {
-  const newTitle = prompt("Edit topic name:", currentTitle);
-
-  if (!newTitle || newTitle.trim() === "" || newTitle === currentTitle) return;
-
-  updateTopic(topicId, newTitle.trim());
-}
-
-async function updateTopic(topicId, title) {
-  const res = await fetch(`${API_BASE_URL}/api/trainer/topics/${topicId}/title`, {
-    method: "PUT",
-    headers: { 
-      Authorization: `Bearer ${token}`, 
-      "Content-Type": "application/json" 
-    },
-    body: JSON.stringify({ title })
-  });
-
-  if (!res.ok) {
-    const text = await res.text();
-    alert("Unable to update topic: " + text);
-    return;
-  }
-
-  await loadTrainerDashboard();
-}
-
-async function completeBatch(batchId) {
-
-  const confirmComplete = confirm("Mark this batch as completed?");
-  if (!confirmComplete) return;
-
-  const res = await fetch(`${API_BASE_URL}/api/trainer/complete/${batchId}`, {
-    method: "PUT",
-    headers: { Authorization: `Bearer ${token}` }
-  });
-
-  if (!res.ok) {
-    const text = await res.text();
-    alert("Unable to complete batch: " + text);
-    return;
-  }
-
-  await loadTrainerDashboard();
-}
-
-
-function openEditForm(id, name, start, end, time, lab, students) {
-
-  editingBatchId = id;
-
-  document.getElementById("editDomainName").value = name || "";
-  document.getElementById("editStartDate").value = start || "";
-  document.getElementById("editEndDate").value = end || "";
-  document.getElementById("editStudents").value = students || "";
-  if (lab) {
-    let fixedLab = lab;
-
-    if (lab === "Lab-1") fixedLab = "Lab-01";
-    if (lab === "Lab-2") fixedLab = "Lab-02";
-    if (lab === "Lab-3") fixedLab = "Lab-03";
-
-    document.getElementById("editLabNo").value = fixedLab;
-  }
-  // time split (optional safe)
-  if (time && time.includes("-")) {
-    const parts = time.split("-");
-
-    function convertTo24(t) {
-      if (!t) return "";
-      t = t.trim();
-
-      const [timePart, modifier] = t.split(" ");
-      let [hours, minutes] = timePart.split(":");
-
-      if (modifier === "PM" && hours !== "12") {
-        hours = String(parseInt(hours) + 12);
-      }
-      if (modifier === "AM" && hours === "12") {
-        hours = "00";
-      }
-
-      return `${hours.padStart(2, "0")}:${minutes}`;
-    }
-
-    document.getElementById("editStartTime").value = convertTo24(parts[0]);
-    document.getElementById("editEndTime").value = convertTo24(parts[1]);
-  }
-
-  document.getElementById("editModal").classList.remove("hidden");
-  document.getElementById("editModal").classList.add("flex");
-}
-
-function closeEditModal() {
-  document.getElementById("editModal").classList.add("hidden");
-}
-
-document.getElementById("editBatchForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const payload = {
-    domainName: document.getElementById("editDomainName").value,
-    startDate: document.getElementById("editStartDate").value,
-    endDate: document.getElementById("editEndDate").value,
-    noOfStudents: document.getElementById("editStudents").value,
-    labNo: document.getElementById("editLabNo").value,
-    time: document.getElementById("editStartTime").value + " - " + document.getElementById("editEndTime").value
-  };
-
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/trainer/batches/${editingBatchId}`, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
-    });
-
-    if (!res.ok) {
-      const text = await res.text();
-      alert("Update failed: " + text);
-      return;
-    }
-
-    closeEditModal();
-    await loadTrainerDashboard();
-
-  } catch (err) {
-    console.error(err);
-    alert("Error updating batch");
-  }
-});
-
-async function deleteBatch(batchId) {
-
-  const confirmDelete = confirm("Are you sure you want to delete this batch?");
-  if (!confirmDelete) return;
-
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/trainer/batches/${batchId}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-
-    if (!res.ok) {
-      const text = await res.text();
-      alert("Delete failed: " + text);
-      return;
-    }
-
-    await loadTrainerDashboard();
-
-  } catch (err) {
-    console.error(err);
-    alert("Error deleting batch");
-  }
-}
-</script>
-
-
-</body></html>
+</html>

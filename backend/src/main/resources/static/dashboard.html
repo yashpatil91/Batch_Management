@@ -262,6 +262,8 @@
 				<span class="material-symbols-outlined">layers</span>
 				Batch Management
 			</a>
+			
+			
 
 			<!-- Trainer -->
 			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
@@ -391,7 +393,7 @@
 				</div>
 			</div>
 			<!-- Main Data Section: Asymmetric Layout -->
-			<div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+			<div class="grid grid-cols-1 xl:grid-cols-1 gap-8">
 				<!-- Batch Progress Table (Lg Column) -->
 				<div class="xl:col-span-2 bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm">
 					<div class="px-8 py-6 flex justify-between items-center border-b border-surface-container-low">
@@ -436,21 +438,7 @@
 						</table>
 					</div>
 				</div>
-				<!-- Trainer Quick Stats (Sm Column) -->
-				<div class="relative">
-					<div id="trainerBox"
-					     class="bg-inverse-surface rounded-xl p-8 text-white space-y-6 top-0 right-0 w-full xl:w-[350px] z-20">
-					<div class="space-y-1">
-						<h3 class="font-headline text-xl font-bold text-primary-fixed">Trainer Directory</h3>
-						<p class="text-outline-variant text-xs uppercase tracking-widest">Active Mentorship
-							High-Performers</p>
-					</div>
-							<div id="trainerQuickStats" class="space-y-4 overflow-hidden flex-1"></div>					<button id="toggleBtn" onclick="openTrainerModal()"
-					    class="w-full py-3 border border-outline-variant/30 rounded-lg text-sm font-bold text-primary-fixed hover:bg-white/5 transition-all">
-					    View Full Directory
-					</button>
-					</div>
-				</div>
+				
 			</div>
 			<!-- Detailed Trainer Table -->
 			<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm">
@@ -558,32 +546,7 @@
 	</div>
 	
 	
-	<div id="trainerModal"
-		     class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
-
-		    <div class="bg-[#2d3133] w-[500px] max-h-[600px] rounded-xl p-6 shadow-2xl text-[#9df0f4]">
-
-		        <!-- Header -->
-		        <div class="flex justify-between items-center mb-4">
-		            <h2 class="font-headline text-xl font-bold text-[#9df0f4]">
-		                Trainer Directory
-		            </h2>
-		            <button onclick="closeTrainerModal()" 
-		                class="text-red-400 hover:text-red-600 text-lg font-bold">
-		                ✕
-		            </button>
-		        </div>
-
-		        <!-- Trainer List -->
-		        <div id="modalTrainerList" 
-		             class="space-y-3 overflow-y-auto max-h-[450px] pr-2">
-
-		            <!-- Trainers will be injected here -->
-
-		        </div>
-
-		    </div>
-		</div>
+	
 		
 	
 	<script>
