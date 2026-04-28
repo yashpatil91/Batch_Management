@@ -662,12 +662,9 @@
 
 		    const batches = await batchRes.json();
 
-		    const trainerBody = document.getElementById("trainerPerformanceBody");
-		    const quickStats = document.getElementById("trainerQuickStats");
+			const trainerBody = document.getElementById("trainerPerformanceBody");
 
-		    trainerBody.innerHTML = "";
-		    quickStats.innerHTML = "";
-
+			trainerBody.innerHTML = "";
 		    /* ===== CALCULATE ACTIVE BATCH COUNT ===== */
 		    const trainersWithBatchCount = trainers.map((trainer) => {
 		      const activeBatchCount = batches.filter(
@@ -772,7 +769,7 @@
 		      );
 		    });
 
-		    renderTrainerQuickStats();
+		 //   renderTrainerQuickStats();
 
 		  } catch (err) {
 		    console.error("Trainer Error:", err);
@@ -787,31 +784,31 @@
 		
 		//let expanded = false;
 		
-		function renderTrainerQuickStats() {
-		    const quickStats = document.getElementById("trainerQuickStats");
-		    quickStats.innerHTML = "";
+//function renderTrainerQuickStats() {
+//    const quickStats = document.getElementById("trainerQuickStats");
+  //  quickStats.innerHTML = "";
 
-		    // Estimate how many trainers fit
-		    const boxHeight = quickStats.clientHeight;
-		    const itemHeight = 70; // approx height per trainer
-		    const count = Math.floor(boxHeight / itemHeight) || 1;
+    // Estimate how many trainers fit
+//    const boxHeight = quickStats.clientHeight;
+  //  const itemHeight = 70; // approx height per trainer
+    //const count = Math.floor(boxHeight / itemHeight) || 1;
 
-		    const list = trainerData.slice(0, 3);
+//    const list = trainerData.slice(0, 3);
 
-		    list.forEach((trainer) => {
-		        quickStats.insertAdjacentHTML("beforeend", `
-		            <div class="flex items-center justify-between p-4 bg-surface-variant/10 rounded-lg">
-		                <div>
-		                    <p class="font-bold text-sm">${trainer.name || "N/A"}</p>
-		                    <p class="text-[10px] text-outline-variant uppercase">${trainer.email || "N/A"}</p>
-		                </div>
-		                <span class="material-symbols-outlined text-primary-fixed text-sm">arrow_forward_ios</span>
-		            </div>
-		        `);
-		    });
-		}
+  //  list.forEach((trainer) => {
+    //    quickStats.insertAdjacentHTML("beforeend", `
+      //      <div class="flex items-center justify-between p-4 bg-surface-variant/10 rounded-lg">
+        //        <div>
+          //          <p class="font-bold text-sm">${trainer.name || "N/A"}</p>
+            //        <p class="text-[10px] text-outline-variant uppercase">${trainer.email || "N/A"}</p>
+              //  </div>
+                //<span class="material-symbols-outlined text-primary-fixed text-sm">arrow_forward_ios</span>
+            //</div>
+    //    `);
+   // });
+//}
 
-		
+
 		
 		function openTrainerModal() {
 		    const modal = document.getElementById("trainerModal");
