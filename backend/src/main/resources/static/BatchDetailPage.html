@@ -118,7 +118,7 @@
       <a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all" href="/dashboard.html">
         <span class="material-symbols-outlined">dashboard</span>Dashboard
       </a>
-      <a class="border-l-4 border-[#9df0f4] bg-[#3f484a] text-[#9df0f4] py-3 px-6 flex items-center gap-3 transition-all" href="/BatchManagement.html">
+      <a class="border-l-4 border-[#9df0f4] bg-[#3f484a] text-[#9df0f4] py-3 px-6 flex items-center gap-3 transition-all" href="/BatchDetailPage.html">
         <span class="material-symbols-outlined">layers</span>Batch Management
       </a>
       <a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all" href="/TrainerManagmentpage.html">
@@ -223,6 +223,113 @@
     </div>
   </main>
 
+  <div id="editModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
+
+        <div class="w-[420px]">
+
+          <div class="bg-white p-6 rounded-xl shadow-xl">
+
+            <h2 class="text-lg font-bold mb-4">Update Batch</h2>
+
+            <form id="editBatchForm" class="space-y-5">
+
+              <!-- Batch Name -->
+              <div class="space-y-1.5">
+                <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">
+                  Batch Name
+                </label>
+                <input id="editDomainName" type="text"
+                  class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface"
+                  placeholder="e.g. Fullstack Dev 2024" />
+              </div>
+
+              <!-- Dates -->
+              <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                  <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">
+                    Start Date
+                  </label>
+                  <input id="editStartDate" type="date"
+                    class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface" />
+                </div>
+
+                <div class="space-y-1.5">
+                  <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">
+                    End Date
+                  </label>
+                  <input id="editEndDate" type="date"
+                    class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface" />
+                </div>
+              </div>
+
+              <!-- Students -->
+              <div class="space-y-1.5">
+                <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">
+                  No. of Students
+                </label>
+                <input id="editStudents" type="number" min="1"
+                  class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface" />
+              </div>
+
+              <!-- Timing -->
+              <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                  <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">
+                    Start Time
+                  </label>
+                  <input id="editStartTime" type="time"
+                    class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface" />
+                </div>
+
+                <div class="space-y-1.5">
+                  <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">
+                    End Time
+                  </label>
+                  <input id="editEndTime" type="time"
+                    class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface" />
+                </div>
+              </div>
+
+              <!-- Lab -->
+              <div class="space-y-1.5">
+                <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">
+                  Lab No
+                </label>
+
+                <select id="editLabNo"
+                  class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-outline-variant"
+                  onchange="this.classList.remove('text-outline-variant'); this.classList.add('text-on-surface')">
+
+                  <option value="" disabled hidden>Select Lab</option>
+
+                  <option value="Lab-01" class="text-black">Lab-01</option>
+                  <option value="Lab-02" class="text-black">Lab-02</option>
+                  <option value="Lab-03" class="text-black">Lab-03</option>
+                  <option value="Lab-04" class="text-black">Lab-04</option>
+                  <option value="Lab-05" class="text-black">Lab-05</option>
+
+                </select>
+              </div>
+
+              <!-- Buttons -->
+              <div class="flex gap-2">
+                <button type="button" onclick="closeEditModal()"
+                  class="flex-1 border border-outline py-3 rounded-lg text-sm font-bold">
+                  Cancel
+                </button>
+
+                <button type="submit"
+                  class="flex-1 bg-primary-container text-on-primary-container py-3 rounded-lg font-bold text-sm flex items-center justify-center gap-2">
+                  <span class="material-symbols-outlined text-lg">edit</span>
+                  Update Details
+                </button>
+              </div>
+
+            </form>
+          </div>
+
+        </div>
+      </div>
   <script>
     const API_BASE_URL = "http://localhost:8080";
 
@@ -284,13 +391,33 @@
                   <span class="text-sm font-medium text-on-surface">${formatDate(batch.startDate)} – ${formatDate(batch.endDate)}</span>
                 </div>
               </div>
-              <div class="flex items-center gap-4">
-                <div class="flex-1 h-3 bg-surface-container-high rounded-full overflow-hidden">
-                  <div class="bg-gradient-to-r from-primary to-primary-container h-full rounded-full transition-all duration-700"
-                       style="width:${batch.progress ?? 0}%"></div>
-                </div>
-                <span class="font-headline font-bold text-lg text-primary">${batch.progress ?? 0}%</span>
-              </div>
+			  <div class="flex items-center gap-4">
+			    <div class="flex-1 h-3 bg-surface-container-high rounded-full overflow-hidden">
+			      <div class="bg-gradient-to-r from-primary to-primary-container h-full rounded-full transition-all duration-700"
+			           style="width:${batch.progress ?? 0}%"></div>
+			    </div>
+			    <span class="font-headline font-bold text-lg text-primary">${batch.progress ?? 0}%</span>
+			  </div>
+
+			  <!-- ✅ NEW BUTTONS -->
+			  <div class="flex justify-end gap-3 mt-4">
+
+				<button 
+				  onclick="openEditForm(${batch.id}, '${batch.domainName}', '${batch.startDate}', '${batch.endDate}', '${batch.time}', '${batch.labNo}', ${batch.noOfStudents})"
+				  class="px-4 py-1.5 border border-gray-400 rounded-full text-sm font-medium">
+				  Edit
+				</button>
+
+				<button 
+				onclick="deleteBatch(${batch.id})"
+				  class="px-4 py-1.5 bg-error text-white rounded-full text-sm font-medium 
+				         hover:opacity-90 transition-all">
+				  Delete
+				</button>
+
+			  </div>
+			  
+			  
             </div>
           `).join("")
           : `<div class="col-span-2 text-center py-16 text-on-surface-variant">
@@ -374,6 +501,103 @@
     });
 
     loadAdminBatches();
+	
+	async function deleteBatch(batchId) {
+	  try {
+	    const confirmDelete = confirm("Are you sure you want to delete this batch?");
+	    if (!confirmDelete) return;
+
+	    const res = await fetch(`${API_BASE_URL}/api/admin/batches/${batchId}`, {
+	      method: "DELETE",
+	      headers: authHeaders()
+	    });
+
+	    if (!res.ok) {
+	      throw new Error("Failed to delete batch");
+	    }
+
+	    // ✅ Reload UI after delete
+	    loadAdminBatches();
+
+	    alert("Batch deleted successfully");
+
+	  } catch (err) {
+	    console.error("Delete Error:", err);
+	    alert("Error deleting batch");
+	  }
+	}
+	
+	let editingBatchId = null;
+
+	/* OPEN MODAL */
+	function openEditForm(id, name, start, end, time, lab, students) {
+	  editingBatchId = id;
+
+	  document.getElementById("editDomainName").value = name || "";
+	  document.getElementById("editStartDate").value = start || "";
+	  document.getElementById("editEndDate").value = end || "";
+	  document.getElementById("editStudents").value = students || "";
+
+	  // ✅ FIX LAB (IMPORTANT)
+	  if (lab) {
+	    const formattedLab = lab.trim().toUpperCase();
+	    document.getElementById("editLabNo").value = formattedLab;
+	  }
+
+	  // ✅ FIX TIME (IMPORTANT)
+	  if (time) {
+	    const cleaned = time.replace(/\s+/g, ""); // remove spaces
+	    const parts = cleaned.split("-");
+
+	    document.getElementById("editStartTime").value = parts[0] || "";
+	    document.getElementById("editEndTime").value = parts[1] || "";
+	  }
+
+	  document.getElementById("editModal").classList.remove("hidden");
+	  document.getElementById("editModal").classList.add("flex");
+	}
+
+	/* CLOSE MODAL */
+	function closeEditModal() {
+	  editingBatchId = null;
+	  document.getElementById("editModal").classList.add("hidden");
+	  document.getElementById("editModal").classList.remove("flex");
+	}
+
+	/* SUBMIT EDIT */
+	document.getElementById("editBatchForm").addEventListener("submit", async (e) => {
+	  e.preventDefault();
+
+	  const payload = {
+	    domainName: document.getElementById("editDomainName").value,
+	    startDate: document.getElementById("editStartDate").value,
+	    endDate: document.getElementById("editEndDate").value,
+	    noOfStudents: document.getElementById("editStudents").value,
+	    labNo: document.getElementById("editLabNo").value,
+	    time: `${document.getElementById("editStartTime").value} - ${document.getElementById("editEndTime").value}`
+	  };
+
+	  try {
+	    const res = await fetch(`${API_BASE_URL}/api/admin/batches/${editingBatchId}`, {
+	      method: "PUT",
+	      headers: authHeaders(),
+	      body: JSON.stringify(payload)
+	    });
+
+	    if (!res.ok) throw new Error();
+
+	    alert("Batch updated successfully");
+
+	    closeEditModal();
+	    loadAdminBatches(); // refresh UI
+
+	  } catch (err) {
+	    console.error(err);
+	    alert("Update failed");
+	  }
+	});
   </script>
+  
+  
 </body>
 </html>

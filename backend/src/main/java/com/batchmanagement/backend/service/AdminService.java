@@ -210,4 +210,34 @@ public class AdminService {
 
         return userRepository.save(user);
     }
+    
+    //delete batch
+    public void deleteBatch(Long id) {
+        Batch batch = batchRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Batch not found"));
+
+        // 🔥 VERY IMPORTANT (fixes your error)
+        batch.setTrainer(null);
+
+        batchRepository.delete(batch);
+    }
+    
+    //edit
+    public BatchResponse updateBatch(Long id, CreateBatchRequest request) {
+
+        Batch batch = batchRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Batch not found"));
+
+        // ✅ Update fields (same as trainer)
+        batch.setDomainName(request.getDomainName());
+        batch.setStartDate(request.getStartDate());
+        batch.setEndDate(request.getEndDate());
+        batch.setTime(request.getTime());
+        batch.setLabNo(request.getLabNo());
+        batch.setNoOfStudents(request.getNoOfStudents());
+
+        Batch updated = batchRepository.save(batch);
+
+        return BatchMapper.toResponse(updated);
+    }
 }

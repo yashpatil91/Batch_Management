@@ -98,4 +98,20 @@ public class AdminController {
 
         return "Email Sent";
     }
+    
+    //delete batch
+    @DeleteMapping("/batches/{id}")
+    public ResponseEntity<Void> deleteBatch(@PathVariable Long id) {
+        adminService.deleteBatch(id);
+        return ResponseEntity.noContent().build();
+    }
+    
+    //edit batch
+    @PutMapping("/batches/{id}")
+    public ResponseEntity<BatchResponse> updateBatch(
+            @PathVariable Long id,
+            @Valid @RequestBody CreateBatchRequest request
+    ) {
+        return ResponseEntity.ok(adminService.updateBatch(id, request));
+    }
 }
