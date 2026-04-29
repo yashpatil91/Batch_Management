@@ -1120,6 +1120,30 @@
 		// ----------------------------
 		setLoggedInName();
 		loadTrainerDashboard();
+		
+		async function completeBatch(batchId) {
+		  if (!confirm("Mark this batch as completed?")) return;
+
+		  try {
+		    const res = await fetch(`${API_BASE_URL}/api/trainer/complete/${batchId}`, {
+		      method: "PUT",
+		      headers: {
+		        Authorization: `Bearer ${token}`
+		      }
+		    });
+
+		    if (!res.ok) {
+		      alert("Failed to complete batch: " + await res.text());
+		      return;
+		    }
+
+		    await loadTrainerDashboard();  // UI updates automatically
+
+		  } catch (err) {
+		    console.error(err);
+		    alert("Error completing batch");
+		  }
+		}
 	</script>
 	
 
