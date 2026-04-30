@@ -445,6 +445,7 @@
 				<div class="px-8 py-6 border-b border-surface-container-low">
 					<h3 class="font-headline text-xl font-bold text-on-surface">Lead Trainer Performance</h3>
 				</div>
+				
 				<table class="w-full text-left">
 					<thead
 						class="bg-surface-container-low/50 font-label text-[10px] uppercase tracking-[0.1em] text-outline">
@@ -662,11 +663,19 @@
 
 		    const batches = await batchRes.json();
 
-		    const trainerBody = document.getElementById("trainerPerformanceBody");
-		    const quickStats = document.getElementById("trainerQuickStats");
+			const trainerBody = document.getElementById("trainerPerformanceBody");
+			const quickStats = document.getElementById("trainerQuickStats");
 
-		    trainerBody.innerHTML = "";
-		    quickStats.innerHTML = "";
+			if (!trainerBody) {
+			    console.error("trainerPerformanceBody not found");
+			    return;
+			}
+
+			trainerBody.innerHTML = "";
+
+			if (quickStats) {
+			    quickStats.innerHTML = "";
+			}
 
 		    /* ===== CALCULATE ACTIVE BATCH COUNT ===== */
 		    const trainersWithBatchCount = trainers.map((trainer) => {
@@ -772,7 +781,9 @@
 		      );
 		    });
 
-		    renderTrainerQuickStats();
+			if (quickStats) {
+			    renderTrainerQuickStats();
+			}
 
 		  } catch (err) {
 		    console.error("Trainer Error:", err);
@@ -780,10 +791,7 @@
 		}
 
 		
-		setLoggedInName();
-		loadDashboard();
-		loadBatches();
-		loadTrainers();
+		
 		
 		//let expanded = false;
 		
@@ -841,10 +849,7 @@
 		    modal.classList.add("hidden");
 		}
 
-		function closeTrainerModal() {
-		    const modal = document.getElementById("trainerModal");
-		    modal.classList.add("hidden");
-		}
+		
 		/* =========================
 		   DASHBOARD ACTIVE BATCH FILTER
 		   Search by:
@@ -1032,9 +1037,13 @@
 		// =========================
 		// EVENT LISTENERS
 		// =========================
-		yearFilter.addEventListener("change", applyDashboardFilters);
-		searchInput.addEventListener("input", applyDashboardFilters);
+		if (yearFilter) {
+		    yearFilter.addEventListener("change", applyDashboardFilters);
+		}
 
+		if (searchInput) {
+		    searchInput.addEventListener("input", applyDashboardFilters);
+		}
 		// =========================
 		// LOAD DASHBOARD DATA f
 		// =========================
@@ -1058,7 +1067,10 @@
 		// =========================
 		// INIT push
 		// =========================
+		
 		setLoggedInName();
+		loadDashboard();
+		loadTrainers();
 		loadDashboardBatches();
 	</script>
 	
