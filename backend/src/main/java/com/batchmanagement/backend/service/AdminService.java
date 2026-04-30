@@ -48,7 +48,11 @@ public class AdminService {
         List<User> trainers = userRepository.findByRole(Role.TRAINER);
         return trainers.stream()
                 .map(trainer -> {
-                    int totalBatches = batchRepository.countByTrainer(trainer);
+                	int totalBatches =
+                		    batchRepository.countByTrainerAndStatusNot(
+                		        trainer,
+                		        BatchStatus.COMPLETED
+                		    );
                     return UserMapper.toResponse(trainer, totalBatches);
                 })
                 .toList();
@@ -161,9 +165,65 @@ public class AdminService {
             batch.setTrainer(trainer);
         }
 
+        // =========================
+        // TRAINER CONFLICT CHECK
+        // =========================
+        if (trainer != null) {
+
+            List<Batch> activeBatches =
+                batchRepository.findByTrainerAndStatusNot(
+                    trainer,
+                    BatchStatus.COMPLETED
+                );
+
+            for (Batch existing : activeBatches) {
+
+                boolean dateOverlap =
+                    !request.getStartDate().isAfter(existing.getEndDate()) &&
+                    !request.getEndDate().isBefore(existing.getStartDate());
+
+                if (!dateOverlap) continue;
+
+                if (isTimeConflict(request.getTime(), existing.getTime())) {
+                    throw new BadRequestException(
+                        "Trainer already has another active batch during this time."
+                    );
+                }
+            }
+        }
+
+        // =========================
+        // LAB CONFLICT CHECK
+        // =========================
+        List<Batch> labBatches =
+            batchRepository.findByLabNoAndStatusNot(
+                request.getLabNo(),
+                BatchStatus.COMPLETED
+            );
+
+        for (Batch existing : labBatches) {
+
+            boolean dateOverlap =
+                !request.getStartDate().isAfter(existing.getEndDate()) &&
+                !request.getEndDate().isBefore(existing.getStartDate());
+
+            if (!dateOverlap) continue;
+
+            if (isTimeConflict(request.getTime(), existing.getTime())) {
+                throw new BadRequestException(
+                    "Lab already occupied during this time."
+                );
+            }
+        }
+
+        // =========================
+        // SAVE ONLY AFTER VALIDATION
+        // =========================
         Batch savedBatch = batchRepository.save(batch);
 
-        // 🔥 EMAIL IF TRAINER EXISTS
+        // =========================
+        // EMAIL
+        // =========================
         if (trainer != null) {
             try {
                 emailService.sendBatchEmail(
@@ -179,7 +239,6 @@ public class AdminService {
 
         return BatchMapper.toResponse(savedBatch);
     }
-
     // ================= DASHBOARD =================
 
     public DashboardResponse getDashboard() {
@@ -228,7 +287,69 @@ public class AdminService {
         Batch batch = batchRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Batch not found"));
 
-        // ✅ Update fields (same as trainer)
+        // Get assigned trainer
+        User trainer = batch.getTrainer();
+
+        // =========================
+        // LAB CONFLICT CHECK
+        // =========================
+        List<Batch> labBatches =
+            batchRepository.findByLabNoAndStatusNot(
+                request.getLabNo(),
+                BatchStatus.COMPLETED
+            );
+
+        for (Batch existing : labBatches) {
+
+            // Skip current batch
+            if (existing.getId().equals(batch.getId())) continue;
+
+            boolean dateOverlap =
+                !request.getStartDate().isAfter(existing.getEndDate()) &&
+                !request.getEndDate().isBefore(existing.getStartDate());
+
+            if (!dateOverlap) continue;
+
+            if (isTimeConflict(request.getTime(), existing.getTime())) {
+                throw new BadRequestException(
+                    "Lab already occupied during this time."
+                );
+            }
+        }
+
+        // =========================
+        // TRAINER CONFLICT CHECK
+        // =========================
+        if (trainer != null) {
+
+            List<Batch> activeBatches =
+                batchRepository.findByTrainerAndStatusNot(
+                    trainer,
+                    BatchStatus.COMPLETED
+                );
+
+            for (Batch existing : activeBatches) {
+
+                // Skip current batch
+                if (existing.getId().equals(batch.getId())) continue;
+
+                boolean dateOverlap =
+                    !request.getStartDate().isAfter(existing.getEndDate()) &&
+                    !request.getEndDate().isBefore(existing.getStartDate());
+
+                if (!dateOverlap) continue;
+
+                if (isTimeConflict(request.getTime(), existing.getTime())) {
+                    throw new BadRequestException(
+                        "Trainer already has another active batch during this time."
+                    );
+                }
+            }
+        }
+
+        // =========================
+        // UPDATE FIELDS
+        // =========================
         batch.setDomainName(request.getDomainName());
         batch.setStartDate(request.getStartDate());
         batch.setEndDate(request.getEndDate());
@@ -239,5 +360,37 @@ public class AdminService {
         Batch updated = batchRepository.save(batch);
 
         return BatchMapper.toResponse(updated);
+    }
+    private boolean isTimeConflict(String newTime, String existingTime) {
+
+        String[] newParts = newTime.split("-");
+        String[] oldParts = existingTime.split("-");
+
+        int newStart = convertToMinutes(newParts[0].trim());
+        int newEnd   = convertToMinutes(newParts[1].trim());
+
+        int oldStart = convertToMinutes(oldParts[0].trim());
+        int oldEnd   = convertToMinutes(oldParts[1].trim());
+
+        return newStart < oldEnd && newEnd > oldStart;
+    }
+
+    private int convertToMinutes(String time) {
+        time = time.trim().toUpperCase();
+
+        boolean isPM = time.contains("PM");
+        boolean isAM = time.contains("AM");
+
+        time = time.replace("AM", "").replace("PM", "").trim();
+
+        String[] parts = time.split(":");
+
+        int hour   = Integer.parseInt(parts[0].trim());
+        int minute = Integer.parseInt(parts[1].trim()); // ✅ parts[1] is now clean "00", not "00 - 17"
+
+        if (isPM && hour != 12) hour += 12;
+        if (isAM && hour == 12) hour = 0;
+
+        return hour * 60 + minute;
     }
 }

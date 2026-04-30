@@ -237,20 +237,15 @@
 			<div class="flex items-center gap-6">
 				<!-- Date Range Picker Mock -->
 				
-				<div class="flex items-center gap-4 border-l border-outline-variant/30 pl-6">
-					<button class="p-2 rounded-full text-slate-500 hover:bg-slate-200/50 active:scale-95 duration-150">
-						<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-					</button>
-					<button
-						class="flex items-center gap-2 p-1 pr-3 rounded-full hover:bg-slate-200/50 active:scale-95 duration-150 group">
-						<div
-							class="h-8 w-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container text-xs font-bold">
-							JD</div>
-						<span class="text-sm font-semibold text-slate-900">John Doe</span>
-					</button>
-				</div>
+				<div class="flex items-center gap-6">
+								
+								<button onclick="logout()"
+									class="text-[#0d7377] font-bold hover:bg-[#c9e9ea] px-4 py-2 rounded transition-colors uppercase">Logout</button>
+							
+							</div>
 			</div>
 		</header>
+		
 		<div class="p-8 space-y-8 max-w-[1600px] mx-auto">
 			<!-- Quick Actions & Generation -->
 		
@@ -262,9 +257,8 @@
 						<div class="p-2 bg-primary/10 rounded-lg text-primary">
 							<span class="material-symbols-outlined" data-icon="task_alt">task_alt</span>
 						</div>
-						<span
-							class="text-[10px] font-bold text-teal-600 bg-teal-50 px-2 py-1 rounded-full uppercase tracking-tighter">+12.5%</span>
-					</div>
+						
+						</div>
 					<p class="text-xs font-label uppercase tracking-widest text-on-surface-variant mb-1">Total Batches
 						Completed</p>
 					<h4 id="totalBatches" class="text-3xl font-display font-extrabold text-on-surface">0</h4>
@@ -275,9 +269,7 @@
 						<div class="p-2 bg-secondary/10 rounded-lg text-secondary">
 							<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
 						</div>
-						<span
-							class="text-[10px] font-bold text-teal-600 bg-teal-50 px-2 py-1 rounded-full uppercase tracking-tighter">Target:
-							95%</span>
+						
 					</div>
 					<p class="text-xs font-label uppercase tracking-widest text-on-surface-variant mb-1">Average
 						Completion Rate</p>
@@ -294,14 +286,9 @@
 					<p class="text-xs font-label uppercase tracking-widest text-on-surface-variant mb-1">Top Performing
 						Trainer</p>
 					<div class="flex items-center gap-3 mt-1">
-						<div class="h-10 w-10 rounded-full bg-zinc-200 overflow-hidden">
-							<img alt="Marcus Chen" class="w-full h-full object-cover"
-								data-alt="headshot of a middle-aged professional man smiling in a corporate setting with soft natural light"
-								src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTIWzkROrBej65s2gl7t1YalC8-apeQnfV0oLbQSuC9srUgLd3e3EcB0CfWln_Hb3TyHxWkP4lIOvCczvqxsbj1fTWPOPgu7g7mdZGCDT4znVElQxdxmlWm3SzLsnngYHXgnfTDQTaoZehLaoJnXZMR0mfRHKH5HDbk91psye58ckN2pLhlutYftQEh0hzXHS-40qPY7XhpbMo2GAs2YcGqkCqpj3h8Jg-93Assv9ttZG9u8sJ5NYO_OWm3b1tt3vuUyYYWbTsjE8" />
-						</div>
+						
 						<div>
 							<h4 id="topTrainer" class="text-lg font-headline font-bold text-on-surface">N/A</h4>
-							<p class="text-[10px] text-primary font-bold">142 Batches Lead</p>
 						</div>
 					</div>
 				</div>
