@@ -101,6 +101,173 @@
     body {
       min-height: max(884px, 100dvh);
     }
+	/* ===== Smooth Page Fade In ===== */
+	body {
+	  animation: fadeIn 0.8s ease-in-out;
+	}
+
+	@keyframes fadeIn {
+	  from {
+	    opacity: 0;
+	    transform: translateY(10px);
+	  }
+	  to {
+	    opacity: 1;
+	    transform: translateY(0);
+	  }
+	}
+
+	/* ===== Card Border + Glow ===== */
+	main {
+	  border: 1px solid rgba(190, 201, 201, 0.3);
+	  transition: all 0.3s ease;
+	}
+
+	main:hover {
+	  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+	}
+
+	/* ===== Input Field Animation ===== */
+	input {
+	  transition: all 0.3s ease;
+	}
+
+	input:focus {
+	  border: 1px solid #0d7377 !important;
+	  box-shadow: 0 0 0 3px rgba(13, 115, 119, 0.15);
+	  transform: scale(1.02);
+	}
+
+	/* ===== Button Hover Animation ===== */
+	button[type="submit"] {
+	  position: relative;
+	  overflow: hidden;
+	}
+
+	button[type="submit"]::after {
+	  content: "";
+	  position: absolute;
+	  width: 300%;
+	  height: 300%;
+	  top: -100%;
+	  left: -100%;
+	  background: rgba(255, 255, 255, 0.08);
+	  transform: rotate(25deg);
+	  transition: all 0.5s ease;
+	}
+
+	button[type="submit"]:hover::after {
+	  top: 0;
+	  left: 0;
+	}
+
+	/* ===== Left Panel Floating Effect ===== */
+	.md\:col-span-5 {
+	  border-right: 1px solid rgba(255, 255, 255, 0.08);
+	  animation: floatPanel 6s ease-in-out infinite;
+	}
+
+	@keyframes floatPanel {
+	  0%, 100% {
+	    transform: translateY(0px);
+	  }
+	  50% {
+	    transform: translateY(-8px);
+	  }
+	}
+
+	/* ===== Avatar Card Glow ===== */
+	.ghost-border {
+	  transition: all 0.3s ease;
+	}
+
+	.ghost-border:hover {
+	  border: 1px solid rgba(255, 255, 255, 0.2);
+	  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+	}
+
+	/* ===== Links Hover Effect ===== */
+	a {
+	  position: relative;
+	}
+
+	a::after {
+	  content: "";
+	  position: absolute;
+	  width: 0%;
+	  height: 2px;
+	  bottom: -2px;
+	  left: 0;
+	  background: #0d7377;
+	  transition: 0.3s ease;
+	}
+
+	a:hover::after {
+	  width: 100%;
+	}
+
+	/* ===== Checkbox Styling ===== */
+	input[type="checkbox"] {
+	  cursor: pointer;
+	  transition: 0.2s ease;
+	}
+
+	input[type="checkbox"]:hover {
+	  transform: scale(1.1);
+	}
+
+	/* ===== Subtle Background Animation ===== */
+	body::before {
+	  content: "";
+	  position: fixed;
+	  top: -50%;
+	  left: -50%;
+	  width: 200%;
+	  height: 200%;
+	  background: radial-gradient(circle, rgba(13,115,119,0.05) 0%, transparent 60%);
+	  animation: moveBg 12s linear infinite;
+	  z-index: -1;
+	}
+
+	@keyframes moveBg {
+	  0% {
+	    transform: rotate(0deg);
+	  }
+	  100% {
+	    transform: rotate(360deg);
+	  }
+	}
+	/*master*/
+	/* ===== Heading Animation (Always Visible) ===== */
+	h1 {
+	  animation: softSlide 1s ease-out;
+	}
+
+	/* Smooth slight movement (no hiding) */
+	@keyframes softSlide {
+	  0% {
+	    transform: translateY(20px);
+	  }
+	  100% {
+	    transform: translateY(0);
+	  }
+	}
+
+	/* Highlight word animation (batches) */
+	h1 span {
+	  display: inline-block;
+	  animation: glowPulse 2s ease-in-out infinite alternate;
+	}
+
+	/* Glow effect */
+	@keyframes glowPulse {
+	  from {
+	    text-shadow: 0 0 4px rgba(157, 240, 244, 0.3);
+	  }
+	  to {
+	    text-shadow: 0 0 12px rgba(157, 240, 244, 0.9);
+	  }
+	}
   </style>
   </head>
 <body class="bg-surface font-body text-on-surface min-h-screen flex items-center justify-center p-6">
@@ -118,10 +285,10 @@
 <div class="w-10 h-10 bg-primary-fixed rounded flex items-center justify-center">
 <span class="material-symbols-outlined text-on-primary-fixed" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
 </div>
-<span class="font-headline text-lg font-bold tracking-tighter text-surface-container-lowest">Precision Ledger</span>
+<span class="font-headline text-lg font-bold tracking-tighter text-surface-container-lowest">Fortune Cloud</span>
 </div>
 <h1 class="font-headline text-4xl font-extrabold text-white leading-tight mb-6">
-                    Master your production <span class="text-primary-fixed">batches</span> with surgical accuracy.
+                    Simplify <span class="text-primary-fixed">batches</span> Scheduling with Accuracy.
                 </h1>
 <p class="text-surface-variant text-base leading-relaxed opacity-80 max-w-sm">
                     Access the industry-leading ledger for real-time tracking, trainer oversight, and analytical reporting.
@@ -167,7 +334,7 @@
 <span class="material-symbols-outlined text-outline text-xl">lock</span>
 </div>
 <input class="w-full pl-12 pr-12 py-4 bg-surface rounded-xl ghost-border focus:ring-0 focus:border-primary-container text-on-surface placeholder:text-outline/50 transition-all" id="password" name="password" placeholder="••••••••••••" required="" type="password"/>
-<button class="absolute inset-y-0 right-0 pr-4 flex items-center text-outline hover:text-on-surface-variant transition-colors" type="button">
+<button id="togglePassword" class="absolute inset-y-0 right-0 pr-4 flex items-center text-outline hover:text-on-surface-variant transition-colors" type="button">
 <span class="material-symbols-outlined text-xl">visibility</span>
 </button>
 </div>
@@ -187,7 +354,7 @@
 </form>
 <!-- Footer Links -->
 <div class="mt-12 pt-8 border-t border-surface-container flex flex-col sm:flex-row justify-between items-center gap-4">
-<p class="text-xs text-outline">© 2024 Precision Ledger. All rights reserved.</p>
+<p class="text-xs text-outline">© 2024 Fortune Cloud. All rights reserved.</p>
 <div class="flex gap-6">
 <a class="text-xs font-medium text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
 <a class="text-xs font-medium text-on-surface-variant hover:text-primary transition-colors" href="#">Security</a>
@@ -207,7 +374,7 @@ function loginUser(event) {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
-    fetch("http://localhost:8080/api/auth/login", {
+    fetch("/api/auth/login", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -224,23 +391,36 @@ function loginUser(event) {
         return response.json();
     })
     .then(data => {
-        console.log(data);
-
-        // ✅ Save token
         localStorage.setItem("token", data.token);
-
-        // ✅ Save role
         localStorage.setItem("role", data.role);
+        localStorage.setItem("name", data.name || "");
+        localStorage.setItem("userId", data.userId || "");
 
-        alert("Login Successful ✅");
-
-        // ✅ Redirect
-        window.location.href = "dashboard.html";
+        if (data.role === "ADMIN") {
+            window.location.href = "dashboard.html";
+            return;
+        }
+        if (data.role === "TRAINER") {
+            window.location.href = "Trainerdashboard.html";
+            return;
+        }
+        window.location.href = "index.html";
     })
     .catch(error => {
         alert("Invalid Email or Password ❌");
         console.error(error);
     });
 }
+
+const toggleBtn = document.getElementById("togglePassword");
+const passwordInput = document.getElementById("password");
+
+toggleBtn.addEventListener("click", function () {
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+    } else {
+        passwordInput.type = "password";
+    }
+});
 </script>
 </body></html>

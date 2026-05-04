@@ -32,7 +32,8 @@ public class Batch {
     @Column(nullable = false)
     private BatchStatus status;
 
-    @Column(name = "time", nullable = false)
+ // To this:
+    @Column(name = "`time`", nullable = false)   // MySQL
     private String time;
 
     @Column(name = "lab_no", nullable = false)

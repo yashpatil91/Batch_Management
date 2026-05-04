@@ -1,14 +1,19 @@
 package com.batchmanagement.backend.controller;
 
 import com.batchmanagement.backend.dto.admin.AssignBatchRequest;
+import com.batchmanagement.backend.dto.admin.CreateBatchRequest;
 import com.batchmanagement.backend.dto.admin.DashboardResponse;
 import com.batchmanagement.backend.dto.common.BatchResponse;
 import com.batchmanagement.backend.dto.common.UserCreateRequest;
 import com.batchmanagement.backend.dto.common.UserResponse;
 import com.batchmanagement.backend.dto.common.UserUpdateRequest;
 import com.batchmanagement.backend.service.AdminService;
+import com.batchmanagement.backend.service.EmailService;
+
 import jakarta.validation.Valid;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -70,8 +75,43 @@ public class AdminController {
         return ResponseEntity.ok(adminService.assignBatch(request));
     }
 
+    @PostMapping("/batches")
+    public ResponseEntity<BatchResponse> createBatch(@Valid @RequestBody CreateBatchRequest request) {
+        return ResponseEntity.ok(adminService.createBatch(request));
+    }
+
     @GetMapping("/dashboard")
     public ResponseEntity<DashboardResponse> getDashboard() {
         return ResponseEntity.ok(adminService.getDashboard());
+    }
+    @Autowired
+    private EmailService emailService;
+
+    @GetMapping("/test-email")
+    public String testEmail() {
+
+        emailService.sendEmail(
+            "yourgmail@gmail.com",   // 👈 YOUR EMAIL HERE
+            "Test Email",
+            "Spring Boot Email Working"
+        );
+
+        return "Email Sent";
+    }
+    
+    //delete batch
+    @DeleteMapping("/batches/{id}")
+    public ResponseEntity<Void> deleteBatch(@PathVariable Long id) {
+        adminService.deleteBatch(id);
+        return ResponseEntity.noContent().build();
+    }
+    
+    //edit batch
+    @PutMapping("/batches/{id}")
+    public ResponseEntity<BatchResponse> updateBatch(
+            @PathVariable Long id,
+            @Valid @RequestBody CreateBatchRequest request
+    ) {
+        return ResponseEntity.ok(adminService.updateBatch(id, request));
     }
 }

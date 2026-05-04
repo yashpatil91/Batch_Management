@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yash Patil | Java Developer</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#0a0a0f;
+  --card:#111122;
+  --indigo:#6366f1;
+  --pink:#ec4899;
+  --cyan:#22d3ee;
+}
+body{
+  font-family:'DM Sans';
+  background:var(--bg);
+  color:#fff;
+  margin:0;
+}
+section{padding:80px 20px;max-width:1100px;margin:auto}
+h1,h2{font-family:'Syne'}
+h2{color:var(--cyan)}
+
+nav{
+  position:fixed;width:100%;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(10px);
+  display:flex;justify-content:center;
+  padding:15px;
+}
+nav a{color:#fff;margin:0 15px;text-decoration:none}
+
+/* HERO */
+.hero{
+  text-align:center;
+  padding-top:120px;
+}
+.hero h1{
+  font-size:48px;
+  background:linear-gradient(90deg,var(--indigo),var(--pink));
+  -webkit-background-clip:text;
+  color:transparent;
+}
+.tagline{
+  font-size:18px;
+  opacity:0.9;
+  margin:15px 0;
+}
+.btn{
+  padding:10px 20px;
+  border:none;
+  border-radius:20px;
+  margin:10px;
+  background:var(--indigo);
+  color:#fff;
+  cursor:pointer;
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+}
+
+/* CARD */
+.card{
+  background:var(--card);
+  padding:20px;
+  border-radius:12px;
+  transition:.3s;
+}
+.card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 0 20px var(--pink);
+}
+
+/* PROJECT */
+.project img{
+  width:100%;
+  border-radius:10px;
+  margin-bottom:10px;
+}
+
+/* BADGES */
+.badge{
+  display:inline-block;
+  background:rgba(255,255,255,0.1);
+  padding:5px 10px;
+  margin:5px;
+  border-radius:20px;
+  font-size:12px;
+}
+
+/* METRICS */
+.metrics{
+  display:flex;
+  justify-content:center;
+  gap:30px;
+  margin-top:20px;
+}
+.metric{
+  text-align:center;
+}
+.metric h3{color:var(--cyan)}
+</style>
+</head>
+
+<body>
+
+<nav>
+<a href="#projects">Projects</a>
+<a href="#skills">Skills</a>
+<a href="#contact">Contact</a>
+</nav>
+
+<section class="hero">
+<h1>Yash Patil</h1>
+
+<p class="tagline">
+Java Developer specializing in scalable backend systems using Spring Boot & REST APIs.
+</p>
+
+<a href="Yash_Patil_Resume.pdf" download>
+<button class="btn">⬇ Download Resume</button>
+</a>
+
+<a href="#projects">
+<button class="btn">🚀 View Projects</button>
+</a>
+
+<div class="metrics">
+<div class="metric">
+<h3>2+</h3>
+<p>Projects</p>
+</div>
+<div class="metric">
+<h3>30%</h3>
+<p>Automation Efficiency</p>
+</div>
+<div class="metric">
+<h3>REST</h3>
+<p>API Focus</p>
+</div>
+</div>
+</section>
+
+<section id="projects">
+<h2>Projects</h2>
+
+<div class="grid">
+
+<div class="card project">
+<img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71">
+<h3>Batch Management System</h3>
+
+<p><b>Problem:</b> Manual batch tracking was inefficient</p>
+<p><b>Solution:</b> Built REST-based backend with automation</p>
+<p><b>Impact:</b> Reduced manual work by ~30%</p>
+
+<div>
+<span class="badge">Spring Boot</span>
+<span class="badge">MySQL</span>
+<span class="badge">REST API</span>
+</div>
+</div>
+
+<div class="card project">
+<img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9">
+<h3>Salon Connect</h3>
+
+<p><b>Problem:</b> Booking conflicts & manual scheduling</p>
+<p><b>Solution:</b> Slot-based system + multi-role dashboards</p>
+<p><b>Impact:</b> Improved booking accuracy & user experience</p>
+
+<div>
+<span class="badge">JSP</span>
+<span class="badge">Servlets</span>
+<span class="badge">MySQL</span>
+</div>
+
+<a href="https://salonconnect-1-g2j8.onrender.com" target="_blank">
+<button class="btn">Live Demo</button>
+</a>
+
+</div>
+
+</div>
+</section>
+
+<section id="skills">
+<h2>Skills</h2>
+
+<div class="card">
+<span class="badge">Java</span>
+<span class="badge">Spring Boot</span>
+<span class="badge">Hibernate</span>
+<span class="badge">JDBC</span>
+<span class="badge">MySQL</span>
+<span class="badge">REST API</span>
+<span class="badge">HTML</span>
+<span class="badge">CSS</span>
+<span class="badge">JavaScript</span>
+</div>
+
+</section>
+
+<section id="contact">
+<h2>Contact</h2>
+
+<div class="grid">
+<div class="card">📞 9156299185</div>
+<div class="card">📧 yashpatil.ac@gmail.com</div>
+<div class="card">💻 github.com/yashpatil91</div>
+</div>
+
+</section>
+
+</body>
+</html>

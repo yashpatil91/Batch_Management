@@ -105,49 +105,202 @@
 		body {
 			min-height: max(884px, 100dvh);
 		}
+
+		/* ===== ONLY BORDER GLOW EFFECT (FIXED) ===== */
+		.bg-surface-container-lowest {
+			position: relative;
+			border-radius: 12px;
+			background: #ffffff;
+			/* keep inside clean */
+			z-index: 0;
+			overflow: hidden;
+		}
+
+		/* 🌈 Animated Border */
+		.bg-surface-container-lowest::before {
+			content: "";
+			position: absolute;
+			inset: -2px;
+			border-radius: 12px;
+			background: linear-gradient(120deg, #00f0ff, #0d7377, #81d4d8, #00f0ff);
+			background-size: 300%;
+			animation: glowMove 4s linear infinite;
+			z-index: -2;
+		}
+
+		/* 🧱 Inner white layer (so only border shows) */
+		.bg-surface-container-lowest::after {
+			content: "";
+			position: absolute;
+			inset: 2px;
+			background: #ffffff;
+			border-radius: 10px;
+			z-index: -1;
+		}
+
+		/* ✨ Animation */
+		@keyframes glowMove {
+			0% {
+				background-position: 0%
+			}
+
+			100% {
+				background-position: 300%
+			}
+		}
+
+		/* ===== KPI Numbers Animation ===== */
+		#totalBatches,
+		#activeBatches,
+		#totalTrainers,
+		#completedBatches {
+			font-size: 28px;
+			font-weight: bold;
+			color: #0d7377;
+			animation: popNumber 0.6s ease;
+		}
+
+		@keyframes popNumber {
+			0% {
+				transform: scale(0.7);
+				opacity: 0.5;
+			}
+
+			100% {
+				transform: scale(1);
+				opacity: 1;
+			}
+		}
+
+		/* ===== Table Row Hover Effect ===== */
+		tbody tr {
+			transition: all 0.3s ease;
+		}
+
+		tbody tr:hover {
+			background-color: rgba(13, 115, 119, 0.08);
+			transform: scale(1.01);
+		}
+
+		/* ===== Progress Bar Animation ===== */
+		.primary-gradient {
+			animation: progressFill 1.5s ease-in-out;
+		}
+
+		@keyframes progressFill {
+			from {
+				width: 0%;
+			}
+		}
+
+		/* ===== Button Animation ===== */
+		button {
+			transition: all 0.3s ease;
+		}
+
+		button:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 10px 25px rgba(13, 115, 119, 0.25);
+		}
+
+		/* ===== Sidebar Links Animation ===== */
+		aside a {
+			position: relative;
+			overflow: hidden;
+		}
+
+		aside a::before {
+			content: "";
+			position: absolute;
+			left: 0;
+			top: 0;
+			height: 100%;
+			width: 0%;
+			background: rgba(157, 240, 244, 0.1);
+			transition: 0.3s;
+		}
+
+		aside a:hover::before {
+			width: 100%;
+		}
+
+		/* ===== Header Sticky Smooth Effect ===== */
+		header {
+			transition: all 0.3s ease;
+		}
+
+		header:hover {
+			box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+		}
+
+		/**/
 	</style>
 </head>
 
 <body class="bg-surface font-body text-on-surface">
 	<!-- Navigation Drawer (SideNav) -->
+	<!-- Navigation Drawer (SideNav) -->
 	<aside
 		class="fixed left-0 top-0 bottom-0 z-40 flex flex-col h-screen w-64 bg-[#2d3133] shadow-xl shadow-black/10 font-['Inter'] text-sm font-medium">
+
 		<div class="p-8">
-			<h1 class="text-lg font-bold tracking-tighter text-[#f8f9fb]">Precision Ledger</h1>
+			<h1 class="text-lg font-bold tracking-tighter text-[#f8f9fb]">FORTUNE CLOUD</h1>
 		</div>
+
 		<nav class="flex-1 px-0">
+
+			<!-- ✅ Dashboard (ACTIVE) -->
 			<a class="border-l-4 border-[#9df0f4] bg-[#3f484a] text-[#9df0f4] py-3 px-6 flex items-center gap-3 transition-all"
-				href="#">
-				<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+				href="/dashboard.html">
+				<span class="material-symbols-outlined">dashboard</span>
 				Dashboard
 			</a>
+
+			<!-- Batch -->
 			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
-				href="#">
-				<span class="material-symbols-outlined" data-icon="Layers">layers</span>
+				href="/BatchDetailPage.html">
+				<span class="material-symbols-outlined">layers</span>
 				Batch Management
 			</a>
+			
+			
+
+			<!-- Trainer -->
 			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
-				href="#">
-				<span class="material-symbols-outlined" data-icon="groups">groups</span>
+				href="/TrainerManagmentpage.html">
+				<span class="material-symbols-outlined">groups</span>
 				Trainer Directory
 			</a>
+
+			<!-- Reports -->
 			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
-				href="#">
-				<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+				href="/report.html">
+				<span class="material-symbols-outlined">analytics</span>
 				Reports
 			</a>
+
+			<!-- 🆕 History -->
+			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
+				href="/HistoryPage.html">
+				<span class="material-symbols-outlined">history</span>
+				History
+			</a>
+
 		</nav>
+
+		<!-- User Section -->
 		<div class="p-6 mt-auto bg-[#3f484a]/20">
 			<div class="flex items-center gap-3">
-				<img alt="Admin User Avatar" class="w-10 h-10 rounded-full object-cover"
-					data-alt="Professional portrait of a male administrator in a modern office setting with soft background lighting"
+				<img class="w-10 h-10 rounded-full object-cover"
 					src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpmhAnvMerJrMPWPd8DCzd0yvcNpBt9GhKK92qTMcmQcXyAJ-vClCObmCFDCA4trCZLYuHsOFYLA0pn_D3_jQO-JYy5DD6TGUGwXf1sod6zy67yils_sAqt74fDEdfZd-yfxtCdWjXwq9ccZItEvEzViceUIlQXZ3s_t_x6GwQFjMaULs33j7_dj_mCfZoFPrLUtYWval97nQI-Bv94K9g85e7LuQLBz9zEy2ZpRss7ePXW4Gy2YL9IKWfPJr45MAODBkUZyXzjIQQ" />
+
 				<div class="overflow-hidden">
 					<p class="text-[#9df0f4] truncate font-semibold">Lead Administrator</p>
 					<p class="text-[#bfc8cb] text-xs truncate">System Controller</p>
 				</div>
 			</div>
 		</div>
+
 	</aside>
 	<!-- Main Content Area -->
 	<main class="ml-64 min-h-screen">
@@ -155,33 +308,35 @@
 		<header
 			class="flex justify-between items-center w-full px-8 py-4 sticky top-0 z-30 bg-[#f8f9fb] font-['Manrope'] text-sm tracking-wide uppercase">
 			<div class="flex items-center gap-4">
-				<span class="material-symbols-outlined text-[#0d7377]" data-icon="menu">menu</span>
-				<span class="text-lg font-bold tracking-tighter text-[#191c1e] lowercase">Overview</span>
+				<h1 class="text-lg font-bold tracking-tighter text-[#191c1e] font-headline">PRECISION LEDGER</h1>
+				      
 			</div>
 			<div class="flex items-center gap-6">
-				<div class="relative group">
-					<span class="material-symbols-outlined text-outline cursor-pointer"
-						data-icon="notifications">notifications</span>
-					<span class="absolute top-0 right-0 w-2 h-2 bg-tertiary rounded-full"></span>
-				</div>
+				
 				<button onclick="logout()"
 					class="text-[#0d7377] font-bold hover:bg-[#c9e9ea] px-4 py-2 rounded transition-colors uppercase">Logout</button>
+			
 			</div>
 		</header>
 		<div class="p-8 space-y-8 bg-surface-container-low">
 			<!-- Page Header & Action -->
 			<div class="flex justify-between items-end">
 				<div>
-					<h2 class="font-headline text-3xl font-bold text-on-surface tracking-tight">Executive Dashboard</h2>
+					<h2 class="font-headline text-3xl font-bold text-on-surface tracking-tight">EXECUTIVE DASHBOARD</h2>
 					<p class="text-on-surface-variant font-body">Operational metrics and batch oversight for Q3
 						Lifecycle.</p>
 				</div>
-				<button
-					class="primary-gradient text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-primary/20 scale-100 hover:scale-[1.02] active:scale-95 transition-all">
-					<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
-					Assign New Batch
+				<button onclick="window.location.href='BatchDetailPage.html'"
+				    class="primary-gradient text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">
+				    
+				    <span class="material-symbols-outlined">add_circle</span>
+				    Assign New Batch
+
 				</button>
+				
+				
 			</div>
+			
 			<!-- KPI Cards Bento Grid -->
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 				<!-- Total Batches -->
@@ -197,7 +352,7 @@
 					</div>
 				</div>
 				<!-- Active Batches -->
-				<div class="bg-surface-container-lowest p-6 rounded-xl space-y-2 border-l-4 border-primary">
+				<div class="bg-surface-container-lowest p-6 rounded-xl space-y-2 ">
 					<div class="flex justify-between items-start">
 						<span class="material-symbols-outlined text-primary p-2 bg-primary-fixed rounded-lg"
 							data-icon="rocket_launch">rocket_launch</span>
@@ -221,7 +376,7 @@
 					</div>
 				</div>
 				<!-- Completed Batches -->
-				<div class="bg-surface-container-lowest p-6 rounded-xl space-y-2">f
+				<div class="bg-surface-container-lowest p-6 rounded-xl space-y-2">
 					<div class="flex justify-between items-start">
 						<span class="material-symbols-outlined text-tertiary p-2 bg-tertiary-fixed rounded-lg"
 							data-icon="verified">verified</span>
@@ -235,18 +390,30 @@
 				</div>
 			</div>
 			<!-- Main Data Section: Asymmetric Layout -->
-			<div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+			<div class="grid grid-cols-1 xl:grid-cols-1 gap-8">
 				<!-- Batch Progress Table (Lg Column) -->
 				<div class="xl:col-span-2 bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm">
 					<div class="px-8 py-6 flex justify-between items-center border-b border-surface-container-low">
 						<h3 class="font-headline text-xl font-bold text-on-surface">Active Batch Trajectory</h3>
-						<div class="flex gap-2">
-							<span
-								class="material-symbols-outlined text-outline cursor-pointer hover:text-primary transition-colors"
-								data-icon="filter_list">filter_list</span>
-							<span
-								class="material-symbols-outlined text-outline cursor-pointer hover:text-primary transition-colors"
-								data-icon="download">download</span>
+						<div class="flex flex-col gap-1">
+				
+						<select  id ="yearFilter"" class="bg-surface-container-low border-none rounded-lg text-sm font-medium py-2.5 px-4 focus:ring-2 focus:ring-primary/20 appearance-none pr-10 relative cursor-pointer min-w-[160px]">
+						<option value="">All Years</option>
+						<option value="2026">Year: 2026</option>
+						<option value="2025">Year: 2025</option>
+						<option value="2024">Year: 2024</option>
+						<option value="2023">Year: 2023</option>
+						<option value="2022">Year: 2022</option>
+						<option value="2021">Year: 2021</option>
+
+						</select>
+						</div>
+						<div class="flex flex-col gap-1">
+						
+						<div class="relative">
+						<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+						<input id ="searchInput"class="bg-surface-container-low border-none rounded-lg text-sm font-medium py-2.5 pl-10 pr-4 focus:ring-2 focus:ring-primary/20 w-64" placeholder="Search batch or trainer..." type="text"/>
+						</div>
 						</div>
 					</div>
 					<div class="overflow-x-auto">
@@ -263,156 +430,19 @@
 							</thead>
 							<tbody id="batchTableBody" class="divide-y-0">
 							</tbody>
-								<tr class="group hover:bg-secondary-container transition-all cursor-pointer">
-									<td class="px-8 py-5">
-										<div class="font-bold text-on-surface">B-2024-ALPHA</div>
-										<div class="text-xs text-on-surface-variant">Data Engineering</div>
-									</td>
-									<td class="px-6 py-5">
-										<div class="flex items-center gap-2">
-											<div
-												class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary text-[10px] font-bold">
-												AS</div>
-											<span class="text-sm font-medium">Alan Sterling</span>
-										</div>
-									</td>
-									<td class="px-6 py-5 text-sm text-on-surface-variant font-medium">Oct 12, 2023</td>
-									<td class="px-6 py-5">
-										<span
-											class="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold uppercase tracking-tighter">In-Progress</span>
-									</td>
-									<td class="px-6 py-5 w-48">
-										<div class="flex items-center gap-3">
-											<div
-												class="flex-1 h-2 bg-surface-container-high rounded-full overflow-hidden">
-												<div class="h-full primary-gradient w-[72%]"></div>
-											</div>
-											<span class="text-xs font-bold text-on-surface">72%</span>
-										</div>
-									</td>
-								</tr>
-								<tr class="group hover:bg-secondary-container transition-all cursor-pointer">
-									<td class="px-8 py-5">
-										<div class="font-bold text-on-surface">B-2024-GAMMA</div>
-										<div class="text-xs text-on-surface-variant">Cloud Architecture</div>
-									</td>
-									<td class="px-6 py-5">
-										<div class="flex items-center gap-2">
-											<div
-												class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed-variant text-[10px] font-bold">
-												MR</div>
-											<span class="text-sm font-medium">Maria Rodriguez</span>
-										</div>
-									</td>
-									<td class="px-6 py-5 text-sm text-on-surface-variant font-medium">Nov 01, 2023</td>
-									<td class="px-6 py-5">
-										<span
-											class="px-3 py-1 bg-tertiary/10 text-tertiary rounded-full text-xs font-bold uppercase tracking-tighter">Delayed</span>
-									</td>
-									<td class="px-6 py-5">
-										<div class="flex items-center gap-3">
-											<div
-												class="flex-1 h-2 bg-surface-container-high rounded-full overflow-hidden">
-												<div class="h-full bg-tertiary w-[35%]"></div>
-											</div>
-											<span class="text-xs font-bold text-on-surface">35%</span>
-										</div>
-									</td>
-								</tr>
-								<tr class="group hover:bg-secondary-container transition-all cursor-pointer">
-									<td class="px-8 py-5">
-										<div class="font-bold text-on-surface">B-2023-ZETA</div>
-										<div class="text-xs text-on-surface-variant">Systems Security</div>
-									</td>
-									<td class="px-6 py-5">
-										<div class="flex items-center gap-2">
-											<div
-												class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary text-[10px] font-bold">
-												JH</div>
-											<span class="text-sm font-medium">James Holt</span>
-										</div>
-									</td>
-									<td class="px-6 py-5 text-sm text-on-surface-variant font-medium">Aug 15, 2023</td>
-									<td class="px-6 py-5">
-										<span
-											class="px-3 py-1 bg-secondary-fixed text-on-secondary-fixed-variant rounded-full text-xs font-bold uppercase tracking-tighter">Stabilized</span>
-									</td>
-									<td class="px-6 py-5">
-										<div class="flex items-center gap-3">
-											<div
-												class="flex-1 h-2 bg-surface-container-high rounded-full overflow-hidden">
-												<div class="h-full primary-gradient w-[94%]"></div>
-											</div>
-											<span class="text-xs font-bold text-on-surface">94%</span>
-										</div>
-									</td>
-								</tr>
-							</tbody>
+
+
 						</table>
 					</div>
 				</div>
-				<!-- Trainer Quick Stats (Sm Column) -->
-				<div class="bg-inverse-surface rounded-xl p-8 text-white space-y-6">
-					<div class="space-y-1">
-						<h3 class="font-headline text-xl font-bold text-primary-fixed">Trainer Directory</h3>
-						<p class="text-outline-variant text-xs uppercase tracking-widest">Active Mentorship
-							High-Performers</p>
-					</div>
-					<div class="space-y-4">
-						<div
-							class="flex items-center justify-between p-4 bg-surface-variant/10 rounded-lg hover:bg-surface-variant/20 transition-all cursor-pointer">
-							<div class="flex items-center gap-4">
-								<img alt="Trainer Avatar" class="w-10 h-10 rounded-lg object-cover"
-									data-alt="Close-up of a professional woman in business casual attire smiling confidently in a minimalist office"
-									src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtaZfChlqusswXLRx9506MmxEp3GJMD7MZa5OQ6S33zEXjIUyScnTtzYF4I4TcSff6oKumAdeCn470fldxs4Wp3MXNco7kONW0ksbi204P27A0-oWfBI_6OQeAyY8buWkb092FqjqR68XToYLztr4p-QxZ_cZ3fByi_50vFtuGARfhMB-GG2yRacKt7lgJI8ApPSs3GQ6xBJ5Tf_YnhhmUHOLgI8QEkqH6BNFHPncLwbDeCeOeKq4DW-EEvD1Gfj_6IpEykjqYpNNh" />
-								<div>
-									<p class="font-bold text-sm">Elena Vance</p>
-									<p class="text-[10px] text-outline-variant uppercase">3 Active Batches</p>
-								</div>
-							</div>
-							<span class="material-symbols-outlined text-primary-fixed text-sm"
-								data-icon="arrow_forward_ios">arrow_forward_ios</span>
-						</div>
-						<div
-							class="flex items-center justify-between p-4 bg-surface-variant/10 rounded-lg hover:bg-surface-variant/20 transition-all cursor-pointer">
-							<div class="flex items-center gap-4">
-								<img alt="Trainer Avatar" class="w-10 h-10 rounded-lg object-cover"
-									data-alt="Professional man with glasses looking directly at the camera with a neutral and focused expression"
-									src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJm73eCbmsOdGGgTsRCaF0ZgJ1tQx25_7AjQ2QUq03ixZrv-gXLz_X0xZkkQjnSahFWeWI7IxwNJkAUut5SPcAM2Yo4yBChENbhmU4ZPmXRQ-QmuewDKrxaIk4D7aCAUJJICM5m15Clq4RaGKekIhR6p651aWZWauNpntCinSUZRoW8g1JAfZOkxq1OIT0PbtgtHrioL0P6uxHcHc3VzGo0Gg7SZUsaNcY18U2og8IzHRRynWJEHq8mgk-mrPZErPuA6o2K8uCtikt" />
-								<div>
-									<p class="font-bold text-sm">Marcus Thorne</p>
-									<p class="text-[10px] text-outline-variant uppercase">5 Active Batches</p>
-								</div>
-							</div>
-							<span class="material-symbols-outlined text-primary-fixed text-sm"
-								data-icon="arrow_forward_ios">arrow_forward_ios</span>
-						</div>
-						<div
-							class="flex items-center justify-between p-4 bg-surface-variant/10 rounded-lg hover:bg-surface-variant/20 transition-all cursor-pointer">
-							<div class="flex items-center gap-4">
-								<img alt="Trainer Avatar" class="w-10 h-10 rounded-lg object-cover"
-									data-alt="Headshot of a focused professional woman in a modern corporate setting with bokeh background"
-									src="https://lh3.googleusercontent.com/aida-public/AB6AXuDC9qA99AMDgRf4clwtgrCZl4epUrIHOhbzv_u6YmNDSHApeTYv8vZcB_5ILe7_SmbIpMUdgsQ7DilFBkLIKT5Bre02jwIWosYw8xrzvZI2gXb3MoTPpydaR2BwNYNXnuOLPtLOIjkHPjjKHMOUN_pfeQP3hUsPH6C_W3amfop1478HBI-3IK7HEvg-gsInHOIybwr2D5MiKbQaVCq-nXfC3VBTIsV0_Uuzg2MGBdO4pU_s0UyZ8BZR1OxGW5l8OlRiBc9ohAVgBJF8" />
-								<div>
-									<p class="font-bold text-sm">Sarah Jenkins</p>
-									<p class="text-[10px] text-outline-variant uppercase">2 Active Batches</p>
-								</div>
-							</div>
-							<span class="material-symbols-outlined text-primary-fixed text-sm"
-								data-icon="arrow_forward_ios">arrow_forward_ios</span>
-						</div>
-					</div>
-					<button
-						class="w-full py-3 border border-outline-variant/30 rounded-lg text-sm font-bold text-primary-fixed hover:bg-white/5 transition-all">
-						View Full Directory
-					</button>
-				</div>
+				
 			</div>
 			<!-- Detailed Trainer Table -->
 			<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm">
 				<div class="px-8 py-6 border-b border-surface-container-low">
 					<h3 class="font-headline text-xl font-bold text-on-surface">Lead Trainer Performance</h3>
 				</div>
+				
 				<table class="w-full text-left">
 					<thead
 						class="bg-surface-container-low/50 font-label text-[10px] uppercase tracking-[0.1em] text-outline">
@@ -420,193 +450,630 @@
 							<th class="px-8 py-4 font-semibold">Trainer Profile</th>
 							<th class="px-6 py-4 font-semibold">Assigned Batches</th>
 							<th class="px-6 py-4 font-semibold">Contact</th>
-							<th class="px-6 py-4 text-right font-semibold">Management</th>
+							<!-- NEW STATUS COLUMN -->
+							<th class="px-6 py-4 font-semibold">Trainer Status</th>
+							<th class="px-6 py-4 text-center font-semibold">Management</th>
 						</tr>
 					</thead>
-					<tbody id="batchTableBody" class="divide-y-0">
-						<tr class="hover:bg-secondary-container transition-all">
-							<td class="px-8 py-5">
-								<div class="font-bold text-on-surface">Alan Sterling</div>
-								<div class="text-xs text-on-surface-variant">Senior Technical Instructor</div>
-							</td>
-							<td class="px-6 py-5">
-								<div class="flex flex-wrap gap-1">
-									<span
-										class="text-[10px] font-bold px-2 py-0.5 bg-primary-fixed text-on-primary-fixed-variant rounded">B-2024-ALPHA</span>
-									<span
-										class="text-[10px] font-bold px-2 py-0.5 bg-surface-container-high text-outline rounded">+2
-										more</span>
-								</div>
-							</td>
-							<td class="px-6 py-5 text-sm text-on-surface-variant">alan.s@ledger-system.com</td>
-							<td class="px-6 py-5 text-right">
-								<button class="p-2 text-outline hover:text-primary transition-colors">
-									<span class="material-symbols-outlined" data-icon="edit">edit</span>
-								</button>
-								<button class="p-2 text-outline hover:text-tertiary transition-colors">
-									<span class="material-symbols-outlined" data-icon="delete">delete</span>
-								</button>
-							</td>
-						</tr>
-						<tr class="hover:bg-secondary-container transition-all">
-							<td class="px-8 py-5">
-								<div class="font-bold text-on-surface">Maria Rodriguez</div>
-								<div class="text-xs text-on-surface-variant">Cloud Solutions Specialist</div>
-							</td>
-							<td class="px-6 py-5">
-								<div class="flex flex-wrap gap-1">
-									<span
-										class="text-[10px] font-bold px-2 py-0.5 bg-primary-fixed text-on-primary-fixed-variant rounded">B-2024-GAMMA</span>
-									<span
-										class="text-[10px] font-bold px-2 py-0.5 bg-primary-fixed text-on-primary-fixed-variant rounded">C-2023-DELTA</span>
-								</div>
-							</td>
-							<td class="px-6 py-5 text-sm text-on-surface-variant">m.rodriguez@cloud-edu.io</td>
-							<td class="px-6 py-5 text-right">
-								<button class="p-2 text-outline hover:text-primary transition-colors">
-									<span class="material-symbols-outlined" data-icon="edit">edit</span>
-								</button>
-								<button class="p-2 text-outline hover:text-tertiary transition-colors">
-									<span class="material-symbols-outlined" data-icon="delete">delete</span>
-								</button>
-							</td>
-						</tr>
-					</tbody>
+					<tbody id="trainerPerformanceBody" class="divide-y-0"></tbody>
 				</table>
 			</div>
 		</div>
 	</main>
 	<!-- Assign Batch Modal (Hidden by Default/Simulated Presence) -->
-	<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-on-surface/40 backdrop-blur-[4px] invisible">
-		<div class="glass-panel w-full max-w-lg rounded-xl shadow-2xl p-8 space-y-6 transform scale-95 opacity-0">
-			<div class="flex justify-between items-start">
-				<div>
-					<h2 class="font-headline text-2xl font-bold text-on-surface">Provision New Batch</h2>
-					<p class="text-sm text-on-surface-variant">Assign a technical lead to a specific training track.</p>
-				</div>
-				<button class="text-outline hover:text-on-surface">
-					<span class="material-symbols-outlined" data-icon="close">close</span>
-				</button>
-			</div>
-			<div class="space-y-4">
-				<div class="space-y-1">
-					<label class="text-xs font-bold uppercase tracking-widest text-outline">Batch Name</label>
-					<input
-						class="w-full bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-on-surface py-3"
-						placeholder="e.g. B-2024-SIGMA" type="text" />
-				</div>
-				<div class="space-y-1">
-					<label class="text-xs font-bold uppercase tracking-widest text-outline">Lead Trainer</label>
-					<select
-						class="w-full bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-on-surface py-3">
-						<option>Select a trainer...</option>
-						<option>Alan Sterling</option>
-						<option>Maria Rodriguez</option>
-						<option>James Holt</option>
-					</select>
-				</div>
-				<div class="grid grid-cols-2 gap-4">
-					<div class="space-y-1">
-						<label class="text-xs font-bold uppercase tracking-widest text-outline">Start Date</label>
-						<input
-							class="w-full bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-on-surface py-3"
-							type="date" />
-					</div>
-					<div class="space-y-1">
-						<label class="text-xs font-bold uppercase tracking-widest text-outline">Priority</label>
-						<select
-							class="w-full bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-on-surface py-3">
-							<option>Standard</option>
-							<option>Critical</option>
-							<option>Low</option>
-						</select>
-					</div>
-				</div>
-			</div>
-			<div class="flex gap-4 pt-4">
-				<button
-					class="flex-1 py-3 bg-surface-container-high text-on-surface font-bold rounded-lg hover:bg-surface-container-highest transition-all">Cancel</button>
-				<button
-					class="flex-1 py-3 primary-gradient text-white font-bold rounded-lg shadow-lg shadow-primary/20 hover:opacity-90 transition-all">Finalize
-					Assignment</button>
-			</div>
-		</div>
+	
+	<div id="batchModal"
+	     class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-on-surface/40 backdrop-blur-[4px]">
+
+	    <div class="glass-panel w-full max-w-lg rounded-xl shadow-2xl p-8 space-y-6">
+
+	        <!-- Header -->
+	        <div class="flex justify-between items-start">
+	            <div>
+	                <h2 class="font-headline text-2xl font-bold text-on-surface">Assign New Batch</h2>
+	                <p class="text-sm text-on-surface-variant">Fill details to create a new batch</p>
+	            </div>
+
+	            <button id="closeModalBtn" class="text-outline hover:text-on-surface">
+	                <span class="material-symbols-outlined">close</span>
+	            </button>
+	        </div>
+
+	        <!-- ✅ YOUR FORM -->
+	        <form id="assignBatchForm" class="space-y-5">
+
+	            <div class="space-y-1.5">
+	                <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">
+	                    Batch Name
+	                </label>
+	                <input id="batchNameInput"
+	                       class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface placeholder:text-outline-variant"
+	                       placeholder="Batch Name (existing)"
+	                       type="text"/>
+	            </div>
+
+	            <div class="grid grid-cols-2 gap-4">
+	                <div class="space-y-1.5">
+	                    <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">
+	                        Start Date
+	                    </label>
+	                    <input id="batchStartDateInput"
+	                           class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface"
+	                           type="date"/>
+	                </div>
+
+	                <div class="space-y-1.5">
+	                    <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">
+	                        End Date
+	                    </label>
+	                    <input id="batchEndDateInput"
+	                           class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface"
+	                           type="date"/>
+	                </div>
+	            </div>
+
+	            <div class="space-y-1.5">
+	                <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">
+	                    Assign Trainer
+	                </label>
+	                <select id="trainerSelectInput"
+	                        class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface">
+	                    <option value="">Select trainer...</option>
+	                </select>
+	            </div>
+
+	            <div class="space-y-1.5">
+	                <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">
+	                    Lab No / Notes
+	                </label>
+	                <textarea id="batchLabInput"
+	                          class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface placeholder:text-outline-variant"
+	                          placeholder="e.g. Lab-2"
+	                          rows="3"></textarea>
+	            </div>
+
+	            <button type="submit"
+	                    class="w-full bg-primary-container text-on-primary-container py-3 rounded-lg font-headline font-bold text-sm tracking-tight hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+	                <span class="material-symbols-outlined text-lg">add_circle</span>
+	                Initialize Batch
+	            </button>
+
+	        </form>
+
+	    </div>
 	</div>
+	
+	
+	
+		
+	
 	<script>
-	//  Check login
-	const token = localStorage.getItem("token");
+		
+		//let showAll = false;
+		let trainerData = [];
+		//const API_BASE_URL = "";
+		const API_BASE_URL = "http://localhost:8080";
+		const token = localStorage.getItem("token");
+		const role = localStorage.getItem("role");
 
-	if (!token) {
-	    alert("Please login first ❌");
-	    window.location.href = "index.html";
-	}
+		if (!token) {
+			alert("Please login first.");
+			window.location.href = "index.html";
+		}
 
-	//  Logout function
-	function logout() {
-	    localStorage.removeItem("token");
-	    localStorage.removeItem("role");
+		if (!role || role !== "ADMIN") {
+			window.location.href = role === "TRAINER" ? "Trainerdashboard.html" : "index.html";
+		}
 
-	    alert("Logged out successfully 👋");
-	    window.location.href = "index.html";
-	}
+		function authHeaders() {
+			return {
+				"Authorization": "Bearer " + token
+			};
+		}
 
-	//  Load Dashboard Stats
-	fetch("http://localhost:8080/api/admin/dashboard", {
-	    headers: {
-	        "Authorization": "Bearer " + token
-	    }
-	})
-	.then(res => {
-	    if (!res.ok) throw new Error("Failed to load dashboard");
-	    return res.json();
-	})
-	.then(data => {
-	    document.getElementById("totalBatches").innerText = data.totalBatches;
-	    document.getElementById("activeBatches").innerText = data.activeBatches;
-	    document.getElementById("totalTrainers").innerText = data.totalTrainers;
-	    document.getElementById("completedBatches").innerText = data.completedBatches;
-	})
-	.catch(err => {
-	    console.error("Dashboard Error:", err);
-	});
+		function formatDate(value) {
+			if (!value) return "N/A";
+			const parsed = new Date(value);
+			return Number.isNaN(parsed.getTime()) ? value : parsed.toLocaleDateString();
+		}
 
-	// 🔥 Load Batch Table
-	fetch("http://localhost:8080/api/admin/batches", {
-	    headers: {
-	        "Authorization": "Bearer " + token
-	    }
-	})
-	.then(res => {
-	    if (!res.ok) throw new Error("Failed to load batches");
-	    return res.json();
-	})
-	.then(data => {
-	    const tableBody = document.getElementById("batchTableBody");
+		function logout() {
+			localStorage.removeItem("token");
+			localStorage.removeItem("role");
+			localStorage.removeItem("name");
+			localStorage.removeItem("userId");
+			window.location.href = "index.html";
+		}
 
-	    if (!tableBody) {
-	        console.error("❌ batchTableBody not found in HTML");
-	        return;
-	    }
+		function setLoggedInName() {
+			const name = localStorage.getItem("name");
+			if (!name) return;
+			const targets = document.querySelectorAll("p.text-\\[\\#9df0f4\\].truncate.font-semibold");
+			targets.forEach((node) => {node.textContent = name;});
+		}
 
-	    tableBody.innerHTML = "";
+		async function loadDashboard() {
+			try {
+				const res = await fetch(`${API_BASE_URL}/api/admin/dashboard`, {headers: authHeaders()});
+				if (!res.ok) throw new Error("Failed to load dashboard");
+				const data = await res.json();
+				document.getElementById("totalBatches").innerText = data.totalBatches ?? 0;
+				document.getElementById("activeBatches").innerText = data.ongoingBatches ?? 0;
+				document.getElementById("totalTrainers").innerText = data.totalTrainers ?? 0;
+				document.getElementById("completedBatches").innerText = Math.max(
+					(data.totalBatches ?? 0) - (data.ongoingBatches ?? 0),
+					0
+				);
+			} catch (err) {
+				console.error("Dashboard Error:", err);
+			}
+		}
 
-	    data.forEach(batch => {
-	        const row = `
-	        <tr>
-	            <td>${batch.name}</td>
-	            <td>${batch.trainerName || "N/A"}</td>
-	            <td>${batch.startDate}</td>
-	            <td>${batch.status}</td>
-	            <td>${batch.progress || "0"}%</td>
-	        </tr>
-	        `;
-	        tableBody.innerHTML += row;
-	    });
-	})
-	.catch(err => {
-	    console.error("Batch Error:", err);
-	});
+		async function loadBatches() {
+			try {
+				const res = await fetch(`${API_BASE_URL}/api/admin/batches`, {headers: authHeaders()});
+				if (!res.ok) throw new Error("Failed to load batches");
+				const data = await res.json();
+				const tableBody = document.getElementById("batchTableBody");
+				tableBody.innerHTML = "";
+
+				const activeBatches = data.filter(batch => 
+				    (batch.progress ?? 0) < 100 && 
+				    String(batch.status).toUpperCase() !== "COMPLETED"
+				);
+
+				activeBatches.forEach(batch => {
+					const row = `
+						<tr class="hover:bg-secondary-container transition-all">
+							<td class="px-8 py-4 font-semibold">${batch.domainName || "N/A"}</td>
+							<td class="px-6 py-4">${batch.trainerName || "Unassigned"}</td>
+							<td class="px-6 py-4">${formatDate(batch.startDate)}</td>
+							<td class="px-6 py-4">${batch.status || "N/A"}</td>
+							<td class="px-6 py-4">${batch.progress ?? 0}%</td>
+						</tr>
+					`;
+					tableBody.insertAdjacentHTML("beforeend", row);
+				});
+			} catch (err) {
+				console.error("Batch Error:", err);
+			}
+		}
+
+		// ================= LOAD TRAINERS WITH SORTED ACTIVE BATCH COUNT =================
+		async function loadTrainers() {
+		  try {
+		    /* ===== FETCH TRAINERS ===== */
+		    const trainerRes = await fetch(`${API_BASE_URL}/api/admin/trainers`, {
+		      headers: authHeaders()
+		    });
+
+		    if (!trainerRes.ok) throw new Error("Failed to load trainers");
+
+		    const trainers = await trainerRes.json();
+
+		    /* ===== FETCH BATCHES ===== */
+		    const batchRes = await fetch(`${API_BASE_URL}/api/admin/batches`, {
+		      headers: authHeaders()
+		    });
+
+		    if (!batchRes.ok) throw new Error("Failed to load batches");
+
+		    const batches = await batchRes.json();
+
+			const trainerBody = document.getElementById("trainerPerformanceBody");
+			const quickStats = document.getElementById("trainerQuickStats");
+
+			if (!trainerBody) {
+			    console.error("trainerPerformanceBody not found");
+			    return;
+			}
+
+			trainerBody.innerHTML = "";
+
+			if (quickStats) {
+			    quickStats.innerHTML = "";
+			}
+
+			trainerBody.innerHTML = "";
+		    /* ===== CALCULATE ACTIVE BATCH COUNT ===== */
+		    const trainersWithBatchCount = trainers.map((trainer) => {
+		      const activeBatchCount = batches.filter(
+		        (batch) =>
+		          batch.trainerId === trainer.id &&
+		          (batch.progress ?? 0) < 100 &&
+		          String(batch.status).toUpperCase() !== "COMPLETED"
+		      ).length;
+
+		      return {
+		        ...trainer,
+		        activeBatchCount
+		      };
+		    });
+
+		    /* ===== SORT DESCENDING (HIGHEST FIRST) ===== */
+		    trainersWithBatchCount.sort(
+		      (a, b) => b.activeBatchCount - a.activeBatchCount
+		    );
+
+		    trainerData = trainersWithBatchCount;
+
+		    /* ===== RENDER TRAINERS ===== */
+		    trainersWithBatchCount.forEach((trainer) => {
+		      trainerBody.insertAdjacentHTML(
+		        "beforeend",
+		        `
+		        <tr class="hover:bg-secondary-container transition-all">
+
+		          <!-- Trainer Profile -->
+		          <td class="px-8 py-5">
+		            <div class="font-bold text-on-surface">
+		              ${trainer.name || "N/A"}
+		            </div>
+		            <div class="text-xs text-on-surface-variant">
+		              Trainer
+		            </div>
+		          </td>
+
+		          <!-- Active Assigned Batches -->
+		          <td class="px-6 py-5">
+		            <div class="flex flex-wrap gap-1">
+		              <span class="text-[10px] font-bold px-2 py-0.5 bg-primary-fixed text-on-primary-fixed-variant rounded">
+		                ${trainer.activeBatchCount} Batches
+		              </span>
+		            </div>
+		          </td>
+
+		          <!-- Contact -->
+		          <td class="px-6 py-5 text-sm text-on-surface-variant">
+		            ${trainer.email || "N/A"}
+		          </td>
+
+		          <!-- Trainer Status -->
+		          <td class="px-6 py-5">
+		            <select
+		              class="bg-surface-container-low border-none rounded-lg px-3 py-2 text-sm font-medium text-on-surface focus:ring-2 focus:ring-primary-fixed"
+		              onchange="updateTrainerStatus(${trainer.id}, this.value)"
+		            >
+		              <option value="ACTIVE" ${
+		                trainer.status === "ACTIVE" ? "selected" : ""
+		              }>
+		                Active
+		              </option>
+
+		              <option value="INACTIVE" ${
+		                trainer.status === "INACTIVE" ? "selected" : ""
+		              }>
+		                Inactive
+		              </option>
+		            </select>
+		          </td>
+
+				  <!-- Management -->
+				  <td class="px-6 py-5 text-center">
+				    <select
+				      class="bg-surface-container-low border-none rounded-lg px-3 py-2 text-sm font-medium text-on-surface focus:ring-2 focus:ring-primary-fixed"
+				      onchange="updateTrainerAvailability(${trainer.id}, this.value)"
+				    >
+				      <option value="LIVE" ${
+				        trainer.availability === "LIVE" ? "selected" : ""
+				      }>
+				        Live
+				      </option>
+
+				      <option value="BUSY" ${
+				        trainer.availability === "BUSY" ? "selected" : ""
+				      }>
+				        Busy
+				      </option>
+
+				      <option value="ON_LEAVE" ${
+				        trainer.availability === "ON_LEAVE" ? "selected" : ""
+				      }>
+				        On Leave
+				      </option>
+				    </select>
+				  </td>
+
+		        </tr>
+		        `
+		      );
+		    });
+
+			if (quickStats) {
+			    renderTrainerQuickStats();
+			}
+
+		  } catch (err) {
+		    console.error("Trainer Error:", err);
+		  }
+		}
+
+		
+		
+		
+		//let expanded = false;
+		
+//function renderTrainerQuickStats() {
+//    const quickStats = document.getElementById("trainerQuickStats");
+  //  quickStats.innerHTML = "";
+
+    // Estimate how many trainers fit
+//    const boxHeight = quickStats.clientHeight;
+  //  const itemHeight = 70; // approx height per trainer
+    //const count = Math.floor(boxHeight / itemHeight) || 1;
+
+//    const list = trainerData.slice(0, 3);
+
+  //  list.forEach((trainer) => {
+    //    quickStats.insertAdjacentHTML("beforeend", `
+      //      <div class="flex items-center justify-between p-4 bg-surface-variant/10 rounded-lg">
+        //        <div>
+          //          <p class="font-bold text-sm">${trainer.name || "N/A"}</p>
+            //        <p class="text-[10px] text-outline-variant uppercase">${trainer.email || "N/A"}</p>
+              //  </div>
+                //<span class="material-symbols-outlined text-primary-fixed text-sm">arrow_forward_ios</span>
+            //</div>
+    //    `);
+   // });
+//}
+
+
+		
+		function openTrainerModal() {
+		    const modal = document.getElementById("trainerModal");
+		    const list = document.getElementById("modalTrainerList");
+
+		    list.innerHTML = "";
+
+		    trainerData.forEach((trainer) => {
+		        list.insertAdjacentHTML("beforeend", `
+		            <div class="p-4 bg-[#3f484a] rounded-lg border border-[#4f5a5c] hover:bg-[#4a5456] transition-all">
+		                <p class="font-bold text-sm text-[#9df0f4]">
+		                    ${trainer.name || "N/A"}
+		                </p>
+		                <p class="text-xs text-[#bfc8cb]">
+		                    ${trainer.email || "N/A"}
+		                </p>
+		            </div>
+		        `);
+		    });
+
+		    modal.classList.remove("hidden");
+		    modal.classList.add("flex");
+		}
+
+		function closeTrainerModal() {
+		    const modal = document.getElementById("trainerModal");
+		    modal.classList.add("hidden");
+		}
+
+		
+		/* =========================
+		   DASHBOARD ACTIVE BATCH FILTER
+		   Search by:
+		   - Batch Name (domainName)
+		   - Trainer Name
+		   - Year (from startDate)
+		========================= */
+
+		const yearFilter = document.getElementById("yearFilter");
+		const searchInput = document.getElementById("searchInput");
+		const tableBody = document.getElementById("batchTableBody");
+
+		let allBatches = []; // Filled from API
+
+		// =========================
+		// GET YEAR FROM DATE
+		// =========================
+		function getYearFromDate(dateStr) {
+		    if (!dateStr) return null;
+
+		    const d = new Date(dateStr);
+		    return isNaN(d) ? null : d.getFullYear().toString();
+		}
+
+		// =========================
+		// APPLY FILTERS
+		// =========================
+		function applyDashboardFilters() {
+
+		    const selectedYear = yearFilter.value;
+		    const searchText = searchInput.value.toLowerCase().trim();
+
+		    let filtered = allBatches;
+
+		    // Only ACTIVE / ONGOING batches
+		    filtered = filtered.filter(batch =>
+		        (batch.status || "").toUpperCase() === "ONGOING"
+		    );
+
+		    // YEAR FILTER
+		    if (selectedYear) {
+		        filtered = filtered.filter(batch => {
+		            const year = getYearFromDate(batch.startDate);
+		            return year == selectedYear;
+		        });
+		    }
+
+		    // SEARCH FILTER
+		    if (searchText) {
+		        filtered = filtered.filter(batch =>
+		            (batch.domainName || "").toLowerCase().includes(searchText) ||
+		            (batch.trainerName || "").toLowerCase().includes(searchText)
+		        );
+		    }
+
+		    renderDashboardTable(filtered);
+		}
+
+		// =========================
+		// FIXED DASHBOARD PROGRESS
+		// Use syllabus/topics progress instead of date progress
+		// =========================
+
+		// =========================
+		// FIXED PROGRESS CALCULATION
+		// Supports multiple backend field names
+		// =========================
+		function calculateBatchProgress(batch) {
+
+		    /* Possible backend fields:
+		       totalTopics
+		       syllabusCount
+		       totalSyllabus
+		       totalItems
+		       topicCount
+
+		       completedTopics
+		       completedCount
+		       completedSyllabus
+		       completedItems
+		       progress
+		    */
+
+		    const totalTopics =
+		        batch.totalTopics ??
+		        batch.syllabusCount ??
+		        batch.totalSyllabus ??
+		        batch.totalItems ??
+		        batch.topicCount ??
+		        0;
+
+		    const completedTopics =
+		        batch.completedTopics ??
+		        batch.completedCount ??
+		        batch.completedSyllabus ??
+		        batch.completedItems ??
+		        null;
+
+		    // If backend already provides exact progress
+		    if (batch.progress !== undefined && batch.progress !== null) {
+		        return Math.max(0, Math.min(100, Number(batch.progress)));
+		    }
+
+		    // If no syllabus exists
+		    if (!totalTopics || totalTopics <= 0) {
+		        return 0;
+		    }
+
+		    // If completed topics exist
+		    if (completedTopics !== null) {
+		        return Math.max(
+		            0,
+		            Math.min(
+		                100,
+		                Math.round((completedTopics / totalTopics) * 100)
+		            )
+		        );
+		    }
+
+		    return 0;
+		}
+		
+		// =========================
+		// RENDER DASHBOARD TABLE
+		// =========================
+		function renderDashboardTable(records) {
+
+		    tableBody.innerHTML = "";
+
+		    if (!records.length) {
+		        tableBody.innerHTML = `
+		            <tr>
+		                <td colspan="5" class="text-center py-10 text-outline">
+		                    No active batches found
+		                </td>
+		            </tr>
+		        `;
+		        return;
+		    }
+
+			records.forEach(batch => {
+
+			    let progress = calculateBatchProgress(batch);
+
+			    tableBody.insertAdjacentHTML("beforeend", `
+			        <tr class="hover:bg-secondary-container/30 transition-colors">
+
+			            <td class="px-8 py-5 font-semibold text-on-surface">
+			                ${batch.domainName || "N/A"}
+			            </td>
+
+			            <td class="px-6 py-5 text-on-surface-variant">
+			                ${batch.trainerName || "Unassigned"}
+			            </td>
+
+			            <td class="px-6 py-5 text-on-surface-variant">
+			                ${formatDate(batch.startDate)}
+			            </td>
+
+			            <td class="px-6 py-5">
+			                <span class="px-3 py-1 rounded-full text-xs font-bold
+			                    ${batch.status === "ONGOING"
+			                        ? "bg-green-100 text-green-700"
+			                        : "bg-gray-100 text-gray-700"}">
+			                    ${batch.status || "N/A"}
+			                </span>
+			            </td>
+
+			            <td class="px-6 py-5">
+			                <div class="w-full bg-surface-container-high rounded-full h-2 overflow-hidden">
+			                    <div class="h-full bg-primary rounded-full"
+			                         style="width:${progress}%">
+			                    </div>
+			                </div>
+			                <span class="text-xs font-medium text-outline mt-1 inline-block">
+			                    ${progress}%
+			                </span>
+			            </td>
+
+			        </tr>
+			    `);
+			});
+
+			}
+		// =========================
+		// EVENT LISTENERS
+		// =========================
+		if (yearFilter) {
+		    yearFilter.addEventListener("change", applyDashboardFilters);
+		}
+
+		if (searchInput) {
+		    searchInput.addEventListener("input", applyDashboardFilters);
+		}
+		// =========================
+		// LOAD DASHBOARD DATA f
+		// =========================
+		async function loadDashboardBatches() {
+		    try {
+		        const res = await fetch(`${API_BASE_URL}/api/admin/batches`, {
+		            headers: authHeaders()
+		        });
+
+		        if (!res.ok) throw new Error("Failed to load batches");
+
+		        allBatches = await res.json();
+
+		        applyDashboardFilters();
+
+		    } catch (err) {
+		        console.error("Dashboard batch loading error:", err);
+		    }
+		}
+
+		// =========================
+		// INIT push
+		// =========================
+		
+		setLoggedInName();
+		loadDashboard();
+		loadTrainers();
+		loadDashboardBatches();
 	</script>
+	
+	
+	
 </body>
 
 </html>

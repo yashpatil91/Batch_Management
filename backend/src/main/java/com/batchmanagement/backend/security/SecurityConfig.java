@@ -42,14 +42,13 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
 
                 // ✅ Allow frontend files
-                .requestMatchers(
-                        "/",
-                        "/index.html",
-                        "/dashboard.html",
-                        "/css/**",
-                        "/js/**",
-                        "/images/**"
-                ).permitAll()
+            		.requestMatchers(
+            		        "/",
+            		        "/*.html",
+            		        "/css/**",
+            		        "/js/**",
+            		        "/images/**"
+            		).permitAll()
 
                 // ✅ Auth APIs
                 .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()

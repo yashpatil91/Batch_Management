@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+	<title>System Reports | Precision Ledger</title>
+	<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap"
+		rel="stylesheet" />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+		rel="stylesheet" />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+		rel="stylesheet" />
+	<script id="tailwind-config">
+		tailwind.config = {
+			darkMode: "class",
+			theme: {
+				extend: {
+					"colors": {
+						"on-primary-fixed-variant": "#004f52",
+						"on-primary-fixed": "#002021",
+						"surface-tint": "#00696d",
+						"primary": "#00595c",
+						"surface-container-high": "#e6e8ea",
+						"on-tertiary": "#ffffff",
+						"surface-variant": "#e0e3e5",
+						"secondary-container": "#c9e9ea",
+						"on-secondary": "#ffffff",
+						"on-tertiary-fixed-variant": "#930019",
+						"on-error-container": "#93000a",
+						"on-surface-variant": "#3e4949",
+						"surface": "#f8f9fb",
+						"on-surface": "#191c1e",
+						"outline-variant": "#bec9c9",
+						"primary-fixed": "#9df0f4",
+						"secondary": "#466365",
+						"error": "#ba1a1a",
+						"tertiary-container": "#ca1f2f",
+						"on-secondary-container": "#4c696b",
+						"surface-container": "#eceef0",
+						"error-container": "#ffdad6",
+						"surface-container-low": "#f2f4f6",
+						"primary-container": "#0d7377",
+						"on-background": "#191c1e",
+						"on-tertiary-container": "#ffe1df",
+						"surface-container-highest": "#e0e3e5",
+						"surface-dim": "#d8dadc",
+						"on-primary": "#ffffff",
+						"inverse-on-surface": "#eff1f3",
+						"secondary-fixed": "#c9e9ea",
+						"on-error": "#ffffff",
+						"inverse-primary": "#81d4d8",
+						"background": "#f8f9fb",
+						"tertiary-fixed-dim": "#ffb3af",
+						"tertiary-fixed": "#ffdad8",
+						"outline": "#6e7979",
+						"surface-container-lowest": "#ffffff",
+						"on-secondary-fixed": "#002021",
+						"on-secondary-fixed-variant": "#2f4c4d",
+						"inverse-surface": "#2d3133",
+						"primary-fixed-dim": "#81d4d8",
+						"secondary-fixed-dim": "#adccce",
+						"surface-bright": "#f8f9fb",
+						"on-tertiary-fixed": "#410006",
+						"on-primary-container": "#a2f5f9",
+						"tertiary": "#a4001d"
+					},
+					"borderRadius": {
+						"DEFAULT": "0.125rem",
+						"lg": "0.25rem",
+						"xl": "0.5rem",
+						"full": "0.75rem"
+					},
+					"fontFamily": {
+						"headline": ["Manrope"],
+						"display": ["Manrope"],
+						"body": ["Inter"],
+						"label": ["Inter"]
+					}
+				},
+			},
+		}
+	</script>
+	<style>
+	/* 🔥 AUTO GLOW BORDER (always animated) */
+	.glow-card {
+	  position: relative;
+	  border-radius: 0.75rem;
+	  overflow: hidden;
+	  z-index: 0;
+	}
+
+	.glow-card::before {
+	  content: "";
+	  position: absolute;
+	  inset: -1px;
+	  border-radius: inherit;
+	  background: linear-gradient(
+	    120deg,
+	    #0d7377,
+	    #9df0f4,
+	    #0d7377,
+	    #0d7377
+	  );
+	  background-size: 300% 300%;
+	  animation: borderMove 4s linear infinite;
+	  z-index: -1;
+	}
+
+	/* Inner background fix */
+	.glow-card::after {
+	  content: "";
+	  position: absolute;
+	  inset: 1px;
+	  background: #ffffff;
+	  border-radius: inherit;
+	  z-index: -1;
+	}
+
+	/* 🎬 Border animation */
+	@keyframes borderMove {
+	  0% { background-position: 0% 50%; }
+	  100% { background-position: 300% 50%; }
+	}
+
+	/* ✨ Floating animation (subtle auto movement) */
+	.auto-float {
+	  animation: floatCard 4s ease-in-out infinite;
+	}
+
+	@keyframes floatCard {
+	  0%, 100% { transform: translateY(0px); }
+	  50% { transform: translateY(-6px); }
+	}
+
+	/* ✨ Fade on load */
+	.fade-in {
+	  animation: fadeIn 0.6s ease forwards;
+	}
+
+	@keyframes fadeIn {
+	  from { opacity: 0; transform: translateY(10px);}
+	  to { opacity: 1; transform: translateY(0);}
+	}
+
+	/* 🔥 Table row subtle animation (no hover needed) */
+	.table-row {
+	  animation: rowFade 0.5s ease forwards;
+	}
+
+	@keyframes rowFade {
+	  from { opacity: 0; transform: translateX(-10px); }
+	  to { opacity: 1; transform: translateX(0); }
+	}
+	</style>
+</head>
+
+<body class="bg-surface text-on-surface font-body antialiased">
+	<!-- Sidebar Navigation Shell -->
+	<!-- Navigation Drawer (SideNav) -->
+	<aside
+		class="fixed left-0 top-0 bottom-0 z-40 flex flex-col h-screen w-64 bg-[#2d3133] shadow-xl shadow-black/10 font-['Inter'] text-sm font-medium">
+
+		<div class="p-8">
+			<h1 class="text-lg font-bold tracking-tighter text-[#f8f9fb]">
+				PRECISION LEDGER
+			</h1>
+		</div>
+
+		<nav class="flex-1 px-0">
+
+			<!-- Dashboard -->
+			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
+				href="/dashboard.html">
+				<span class="material-symbols-outlined">dashboard</span>
+				Dashboard
+			</a>
+
+			<!-- Batch -->
+			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
+				href="/BatchDetailPage.html">
+				<span class="material-symbols-outlined">layers</span>
+				Batch Management
+			</a>
+
+			<!-- Trainer -->
+			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
+				href="/TrainerManagmentpage.html">
+				<span class="material-symbols-outlined">groups</span>
+				Trainer Directory
+			</a>
+
+			<!-- ✅ Reports (ACTIVE) -->
+			<a class="border-l-4 border-[#9df0f4] bg-[#3f484a] text-[#9df0f4] py-3 px-6 flex items-center gap-3 transition-all"
+				href="/report.html">
+				<span class="material-symbols-outlined">analytics</span>
+				Reports
+			</a>
+
+			<!-- 🆕 History -->
+			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
+				href="/HistoryPage.html">
+				<span class="material-symbols-outlined">history</span>
+				History
+			</a>
+
+		</nav>
+
+		<!-- User Section -->
+		<div class="p-6 mt-auto bg-[#3f484a]/20">
+			<div class="flex items-center gap-3">
+				<img class="w-10 h-10 rounded-full object-cover"
+					src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpmhAnvMerJrMPWPd8DCzd0yvcNpBt9GhKK92qTMcmQcXyAJ-vClCObmCFDCA4trCZLYuHsOFYLA0pn_D3_jQO-JYy5DD6TGUGwXf1sod6zy67yils_sAqt74fDEdfZd-yfxtCdWjXwq9ccZItEvEzViceUIlQXZ3s_t_x6GwQFjMaULs33j7_dj_mCfZoFPrLUtYWval97nQI-Bv94K9g85e7LuQLBz9zEy2ZpRss7ePXW4Gy2YL9IKWfPJr45MAODBkUZyXzjIQQ" />
+
+				<div class="overflow-hidden">
+					<p class="text-[#9df0f4] truncate font-semibold">Lead Administrator</p>
+					<p class="text-[#bfc8cb] text-xs truncate">System Controller</p>
+				</div>
+			</div>
+		</div>
+
+	</aside>
+	<!-- Main Content Canvas -->
+	<main class="ml-64 min-h-screen">
+		<!-- Top Navigation Bar -->
+		<header
+			class="bg-slate-50/80 backdrop-blur-xl sticky top-0 z-40 flex justify-between items-center w-full px-8 py-4 shadow-sm">
+			<div class="flex items-center gap-4">
+				<h2 class="text-xl font-headline font-bold text-slate-900 tracking-tight">SYSTEM REPORTS</h2>
+			</div>
+			<div class="flex items-center gap-6">
+				<!-- Date Range Picker Mock -->
+				
+				<div class="flex items-center gap-6">
+								
+								<button onclick="logout()"
+									class="text-[#0d7377] font-bold hover:bg-[#c9e9ea] px-4 py-2 rounded transition-colors uppercase">Logout</button>
+							
+							</div>
+			</div>
+		</header>
+		
+		<div class="p-8 space-y-8 max-w-[1600px] mx-auto">
+			<!-- Quick Actions & Generation -->
+		
+			<!-- Analytics Cards (KPIs) -->
+			<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+				<!-- KPI 1 -->
+				<div class="bg-surface-container-lowest p-6 rounded-xl glow-card hover-lift fade-in group">
+					<div class="flex justify-between items-start mb-4">
+						<div class="p-2 bg-primary/10 rounded-lg text-primary">
+							<span class="material-symbols-outlined" data-icon="task_alt">task_alt</span>
+						</div>
+						
+						</div>
+					<p class="text-xs font-label uppercase tracking-widest text-on-surface-variant mb-1">Total Batches
+						Completed</p>
+					<h4 id="totalBatches" class="text-3xl font-display font-extrabold text-on-surface">0</h4>
+				</div>
+				<!-- KPI 2 -->
+				<div class="bg-surface-container-lowest p-6 rounded-xl glow-card hover-lift fade-in group">
+					<div class="flex justify-between items-start mb-4">
+						<div class="p-2 bg-secondary/10 rounded-lg text-secondary">
+							<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
+						</div>
+						
+					</div>
+					<p class="text-xs font-label uppercase tracking-widest text-on-surface-variant mb-1">Average
+						Completion Rate</p>
+					<h4 id="completionRate" class="text-3xl font-display font-extrabold text-on-surface">0<span
+							class="text-lg text-on-surface-variant font-normal">%</span></h4>
+				</div>
+				<!-- KPI 3 -->
+				<div class="bg-surface-container-lowest p-6 rounded-xl glow-card hover-lift fade-in group">
+					<div class="flex justify-between items-start mb-4">
+						<div class="p-2 bg-primary-container/20 rounded-lg text-primary-container">
+							<span class="material-symbols-outlined" data-icon="military_tech">military_tech</span>
+						</div>
+					</div>
+					<p class="text-xs font-label uppercase tracking-widest text-on-surface-variant mb-1">Top Performing
+						Trainer</p>
+					<div class="flex items-center gap-3 mt-1">
+						
+						<div>
+							<h4 id="topTrainer" class="text-lg font-headline font-bold text-on-surface">N/A</h4>
+						</div>
+					</div>
+				</div>
+				<!-- KPI 4 -->
+				<div class="bg-surface-container-lowest p-6 rounded-xl glow-card hover-lift fade-in group">
+					<div class="flex justify-between items-start mb-4">
+						<div class="p-2 bg-surface-container-high rounded-lg text-on-surface">
+							<span class="material-symbols-outlined" data-icon="schedule">schedule</span>
+						</div>
+					</div>
+					<p class="text-xs font-label uppercase tracking-widest text-on-surface-variant mb-1">Total Training
+						Hours</p>
+					<h4 id="trainingHours" class="text-3xl font-display font-extrabold text-on-surface">0 hrs <span
+							class="text-lg text-on-surface-variant font-normal">hrs</span></h4>
+				</div>
+			</section>
+			<!-- Data Visualizations (Bento Style) -->
+			<section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+				<!-- Monthly Enrollment Trends (Line Chart Mockup) -->
+				<div class="lg:col-span-2 bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10 glow-card hover-lift fade-in">
+					<div class="flex justify-between items-end mb-10">
+						<div>
+							<h3>Monthly Enrollment Trends</h3>
+
+
+							<p class="text-sm text-on-surface-variant">User registration volume for current fiscal year
+							</p>
+						</div>
+						
+					</div>
+					<!-- Chart Mockup -->
+					<div style="height:420px; display:flex; justify-content:center; align-items:center;">
+						<canvas id="enrollmentChart"></canvas>
+					</div>
+
+					<!-- ✅ CORRECT PLACE -->
+
+				</div>
+				<!-- Batch Success Rate (Bar Chart Mockup) -->
+				<div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10 glow-card hover-lift fade-in">
+					<div class="mb-6">
+						<h3 class="text-xl font-headline font-bold text-on-surface">Batch Progress Overview</h3>
+						<p class="text-sm text-on-surface-variant">Live progress of all batches</p>
+					</div>
+
+
+					<div id="reportBatchProgress" class="space-y-4 max-h-[350px] overflow-y-auto custom-scrollbar">
+					</div>
+				</div>
+			</section>
+			<!-- Recent Reports Table -->
+			<section class="bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/10 shadow-sm glow-card fade-in">
+				<div class="p-6 border-b border-outline-variant/10 flex justify-between items-center">
+					<h3 class="text-lg font-headline font-bold text-on-surface">Recent Reports</h3>
+					<div onclick="window.location.href='HistoryPage.html'"
+						class="flex items-center gap-2 text-primary cursor-pointer hover:underline text-sm font-bold">
+
+						View All History
+						<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+					</div>
+				</div>
+				<div class="overflow-x-auto">
+					<table class="w-full text-left border-collapse">
+						<thead class="bg-surface-container-low">
+							<tr class="table-row">
+								<th
+									class="px-6 py-4 text-[10px] font-label font-bold uppercase tracking-widest text-outline">
+									Report Name</th>
+								<th
+									class="px-6 py-4 text-[10px] font-label font-bold uppercase tracking-widest text-outline">
+									Type</th>
+								<th
+									class="px-6 py-4 text-[10px] font-label font-bold uppercase tracking-widest text-outline">
+									Date Generated</th>
+								<th
+									class="px-6 py-4 text-[10px] font-label font-bold uppercase tracking-widest text-outline">
+									Status</th>
+								<th
+									class="px-6 py-4 text-[10px] font-label font-bold uppercase tracking-widest text-outline text-right">
+									Actions</th>
+							</tr>
+						</thead>
+						<tbody id="reportHistoryTable" class="divide-y divide-outline-variant/10">
+						</tbody>
+
+						</tbody>
+					</table>
+				</div>
+			</section>
+		</div>
+		<!-- Footer / Credits (Subtle) -->
+		<!--<footer class="p-8 border-t border-outline-variant/10 text-center">
+			<p class="text-xs text-on-surface-variant font-medium">Precision Ledger Batch Management System © 2023.
+				Generated by Corporate Analytics Engine.</p>
+		</footer>-->
+	</main>
+	<!-- FAB (Suppressed on Details/Reports but kept here for potential global interaction if needed, hidden by default per rules) -->
+	<button
+		class="fixed bottom-8 right-8 bg-primary-container text-on-primary-container h-14 w-14 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50 hidden">
+		<span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
+	</button>
+	<script>
+		const API_BASE = "http://localhost:8080/api";
+		const token = localStorage.getItem("token");
+
+		let chartInstance = null;
+		let trainerChartInstance = null;
+
+		function loadReport() {
+			fetch(API_BASE + "/admin/dashboard", {
+				headers: {
+					"Authorization": "Bearer " + token
+				}
+			})
+				.then(res => res.json())
+				.then(data => {
+
+					// KPI
+					document.getElementById("totalBatches").innerText = data.totalBatches || 0;
+
+					document.getElementById("completionRate").innerText =
+						((data.totalBatches - data.ongoingBatches) / (data.totalBatches || 1) * 100).toFixed(1) + "%";
+
+					document.getElementById("trainingHours").innerText =
+						(data.totalBatches * 40) + " hrs";
+
+					document.getElementById("topTrainer").innerText = data.topTrainer || "Top Trainer";
+
+					loadChart(data);
+					loadBatchProgress();
+					loadTrainerChart();
+
+					// 🔥 NEW: Load history into table
+					loadReportHistory();
+				});
+		}
+
+
+		// 🔥 DOUGHNUT CHART
+		function loadChart(data) {
+
+			const ctx = document.getElementById("enrollmentChart").getContext("2d");
+
+			if (chartInstance) chartInstance.destroy();
+
+			const total = data.totalBatches || 0;
+			const ongoing = data.ongoingBatches || 0;
+			const completed = total - ongoing;
+
+			const centerTextPlugin = {
+				id: 'centerText',
+				beforeDraw(chart) {
+					const {width, height, ctx} = chart;
+
+					ctx.save();
+					ctx.font = "bold 30px sans-serif";
+					ctx.fillStyle = "#111";
+					ctx.textAlign = "center";
+					ctx.textBaseline = "middle";
+
+					ctx.fillText(total, width / 2, height / 2 - 10);
+
+					ctx.font = "14px sans-serif";
+					ctx.fillStyle = "#666";
+					ctx.fillText("Total Batches", width / 2, height / 2 + 15);
+
+					ctx.restore();
+				}
+			};
+
+			const percentagePlugin = {
+				id: 'percentageLabel',
+				afterDatasetsDraw(chart) {
+					const {ctx} = chart;
+					const dataset = chart.data.datasets[0];
+					const total = dataset.data.reduce((a, b) => a + b, 0);
+
+					chart.getDatasetMeta(0).data.forEach((arc, i) => {
+						const value = dataset.data[i];
+						const percent = ((value / total) * 100).toFixed(0) + "%";
+
+						const angle = (arc.startAngle + arc.endAngle) / 2;
+						const radius = (arc.outerRadius + arc.innerRadius) / 2;
+
+						const x = arc.x + Math.cos(angle) * radius;
+						const y = arc.y + Math.sin(angle) * radius;
+
+						ctx.fillStyle = "#fff";
+						ctx.font = "bold 12px sans-serif";
+						ctx.textAlign = "center";
+						ctx.textBaseline = "middle";
+
+						ctx.fillText(percent, x, y);
+					});
+				}
+			};
+
+			chartInstance = new Chart(ctx, {
+				type: 'doughnut',
+				data: {
+					labels: ['Ongoing', 'Completed'],
+					datasets: [{
+						data: [ongoing, completed],
+						backgroundColor: ['#f59e0b', '#22c55e'],
+						borderWidth: 0
+					}]
+				},
+				options: {
+					responsive: true,
+					cutout: '75%',
+					animation: {
+						animateRotate: true,
+						animateScale: true,
+						duration: 1200
+					},
+					plugins: {
+						legend: {position: 'bottom'}
+					}
+				},
+				plugins: [centerTextPlugin, percentagePlugin]
+			});
+		}
+
+
+		// 🔥 TRAINER CHART
+		function loadTrainerChart() {
+
+			fetch(API_BASE + "/admin/trainers-performance", {
+				headers: {Authorization: "Bearer " + token}
+			})
+				.then(res => res.json())
+				.then(data => {
+
+					const names = data.map(t => t.name);
+					const values = data.map(t => t.batchCount);
+
+					const ctx = document.getElementById("trainerChart").getContext("2d");
+
+					if (trainerChartInstance) trainerChartInstance.destroy();
+
+					trainerChartInstance = new Chart(ctx, {
+						type: 'bar',
+						data: {
+							labels: names,
+							datasets: [{
+								data: values,
+								backgroundColor: '#0d7377'
+							}]
+						},
+						options: {
+							plugins: {legend: {display: false}}
+						}
+					});
+				});
+		}
+
+
+		// 🔥 BATCH PROGRESS
+		function loadBatchProgress() {
+			fetch(API_BASE + "/admin/batches", {
+				headers: {Authorization: "Bearer " + token}
+			})
+				.then(res => res.json())
+				.then(data => {
+
+					const container = document.getElementById("reportBatchProgress");
+					if (!container) return;
+
+					container.innerHTML = "";
+
+					data.forEach(batch => {
+
+						const progress = batch.progress || 0;
+
+						let color = progress < 40 ? '#ef4444' :
+							progress < 70 ? '#f59e0b' :
+								'#22c55e';
+
+						container.innerHTML += `
+	                <div class="mb-4">
+	                    <div class="flex justify-between text-sm font-semibold">
+	                        <span>${batch.domainName}</span>
+	                        <span>${progress}%</span>
+	                    </div>
+	                    <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+	                        <div class="h-2 rounded-full"
+	                             style="width:${progress}%; background:${color}">
+	                        </div>
+	                    </div>
+	                </div>
+	            `;
+					});
+				});
+		}
+
+
+		// 🔥 NEW: HISTORY → REPORT TABLE
+		function loadReportHistory() {
+
+			const data = JSON.parse(localStorage.getItem("batchHistoryData")) || [];
+			const table = document.getElementById("reportHistoryTable");
+
+			if (!table) return;
+
+			table.innerHTML = "";
+
+			if (data.length === 0) {
+				table.innerHTML = `
+	        <tr>
+	            <td colspan="5" class="text-center py-6 text-gray-500">
+	                No data available
+	            </td>
+	        </tr>`;
+				return;
+			}
+
+			data.forEach(batch => {
+
+				const statusColor = batch.status === "ONGOING"
+					? "bg-yellow-100 text-yellow-700"
+					: "bg-green-100 text-green-700";
+
+				table.innerHTML += `
+	        <tr class="hover:bg-secondary-container/30 transition-colors">
+	            <td class="px-6 py-4 font-bold">${batch.domainName || "Batch"}</td>
+	            <td class="px-6 py-4">${batch.trainerName || "N/A"}</td>
+	            <td class="px-6 py-4">${batch.startDate ? new Date(batch.startDate).toLocaleDateString() : "N/A"}</td>
+	            <td class="px-6 py-4">${batch.endDate ? new Date(batch.endDate).toLocaleDateString() : "N/A"}</td>
+	            <td class="px-6 py-4">
+	                <span class="px-2 py-1 rounded text-xs font-bold ${statusColor}">
+	                    ${batch.status || "N/A"}
+	                </span>
+	            </td>
+	        </tr>`;
+			});
+		}
+
+
+		// LOAD
+		window.onload = loadReport;
+	</script>
+</body>
+
+</html>
