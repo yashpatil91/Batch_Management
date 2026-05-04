@@ -1,458 +1,675 @@
 <!DOCTYPE html>
+<html class="light" lang="en">
 
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "secondary-fixed": "#c9e9ea",
-                        "on-secondary": "#ffffff",
-                        "on-tertiary-fixed-variant": "#930019",
-                        "surface-container-highest": "#e0e3e5",
-                        "on-secondary-container": "#4c696b",
-                        "on-error-container": "#93000a",
-                        "surface-container-lowest": "#ffffff",
-                        "secondary-container": "#c9e9ea",
-                        "surface-variant": "#e0e3e5",
-                        "tertiary-fixed": "#ffdad8",
-                        "on-primary-fixed": "#002021",
-                        "inverse-primary": "#81d4d8",
-                        "primary": "#00595c",
-                        "surface-container": "#eceef0",
-                        "primary-fixed": "#9df0f4",
-                        "on-secondary-fixed-variant": "#2f4c4d",
-                        "secondary-fixed-dim": "#adccce",
-                        "surface-container-high": "#e6e8ea",
-                        "outline-variant": "#bec9c9",
-                        "on-error": "#ffffff",
-                        "inverse-on-surface": "#eff1f3",
-                        "background": "#f8f9fb",
-                        "tertiary": "#a4001d",
-                        "outline": "#6e7979",
-                        "on-primary": "#ffffff",
-                        "on-surface-variant": "#3e4949",
-                        "on-tertiary-container": "#ffe1df",
-                        "on-background": "#191c1e",
-                        "inverse-surface": "#2d3133",
-                        "on-tertiary": "#ffffff",
-                        "error": "#ba1a1a",
-                        "on-primary-container": "#a2f5f9",
-                        "tertiary-container": "#ca1f2f",
-                        "on-tertiary-fixed": "#410006",
-                        "on-surface": "#191c1e",
-                        "surface": "#f8f9fb",
-                        "on-secondary-fixed": "#002021",
-                        "surface-bright": "#f8f9fb",
-                        "on-primary-fixed-variant": "#004f52",
-                        "tertiary-fixed-dim": "#ffb3af",
-                        "surface-tint": "#00696d",
-                        "primary-fixed-dim": "#81d4d8",
-                        "primary-container": "#0d7377",
-                        "error-container": "#ffdad6",
-                        "secondary": "#466365",
-                        "surface-dim": "#d8dadc",
-                        "surface-container-low": "#f2f4f6"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.125rem",
-                        "lg": "0.25rem",
-                        "xl": "0.5rem",
-                        "full": "0.75rem"
-                    },
-                    "fontFamily": {
-                        "headline": ["Manrope"],
-                        "body": ["Inter"],
-                        "label": ["Inter"]
-                    }
-                },
-            },
-        }
-    </script>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-	/* 🔥 Common smooth animation */
-	.card-animate {
-	  transition: all 0.35s ease;
-	}
-	.card-animate:hover {
-	  transform: translateY(-6px);
-	  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-	}
+<head>
+	<meta charset="utf-8" />
+	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap"
+		rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+		rel="stylesheet" />
+	<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+	<script id="tailwind-config">
+		tailwind.config = {
+			darkMode: "class",
+			theme: {
+				extend: {
+					"colors": {
+						"secondary-fixed": "#c9e9ea",
+						"on-secondary": "#ffffff",
+						"on-tertiary-fixed-variant": "#930019",
+						"surface-container-highest": "#e0e3e5",
+						"on-secondary-container": "#4c696b",
+						"on-error-container": "#93000a",
+						"surface-container-lowest": "#ffffff",
+						"secondary-container": "#c9e9ea",
+						"surface-variant": "#e0e3e5",
+						"tertiary-fixed": "#ffdad8",
+						"on-primary-fixed": "#002021",
+						"inverse-primary": "#81d4d8",
+						"primary": "#00595c",
+						"surface-container": "#eceef0",
+						"primary-fixed": "#9df0f4",
+						"on-secondary-fixed-variant": "#2f4c4d",
+						"secondary-fixed-dim": "#adccce",
+						"surface-container-high": "#e6e8ea",
+						"outline-variant": "#bec9c9",
+						"on-error": "#ffffff",
+						"inverse-on-surface": "#eff1f3",
+						"background": "#f8f9fb",
+						"tertiary": "#a4001d",
+						"outline": "#6e7979",
+						"on-primary": "#ffffff",
+						"on-surface-variant": "#3e4949",
+						"on-tertiary-container": "#ffe1df",
+						"on-background": "#191c1e",
+						"inverse-surface": "#2d3133",
+						"on-tertiary": "#ffffff",
+						"error": "#ba1a1a",
+						"on-primary-container": "#a2f5f9",
+						"tertiary-container": "#ca1f2f",
+						"on-tertiary-fixed": "#410006",
+						"on-surface": "#191c1e",
+						"surface": "#f8f9fb",
+						"on-secondary-fixed": "#002021",
+						"surface-bright": "#f8f9fb",
+						"on-primary-fixed-variant": "#004f52",
+						"tertiary-fixed-dim": "#ffb3af",
+						"surface-tint": "#00696d",
+						"primary-fixed-dim": "#81d4d8",
+						"primary-container": "#0d7377",
+						"error-container": "#ffdad6",
+						"secondary": "#466365",
+						"surface-dim": "#d8dadc",
+						"surface-container-low": "#f2f4f6"
+					},
+					"borderRadius": {
+						"DEFAULT": "0.125rem",
+						"lg": "0.25rem",
+						"xl": "0.5rem",
+						"full": "0.75rem"
+					},
+					"fontFamily": {
+						"headline": ["Manrope"],
+						"body": ["Inter"],
+						"label": ["Inter"]
+					}
+				},
+			},
+		}
+	</script>
+	<style>
+		.material-symbols-outlined {
+			font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+		}
 
-	/* ✨ Always visible animated border */
-	.glow-border {
-	  position: relative;
-	  border-radius: 12px;
-	  padding: 1.5px; /* border thickness */
-	  background: linear-gradient(120deg, #00f0ff, #0d7377, #81d4d8, #00f0ff);
-	  background-size: 300%;
-	  animation: glowMove 5s linear infinite;
-	}
+		.no-scrollbar::-webkit-scrollbar {
+			display: none;
+		}
 
-	/* inner card fix */
-	.glow-border > * {
-	  border-radius: 10px;
-	}
+		.no-scrollbar {
+			-ms-overflow-style: none;
+			scrollbar-width: none;
+		}
 
-	/* 🌈 border animation */
-	@keyframes glowMove {
-	  0% { background-position: 0% }
-	  100% { background-position: 300% }
-	}
+		body {
+			min-height: max(884px, 100dvh);
+		}
 
-	/* 💡 input focus glow */
-	input:focus, textarea:focus {
-	  box-shadow: 0 0 0 2px #81d4d8;
-	}
+		.card-animate {
+			transition: all 0.35s ease;
+		}
 
-	/* ⚡ sidebar hover */
-	aside a:hover {
-	  transform: translateX(6px);
-	}
-  </style>
-  </head>
+		.card-animate:hover {
+			transform: translateY(-6px);
+			box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+		}
+
+		.glow-border {
+			position: relative;
+			border-radius: 12px;
+			padding: 1.5px;
+			background: linear-gradient(120deg, #00f0ff, #0d7377, #81d4d8, #00f0ff);
+			background-size: 300%;
+			animation: glowMove 5s linear infinite;
+		}
+
+		.glow-border>* {
+			border-radius: 10px;
+		}
+
+		@keyframes glowMove {
+			0% {
+				background-position: 0%
+			}
+
+			100% {
+				background-position: 300%
+			}
+		}
+
+		input:focus,
+		textarea:focus {
+			box-shadow: 0 0 0 2px #81d4d8;
+		}
+
+		aside a:hover {
+			transform: translateX(6px);
+		}
+
+		/* Toast */
+		#toast {
+			position: fixed;
+			bottom: 2rem;
+			right: 2rem;
+			z-index: 9999;
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			padding: 0.75rem 1.25rem;
+			border-radius: 10px;
+			font-size: 0.875rem;
+			font-weight: 600;
+			opacity: 0;
+			transform: translateY(10px);
+			transition: all 0.3s ease;
+			pointer-events: none;
+		}
+
+		#toast.show {
+			opacity: 1;
+			transform: translateY(0);
+		}
+
+		#toast.success {
+			background: #d1fae5;
+			color: #065f46;
+		}
+
+		#toast.error {
+			background: #ffdad6;
+			color: #93000a;
+		}
+	</style>
+</head>
+
 <body class="bg-background font-body text-on-surface antialiased">
-<!-- Navigation Drawer -->
-<aside class="fixed left-0 top-0 bottom-0 z-40 flex flex-col docked left-0 h-screen w-64 bg-[#2d3133] shadow-xl shadow-black/10 transition-all duration-200 ease-in-out">
-<div class="p-8">
-<div class="flex items-center gap-4 mb-10">
-<div class="w-10 h-10 rounded-lg bg-primary-fixed flex items-center justify-center">
-<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">precision_manufacturing</span>
-</div>
-<div class="flex flex-col">
-<span class="font-headline font-extrabold tracking-tighter text-white">PRECISION</span>
-<span class="text-[10px] uppercase tracking-[0.2em] text-primary-fixed font-bold">Ledger</span>
-</div>
-</div>
-<!-- Profile Header Section -->
-<div class="flex items-center gap-3 mb-8">
-<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden">
-<img class="w-full h-full object-cover" data-alt="Professional headshot of a senior administrator in a minimalist office setting, soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAj4xrYSCAix5-WqDWvGFH1JlVBK0Qag8UKb2u42DqC04vxwC0HDwtcgSEd5Xjvs-0Aou-NSI7CyJnUquwT3HBJ3l1ABsUt0eXZeEcdW_50cOIDbek7qH8CKyse64jhlC_qsu0oEKOXA4SAh2jWXJlsx7Z-hOBl8cYymELgpm_OHL8wQSqzBmiSfYWZkV_Gyo5nK-DDHYTtnTh24lT92VCK86r6ol5JH-z6URzzRopMwnjRK9o2Is0ohkWFOL4ZYPUr-HSslAeovXoC"/>
-</div>
-<div>
-<p class="font-headline text-sm font-bold text-[#9df0f4]">Lead Administrator</p>
-<p class="text-[11px] text-outline-variant font-medium uppercase tracking-wider">System Controller</p>
-</div>
-</div>
-<nav class="space-y-1">
-<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 font-['Inter'] text-sm font-medium hover:bg-[#3f484a] hover:text-white transition-all"
- href="/dashboard.html">
-<span class="material-symbols-outlined text-lg">dashboard</span>
-<span>Dashboard</span>
-</a>
-<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 font-['Inter'] text-sm font-medium hover:bg-[#3f484a] hover:text-white transition-all" 
-href="/BatchDetailPage.html">
-<span class="material-symbols-outlined text-lg">layers</span>
-<span>Batch Management</span>
-</a>
-<!-- Active Tab: Trainer Directory -->
-<a class="border-l-4 border-[#9df0f4] bg-[#3f484a] text-[#9df0f4] py-3 px-6 flex items-center gap-3 font-['Inter'] text-sm font-medium transition-all" 
-href="/TrainerManagmentpage.html">
-<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">groups</span>
-<span>Trainer Directory</span>
-</a>
-<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 font-['Inter'] text-sm font-medium hover:bg-[#3f484a] hover:text-white transition-all"
- href="#">
-<span class="material-symbols-outlined text-lg">analytics</span>
-<span>Reports</span>
-</a>
-</nav>
-</div>
-<div class="mt-auto p-8">
-<div class="bg-[#3f484a] rounded-xl p-4">
-<p class="text-[11px] uppercase tracking-widest text-[#9df0f4] font-bold mb-2">System Health</p>
-<div class="w-full bg-inverse-surface h-1.5 rounded-full overflow-hidden">
-<div class="bg-primary-fixed h-full w-[88%]"></div>
-</div>
-<p class="text-[10px] text-outline-variant mt-2">All Nodes Operational</p>
-</div>
-</div>
-</aside>
-<!-- Main Content Area -->
-<main class="ml-64 min-h-screen">
-<!-- TopAppBar -->
-<header class="flex justify-between items-center w-full px-8 py-4 bg-[#f8f9fb] docked full-width top-0 sticky z-30">
-<div class="flex items-center gap-4">
-<span class="material-symbols-outlined text-[#0d7377]">menu</span>
-<h1 class="font-['Manrope'] text-sm tracking-wide uppercase font-bold text-[#0d7377]">PRECISION LEDGER</h1>
-</div>
-<div class="flex items-center gap-6">
-<div class="relative">
-<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-sm text-outline">search</span>
-<input class="bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 text-xs w-64 focus:ring-1 focus:ring-primary-container" placeholder="Search system logs..." type="text"/>
-</div>
-<button onclick="logout()" class="font-['Manrope'] text-sm tracking-wide uppercase font-bold text-[#191c1e] hover:bg-[#c9e9ea] transition-colors px-4 py-2 rounded-lg">Logout</button>
-</div>
-</header>
-<!-- Page Content -->
-<div class="px-10 py-8 bg-surface-container-low min-h-[calc(100vh-72px)]">
-<div class="flex justify-between items-end mb-10">
-<div>
-<h2 class="font-headline text-3xl font-extrabold tracking-tight text-on-surface mb-2">TRAINER DIRECTORY</h2>
-<p class="text-on-surface-variant font-medium">Manage and audit institutional educator accounts.</p>
-</div>
-<button id="openTrainerCreate" class="bg-primary hover:bg-primary-container text-white px-6 py-3 rounded-full flex items-center gap-2 font-bold transition-all transform active:scale-95 shadow-lg shadow-primary/20">
-<span class="material-symbols-outlined">add</span>
-<span>Register New Trainer</span>
-</button>
-</div>
-<!-- Bento Grid for Stats -->
-<div class="grid grid-cols-4 gap-6 mb-10">
-<div class="glow-border card-animate"><div class="bg-surface-container-lowest p-6 rounded-xl shadow-black/5 flex flex-col gap-2">
-<p class="font-label text-[10px] uppercase tracking-widest text-outline mb-2">Total Trainers</p>
-<p id="kpiTotalTrainers" class="font-headline text-4xl font-extrabold text-on-surface">0</p>
-<div class="flex items-center gap-1 mt-2 text-primary text-xs font-bold">
-<span class="material-symbols-outlined text-xs">trending_up</span>
-<span>+12% from last month</span>
-</div>
-</div></div>
-<div class="glow-border card-animate"><div class="bg-surface-container-lowest p-6 rounded-xl shadow-black/5 flex flex-col gap-2">
-<p class="font-label text-[10px] uppercase tracking-widest text-outline mb-2">Active Sessions</p>
-<p id="kpiActiveSessions" class="font-headline text-4xl font-extrabold text-on-surface">0</p>
-<div class="flex items-center gap-1 mt-2 text-primary text-xs font-bold">
-<span class="material-symbols-outlined text-xs">sync</span>
-<span>Live across 4 regions</span>
-</div>
-</div></div>
-<div class="col-span-2 bg-gradient-to-br from-primary to-primary-container p-6 rounded-xl shadow-lg relative overflow-hidden">
-<div class="relative z-10">
-<p class="font-label text-[10px] uppercase tracking-widest text-primary-fixed mb-2">System Capacity</p>
-<p id="kpiCapacity" class="font-headline text-4xl font-extrabold text-white">0%</p>
-<div class="w-full bg-white/20 h-2 rounded-full mt-4">
-<div class="bg-primary-fixed h-full rounded-full w-[92.4%]"></div>
-</div>
-</div>
-<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-white/10 text-9xl">speed</span>
-</div>
-</div>
-<!-- CRUD Table Area -->
-<div class="glow-border card-animate"><div class="bg-surface-container-lowest p-6 rounded-xl shadow-black/5 flex flex-col gap-2">
-<div class="p-6 border-b border-surface-container flex justify-between items-center bg-surface-bright">
-<div class="relative flex-1 max-w-md">
-<span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline">filter_list</span>
-<input class="w-full bg-surface-container-low border-none rounded-lg py-3 pl-12 text-sm focus:ring-1 focus:ring-primary-container transition-all" placeholder="Filter by Name, Email or Specialization..." type="text"/>
-</div>
-<div class="flex items-center gap-3">
-<button class="p-2.5 rounded-lg border border-outline-variant/20 hover:bg-surface-container-low text-on-surface-variant transition-all">
-<span class="material-symbols-outlined">download</span>
-</button>
-<button class="p-2.5 rounded-lg border border-outline-variant/20 hover:bg-surface-container-low text-on-surface-variant transition-all">
-<span class="material-symbols-outlined">sort_by_alpha</span>
-</button>
-</div>
-</div>
-<table class="w-full border-collapse">
-<thead>
-<tr class="bg-surface-container-low/50">
-<th class="text-left py-4 px-8 font-label text-[10px] uppercase tracking-widest text-outline">Trainer Profile</th>
-<th class="text-left py-4 px-8 font-label text-[10px] uppercase tracking-widest text-outline">Contact Credentials</th>
-<th class="text-left py-4 px-8 font-label text-[10px] uppercase tracking-widest text-outline">Primary Expertise</th>
-<th class="text-left py-4 px-8 font-label text-[10px] uppercase tracking-widest text-outline">Batch Status</th>
-<th class="text-right py-4 px-8 font-label text-[10px] uppercase tracking-widest text-outline">Administrative Actions</th>
-</tr>
-</thead>
-<tbody id="trainerTableBody" class="divide-y divide-surface-container"></tbody>
-</table>
-<div class="p-6 bg-surface-container-low/30 border-t border-surface-container flex justify-between items-center">
-<p id="trainerSummaryText" class="text-xs text-on-surface-variant font-medium">Showing <span class="font-bold text-on-surface">0</span> registered accounts</p>
-<div class="flex items-center gap-2">
-<button class="px-4 py-2 text-sm font-bold text-outline hover:text-on-surface transition-all">Previous</button>
-<div class="flex items-center">
-<button class="w-8 h-8 rounded-lg bg-primary text-white font-bold text-xs">1</button>
-<button class="w-8 h-8 rounded-lg text-outline hover:bg-surface-container-high text-xs font-bold transition-all">2</button>
-<button class="w-8 h-8 rounded-lg text-outline hover:bg-surface-container-high text-xs font-bold transition-all">3</button>
-</div>
-<button class="px-4 py-2 text-sm font-bold text-primary hover:text-primary-container transition-all">Next</button>
-</div>
-</div>
-</div></div>
-</div>
-</main>
-<!-- Modal Form (Hidden by default, shown here for structure) -->
-<div id="trainerModal" class="fixed inset-0 z-50 flex items-center justify-center bg-on-surface/40 backdrop-blur-[4px] opacity-0 pointer-events-none transition-opacity">
-<div class="bg-surface-container-lowest w-full max-w-xl rounded-xl shadow-2xl overflow-hidden transform scale-95 transition-transform border border-outline-variant/10">
-<div class="p-8 border-b border-surface-container flex justify-between items-center bg-surface-bright">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-lg bg-primary-fixed flex items-center justify-center">
-<span class="material-symbols-outlined text-primary">person_add</span>
-</div>
-<div>
-<h3 class="font-headline text-xl font-extrabold text-on-surface">Register Trainer</h3>
-<p class="text-xs text-outline font-medium uppercase tracking-wider">New System Entity Creation</p>
-</div>
-</div>
-<button id="closeTrainerCreate" class="text-outline hover:text-on-surface transition-all">
-<span class="material-symbols-outlined">close</span>
-</button>
-</div>
-<div class="p-8 space-y-6">
-<div class="grid grid-cols-2 gap-6">
-<div class="space-y-2">
-<label class="block text-[11px] font-bold uppercase tracking-widest text-outline">Full Name</label>
-<input id="trainerName" class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container" placeholder="e.g. Alan Turing" type="text"/>
-</div>
-<div class="space-y-2">
-<label class="block text-[11px] font-bold uppercase tracking-widest text-outline">Internal ID</label>
-<input id="trainerInternalId" class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container" placeholder="TR-XXXXX" type="text"/>
-</div>
-</div>
-<div class="space-y-2">
-<label class="block text-[11px] font-bold uppercase tracking-widest text-outline">Educational Email</label>
-<input id="trainerEmail" class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container" placeholder="name@ledger.edu" type="email"/>
-</div>
-<div class="space-y-2">
-<label class="block text-[11px] font-bold uppercase tracking-widest text-outline">Login Password</label>
-<input id="trainerPassword" class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container" placeholder="Minimum 6 characters" type="password"/>
-</div>
-<div class="space-y-2">
-	<label class="block text-[11px] font-bold uppercase tracking-widest text-outline">
-	  Core Expertise
-	</label>
 
-	<input 
-	  type="text" 
-	  id="trainerExpertise" 
-	  placeholder="Enter expertise (e.g., AI, Cybersecurity)"
-	  class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container"
-	/>
-</div>
-</div>
-<div class="p-8 bg-surface-container-low flex justify-end gap-4">
-<button id="cancelTrainerCreate" class="px-6 py-2.5 text-sm font-bold text-on-surface-variant hover:text-on-surface transition-all">Cancel</button>
-<button id="submitTrainerCreate" class="bg-primary text-white px-8 py-2.5 rounded-full text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary-container transition-all">Establish Account</button>
-</div>
-</div>
-</div>
-<script>
-const API_BASE_URL = "";
-const token = localStorage.getItem("token");
-const role = localStorage.getItem("role");
+	<!-- Toast -->
+	<div id="toast">
+		<span id="toastIcon" class="material-symbols-outlined text-base">check_circle</span>
+		<span id="toastMsg"></span>
+	</div>
 
-if (!token) window.location.href = "index.html";
-if (!role || role !== "ADMIN") {
-  window.location.href = role === "TRAINER" ? "Trainerdashboard.html" : "index.html";
-}
+	<!-- Sidebar -->
+	<aside
+		class="fixed left-0 top-0 bottom-0 z-40 flex flex-col h-screen w-64 bg-[#2d3133] shadow-xl shadow-black/10 font-['Inter'] text-sm font-medium">
+		<div class="p-8">
+			<h1 class="text-lg font-bold tracking-tighter text-[#f8f9fb]">PRECISION LEDGER</h1>
+		</div>
+		<nav class="flex-1 px-0">
+			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
+				href="/dashboard.html">
+				<span class="material-symbols-outlined">dashboard</span>Dashboard
+			</a>
+			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
+				href="/BatchDetailPage.html">
+				<span class="material-symbols-outlined">layers</span>Batch Management
+			</a>
+			<a class="border-l-4 border-[#9df0f4] bg-[#3f484a] text-[#9df0f4] py-3 px-6 flex items-center gap-3 transition-all"
+				href="/TrainerManagmentpage.html">
+				<span class="material-symbols-outlined">groups</span>Trainer Directory
+			</a>
+			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
+				href="/report.html">
+				<span class="material-symbols-outlined">analytics</span>Reports
+			</a>
+			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
+				href="/HistoryPage.html">
+				<span class="material-symbols-outlined">history</span>History
+			</a>
+		</nav>
+		<div class="p-6 mt-auto bg-[#3f484a]/20">
+			<div class="flex items-center gap-3">
+				<img class="w-10 h-10 rounded-full object-cover"
+					src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpmhAnvMerJrMPWPd8DCzd0yvcNpBt9GhKK92qTMcmQcXyAJ-vClCObmCFDCA4trCZLYuHsOFYLA0pn_D3_jQO-JYy5DD6TGUGwXf1sod6zy67yils_sAqt74fDEdfZd-yfxtCdWjXwq9ccZItEvEzViceUIlQXZ3s_t_x6GwQFjMaULs33j7_dj_mCfZoFPrLUtYWval97nQI-Bv94K9g85e7LuQLBz9zEy2ZpRss7ePXW4Gy2YL9IKWfPJr45MAODBkUZyXzjIQQ" />
+				<div class="overflow-hidden">
+					<p class="text-[#9df0f4] truncate font-semibold">Lead Administrator</p>
+					<p class="text-[#bfc8cb] text-xs truncate">System Controller</p>
+				</div>
+			</div>
+		</div>
+	</aside>
 
-const trainerTableBody = document.getElementById("trainerTableBody");
-const trainerModal = document.getElementById("trainerModal");
+	<!-- Main -->
+	<main class="ml-64 min-h-screen">
+		<header class="flex justify-between items-center w-full px-8 py-4 bg-[#f8f9fb] top-0 sticky z-30">
+			<div class="flex items-center gap-4">
+				<span class="material-symbols-outlined text-[#0d7377]">menu</span>
+				<h1 class="font-['Manrope'] text-sm tracking-wide uppercase font-bold text-[#0d7377]">PRECISION LEDGER
+				</h1>
+			</div>
+			<button onclick="logout()"
+				class="font-['Manrope'] text-sm tracking-wide uppercase font-bold text-[#191c1e] hover:bg-[#c9e9ea] transition-colors px-4 py-2 rounded-lg">Logout</button>
+		</header>
 
-function logout() {
-  localStorage.clear();
-  window.location.href = "index.html";
-}
+		<div class="px-10 py-8 bg-surface-container-low min-h-[calc(100vh-72px)]">
+			<div class="flex justify-between items-end mb-10">
+				<div>
+					<h2 class="font-headline text-3xl font-extrabold tracking-tight text-on-surface mb-2">TRAINER
+						DIRECTORY</h2>
+					<p class="text-on-surface-variant font-medium">Manage and audit institutional educator accounts.</p>
+				</div>
+				<button id="openTrainerCreate"
+					class="bg-primary hover:bg-primary-container text-white px-6 py-3 rounded-full flex items-center gap-2 font-bold transition-all transform active:scale-95 shadow-lg shadow-primary/20">
+					<span class="material-symbols-outlined">add</span>
+					<span>Register New Trainer</span>
+				</button>
+			</div>
 
-function setLoggedInName() {
-  const name = localStorage.getItem("name");
-  if (!name) return;
-  const targets = document.querySelectorAll("h3.text-\\[\\#9df0f4\\], p.font-headline.text-sm.font-bold.text-\\[\\#9df0f4\\]");
-  targets.forEach((node) => { node.textContent = name; });
-}
+			<!-- Stats -->
+			<div class="grid grid-cols-4 gap-6 mb-10">
+				<div class="glow-border card-animate">
+					<div class="bg-surface-container-lowest p-6 rounded-xl shadow-black/5 flex flex-col gap-2">
+						<p class="font-label text-[10px] uppercase tracking-widest text-outline mb-2">Total Trainers</p>
+						<p id="kpiTotalTrainers" class="font-headline text-4xl font-extrabold text-on-surface">0</p>
+						<div class="flex items-center gap-1 mt-2 text-primary text-xs font-bold">
+							<span class="material-symbols-outlined text-xs">trending_up</span>
+						</div>
+					</div>
+				</div>
+				<div class="glow-border card-animate">
+					<div class="bg-surface-container-lowest p-6 rounded-xl shadow-black/5 flex flex-col gap-2">
+						<p class="font-label text-[10px] uppercase tracking-widest text-outline mb-2">Active Sessions
+						</p>
+						<p id="kpiActiveSessions" class="font-headline text-4xl font-extrabold text-on-surface">0</p>
+						<div class="flex items-center gap-1 mt-2 text-primary text-xs font-bold">
+							<span class="material-symbols-outlined text-xs">sync</span>
+						</div>
+					</div>
+				</div>
+				<div
+					class="col-span-2 bg-gradient-to-br from-primary to-primary-container p-6 rounded-xl shadow-lg relative overflow-hidden">
+					<div class="relative z-10">
+						<p class="font-label text-[10px] uppercase tracking-widest text-primary-fixed mb-2">System
+							Capacity</p>
+						<p id="kpiCapacity" class="font-headline text-4xl font-extrabold text-white">0%</p>
+						<div class="w-full bg-white/20 h-2 rounded-full mt-4">
+							<div class="bg-primary-fixed h-full rounded-full w-[92.4%]"></div>
+						</div>
+					</div>
+					<span
+						class="material-symbols-outlined absolute -right-4 -bottom-4 text-white/10 text-9xl">speed</span>
+				</div>
+			</div>
 
-function toggleModal(show) {
-  trainerModal.classList.toggle("opacity-0", !show);
-  trainerModal.classList.toggle("pointer-events-none", !show);
-}
+			<!-- Table -->
+			<div class="glow-border card-animate">
+				<div class="bg-surface-container-lowest p-6 rounded-xl shadow-black/5 flex flex-col gap-2">
+					<table class="w-full border-collapse">
+						<thead>
+							<tr class="bg-surface-container-low/50">
+								<th
+									class="text-left py-4 px-8 font-label text-[10px] uppercase tracking-widest text-outline">
+									Trainer Profile</th>
+								<th
+									class="text-left py-4 px-8 font-label text-[10px] uppercase tracking-widest text-outline">
+									Contact Credentials</th>
+								<th
+									class="text-left py-4 px-8 font-label text-[10px] uppercase tracking-widest text-outline">
+									Primary Expertise</th>
+								<th
+									class="text-left py-4 px-8 font-label text-[10px] uppercase tracking-widest text-outline">
+									Batch Status</th>
+								<th
+									class="text-right py-4 px-8 font-label text-[10px] uppercase tracking-widest text-outline">
+									Administrative Actions</th>
+							</tr>
+						</thead>
+						<tbody id="trainerTableBody" class="divide-y divide-surface-container"></tbody>
+					</table>
+					<div
+						class="p-6 bg-surface-container-low/30 border-t border-surface-container flex justify-between items-center">
+						<p id="trainerSummaryText" class="text-xs text-on-surface-variant font-medium">Showing <span
+								class="font-bold text-on-surface">0</span> registered accounts</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
 
-async function fetchTrainers() {
-  const res = await fetch(`${API_BASE_URL}/api/admin/trainers`, {
-    headers: { Authorization: `Bearer ${token}` }
-  });
-  if (!res.ok) throw new Error("Failed to load trainers");
-  return res.json();
-}
+	<!-- ===== CREATE MODAL ===== -->
+	<div id="trainerModal"
+		class="fixed inset-0 z-50 flex items-center justify-center bg-on-surface/40 backdrop-blur-[4px] opacity-0 pointer-events-none transition-opacity">
+		<div
+			class="bg-surface-container-lowest w-full max-w-xl rounded-xl shadow-2xl overflow-hidden transform scale-95 transition-transform border border-outline-variant/10">
+			<div class="p-8 border-b border-surface-container flex justify-between items-center bg-surface-bright">
+				<div class="flex items-center gap-3">
+					<div class="w-10 h-10 rounded-lg bg-primary-fixed flex items-center justify-center">
+						<span class="material-symbols-outlined text-primary">person_add</span>
+					</div>
+					<div>
+						<h3 class="font-headline text-xl font-extrabold text-on-surface">Register Trainer</h3>
+						<p class="text-xs text-outline font-medium uppercase tracking-wider">New System Entity Creation
+						</p>
+					</div>
+				</div>
+				<button id="closeTrainerCreate" class="text-outline hover:text-on-surface transition-all">
+					<span class="material-symbols-outlined">close</span>
+				</button>
+			</div>
+			<div class="p-8 space-y-6">
+				<div class="grid grid-cols-2 gap-6">
+					<div class="space-y-2">
+						<label class="block text-[11px] font-bold uppercase tracking-widest text-outline">Full
+							Name</label>
+						<input id="trainerName"
+							class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container"
+							placeholder="e.g. Alan Turing" type="text" />
+					</div>
+					<div class="space-y-2">
+						<label class="block text-[11px] font-bold uppercase tracking-widest text-outline">Internal
+							ID</label>
+						<input id="trainerInternalId"
+							class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container"
+							placeholder="TR-XXXXX" type="text" />
+					</div>
+				</div>
+				<div class="space-y-2">
+					<label class="block text-[11px] font-bold uppercase tracking-widest text-outline">Educational
+						Email</label>
+					<input id="trainerEmail"
+						class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container"
+						placeholder="name@ledger.edu" type="email" />
+				</div>
+				<div class="space-y-2">
+					<label class="block text-[11px] font-bold uppercase tracking-widest text-outline">Login
+						Password</label>
+					<input id="trainerPassword"
+						class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container"
+						placeholder="Minimum 6 characters" type="password" />
+				</div>
+				<div class="space-y-2">
+					<label class="block text-[11px] font-bold uppercase tracking-widest text-outline">Core
+						Expertise</label>
+					<input type="text" id="trainerExpertise" placeholder="Enter expertise (e.g., AI, Cybersecurity)"
+						class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container" />
+				</div>
+			</div>
+			<div class="p-8 bg-surface-container-low flex justify-end gap-4">
+				<button id="cancelTrainerCreate"
+					class="px-6 py-2.5 text-sm font-bold text-on-surface-variant hover:text-on-surface transition-all">Cancel</button>
+				<button id="submitTrainerCreate"
+					class="bg-primary text-white px-8 py-2.5 rounded-full text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary-container transition-all">Establish
+					Account</button>
+			</div>
+		</div>
+	</div>
 
-function renderTrainers(list) {
-  trainerTableBody.innerHTML = "";
-  list.forEach((trainer, index) => {
-    trainerTableBody.insertAdjacentHTML("beforeend", `
-      <tr class="hover:bg-secondary-container transition-all group">
-        <td class="py-5 px-8"><p class="font-bold text-on-surface">${trainer.name || "N/A"}</p><p class="text-[11px] text-outline font-medium">ID: ${trainer.id}</p></td>
-        <td class="py-5 px-8"><p class="text-sm font-medium text-on-surface">${trainer.email || "N/A"}</p></td>
-        <td class="py-5 px-8"><span class="bg-primary/10 text-primary text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">${trainer.expertise || "General"}</span></td>
-        <td class="py-5 px-8"><div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-emerald-500"></div><span class="text-sm font-semibold text-on-surface">Active</span></div></td>
-        <td class="py-5 px-8 text-right"><div class="flex items-center justify-end gap-2">
-          <button onclick="deleteTrainer(${trainer.id})" class="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-error-container hover:text-error transition-all text-outline"><span class="material-symbols-outlined text-xl">delete</span></button>
-        </div></td>
+	<!-- ===== EDIT MODAL ===== -->
+	<div id="editTrainerModal"
+		class="fixed inset-0 z-50 flex items-center justify-center bg-on-surface/40 backdrop-blur-[4px] opacity-0 pointer-events-none transition-opacity">
+		<div
+			class="bg-surface-container-lowest w-full max-w-xl rounded-xl shadow-2xl overflow-hidden border border-outline-variant/10">
+			<div class="p-8 border-b border-surface-container flex justify-between items-center bg-surface-bright">
+				<div class="flex items-center gap-3">
+					<div class="w-10 h-10 rounded-lg bg-secondary-container flex items-center justify-center">
+						<span class="material-symbols-outlined text-primary">edit</span>
+					</div>
+					<div>
+						<h3 class="font-headline text-xl font-extrabold text-on-surface">Edit Trainer</h3>
+						<p class="text-xs text-outline font-medium uppercase tracking-wider">Modify Educator Account</p>
+					</div>
+				</div>
+				<button id="closeEditModal" class="text-outline hover:text-on-surface transition-all">
+					<span class="material-symbols-outlined">close</span>
+				</button>
+			</div>
+			<div class="p-8 space-y-6">
+				<!-- Hidden field to store trainer ID -->
+				<input type="hidden" id="editTrainerId" />
+				<div class="space-y-2">
+					<label class="block text-[11px] font-bold uppercase tracking-widest text-outline">Full Name</label>
+					<input id="editTrainerName"
+						class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container"
+						placeholder="e.g. Alan Turing" type="text" />
+				</div>
+				<div class="space-y-2">
+					<label class="block text-[11px] font-bold uppercase tracking-widest text-outline">Educational
+						Email</label>
+					<input id="editTrainerEmail"
+						class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container"
+						placeholder="name@ledger.edu" type="email" />
+				</div>
+				<div class="space-y-2">
+					<label class="block text-[11px] font-bold uppercase tracking-widest text-outline">New Password <span
+							class="text-outline font-normal normal-case tracking-normal">(leave blank to keep
+							current)</span></label>
+					<input id="editTrainerPassword"
+						class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container"
+						placeholder="Enter new password or leave blank" type="password" />
+				</div>
+				<div class="space-y-2">
+					<label class="block text-[11px] font-bold uppercase tracking-widest text-outline">Core
+						Expertise</label>
+					<input id="editTrainerExpertise"
+						class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container"
+						placeholder="e.g. AI, Cybersecurity" type="text" />
+				</div>
+			</div>
+			<div class="p-8 bg-surface-container-low flex justify-end gap-4">
+				<button id="cancelEditModal"
+					class="px-6 py-2.5 text-sm font-bold text-on-surface-variant hover:text-on-surface transition-all">Cancel</button>
+				<button id="submitEditTrainer"
+					class="bg-primary text-white px-8 py-2.5 rounded-full text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary-container transition-all flex items-center gap-2">
+					<span class="material-symbols-outlined text-base">save</span>
+					Save Changes
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		const API_BASE_URL = "";
+		const token = localStorage.getItem("token");
+		const role = localStorage.getItem("role");
+
+		if (!token) window.location.href = "index.html";
+		if (!role || role !== "ADMIN") {
+			window.location.href = role === "TRAINER" ? "Trainerdashboard.html" : "index.html";
+		}
+
+		const trainerTableBody = document.getElementById("trainerTableBody");
+		const trainerModal = document.getElementById("trainerModal");
+		const editTrainerModal = document.getElementById("editTrainerModal");
+
+		/* ===== TOAST ===== */
+		function showToast(msg, type = "success") {
+			const toast = document.getElementById("toast");
+			document.getElementById("toastIcon").textContent = type === "success" ? "check_circle" : "error";
+			document.getElementById("toastMsg").textContent = msg;
+			toast.className = `show ${type}`;
+			setTimeout(() => {toast.className = "";}, 3500);
+		}
+
+		function logout() {
+			localStorage.clear();
+			window.location.href = "index.html";
+		}
+
+		/* ===== MODAL HELPERS ===== */
+		function toggleModal(show) {
+			trainerModal.classList.toggle("opacity-0", !show);
+			trainerModal.classList.toggle("pointer-events-none", !show);
+		}
+
+		function toggleEditModal(show) {
+			editTrainerModal.classList.toggle("opacity-0", !show);
+			editTrainerModal.classList.toggle("pointer-events-none", !show);
+		}
+
+		/* ===== OPEN EDIT MODAL — pre-fill data ===== */
+		function openEditModal(trainer) {
+			document.getElementById("editTrainerId").value = trainer.id;
+			document.getElementById("editTrainerName").value = trainer.name || "";
+			document.getElementById("editTrainerEmail").value = trainer.email || "";
+			document.getElementById("editTrainerPassword").value = "";
+			document.getElementById("editTrainerExpertise").value = trainer.expertise || "";
+			toggleEditModal(true);
+		}
+
+		/* ===== FETCH TRAINERS ===== */
+		async function fetchTrainers() {
+			const res = await fetch(`${API_BASE_URL}/api/admin/trainers`, {
+				headers: {Authorization: `Bearer ${token}`}
+			});
+			if (!res.ok) throw new Error("Failed to load trainers");
+			return res.json();
+		}
+
+		/* ===== RENDER TABLE ===== */
+		function renderTrainers(list) {
+			trainerTableBody.innerHTML = "";
+			list.forEach((trainer) => {
+				trainerTableBody.insertAdjacentHTML("beforeend", `
+      <tr class="hover:bg-secondary-container transition-all group" id="trainer-row-${trainer.id}">
+        <td class="py-5 px-8">
+          <p class="font-bold text-on-surface">${trainer.name || "N/A"}</p>
+          <p class="text-[11px] text-outline font-medium">ID: ${trainer.id}</p>
+        </td>
+        <td class="py-5 px-8">
+          <p class="text-sm font-medium text-on-surface">${trainer.email || "N/A"}</p>
+        </td>
+        <td class="py-5 px-8">
+          <span class="bg-primary/10 text-primary text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+            ${trainer.expertise || "General"}
+          </span>
+        </td>
+        <td class="py-5 px-8">
+          <div class="flex items-center gap-2">
+            <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+            <span class="text-sm font-semibold text-on-surface">Active</span>
+          </div>
+        </td>
+        <td class="py-5 px-8 text-right">
+          <div class="flex items-center justify-end gap-2">
+            <!-- Edit Button -->
+            <button
+              onclick='openEditModal(${JSON.stringify(trainer).replace(/'/g, "\\'")})'
+              class="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-secondary-container hover:text-primary transition-all text-outline"
+              title="Edit Trainer">
+              <span class="material-symbols-outlined text-xl">edit</span>
+            </button>
+            <!-- Delete Button -->
+            <button
+              onclick="deleteTrainer(${trainer.id})"
+              class="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-error-container hover:text-error transition-all text-outline"
+              title="Delete Trainer">
+              <span class="material-symbols-outlined text-xl">delete</span>
+            </button>
+          </div>
+        </td>
       </tr>`);
-  });
-  document.getElementById("kpiTotalTrainers").innerText = list.length;
-  document.getElementById("kpiActiveSessions").innerText = list.length;
-  document.getElementById("kpiCapacity").innerText = list.length ? "100%" : "0%";
-  document.getElementById("trainerSummaryText").innerHTML = `Showing <span class="font-bold text-on-surface">${list.length}</span> registered accounts`;
-}
+			});
 
-async function loadTrainers() {
-  try {
-    const trainers = await fetchTrainers();
-    renderTrainers(trainers);
-  } catch (e) {
-    console.error(e);
-  }
-}
+			document.getElementById("kpiTotalTrainers").innerText = list.length;
+			document.getElementById("kpiActiveSessions").innerText = list.length;
+			document.getElementById("kpiCapacity").innerText = list.length ? "100%" : "0%";
+			document.getElementById("trainerSummaryText").innerHTML =
+				`Showing <span class="font-bold text-on-surface">${list.length}</span> registered accounts`;
+		}
 
-async function createTrainer() {
-  const name = document.getElementById("trainerName").value.trim();
-  const email = document.getElementById("trainerEmail").value.trim();
-  const password = document.getElementById("trainerPassword").value.trim();
-  const expertise = document.getElementById("trainerExpertise").value;
-  if (!name || !email || !password) return;
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/admin/trainers`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ name, email, password, expertise })
-    });
-    if (!res.ok) {
-      const errorText = await res.text();
-      throw new Error(errorText || "Failed to create trainer");
-    }
-    toggleModal(false);
-    await loadTrainers();
-  } catch (error) {
-    console.error(error);
-    alert("Unable to create trainer: " + error.message);
-  }
-}
+		/* ===== LOAD TRAINERS ===== */
+		async function loadTrainers() {
+			try {
+				const trainers = await fetchTrainers();
+				renderTrainers(trainers);
+			} catch (e) {
+				console.error(e);
+				showToast("Failed to load trainers.", "error");
+			}
+		}
 
-async function deleteTrainer(id) {
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/admin/trainers/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    if (!res.ok) throw new Error("Delete failed");
-    await loadTrainers();
-  } catch (error) {
-    console.error(error);
-  }
-}
+		/* ===== CREATE TRAINER ===== */
+		async function createTrainer() {
+			const name = document.getElementById("trainerName").value.trim();
+			const email = document.getElementById("trainerEmail").value.trim();
+			const password = document.getElementById("trainerPassword").value.trim();
+			const expertise = document.getElementById("trainerExpertise").value.trim();
 
-document.getElementById("openTrainerCreate").addEventListener("click", () => toggleModal(true));
-document.getElementById("closeTrainerCreate").addEventListener("click", () => toggleModal(false));
-document.getElementById("cancelTrainerCreate").addEventListener("click", () => toggleModal(false));
-document.getElementById("submitTrainerCreate").addEventListener("click", createTrainer);
+			if (!name || !email || !password) {
+				showToast("Please fill all required fields.", "error");
+				return;
+			}
 
-setLoggedInName();
-loadTrainers();
-</script>
-</body></html>
+			try {
+				const res = await fetch(`${API_BASE_URL}/api/admin/trainers`, {
+					method: "POST",
+					headers: {Authorization: `Bearer ${token}`, "Content-Type": "application/json"},
+					body: JSON.stringify({name, email, password, expertise})
+				});
+				if (!res.ok) {
+					const errorText = await res.text();
+					throw new Error(errorText || "Failed to create trainer");
+				}
+				toggleModal(false);
+				showToast("Trainer registered successfully!", "success");
+				await loadTrainers();
+			} catch (error) {
+				console.error(error);
+				showToast(error.message || "Unable to create trainer.", "error");
+			}
+		}
+
+		/* ===== UPDATE TRAINER ===== */
+		async function updateTrainer() {
+			const id = document.getElementById("editTrainerId").value;
+			const name = document.getElementById("editTrainerName").value.trim();
+			const email = document.getElementById("editTrainerEmail").value.trim();
+			const password = document.getElementById("editTrainerPassword").value.trim();
+			const expertise = document.getElementById("editTrainerExpertise").value.trim();
+
+			if (!name || !email) {
+				showToast("Name and email are required.", "error");
+				return;
+			}
+
+			const payload = {name, email, expertise};
+			if (password) payload.password = password; // only send if filled
+
+			try {
+				const res = await fetch(`${API_BASE_URL}/api/admin/trainers/${id}`, {
+					method: "PUT",
+					headers: {Authorization: `Bearer ${token}`, "Content-Type": "application/json"},
+					body: JSON.stringify(payload)
+				});
+				if (!res.ok) {
+					const errorText = await res.text();
+					throw new Error(errorText || "Failed to update trainer");
+				}
+				toggleEditModal(false);
+				showToast("Trainer updated successfully!", "success");
+				await loadTrainers();
+			} catch (error) {
+				console.error(error);
+				showToast(error.message || "Unable to update trainer.", "error");
+			}
+		}
+
+		/* ===== DELETE TRAINER ===== */
+		async function deleteTrainer(id) {
+			if (!confirm("Are you sure you want to delete this trainer?")) return;
+			try {
+				const res = await fetch(`${API_BASE_URL}/api/admin/trainers/${id}`, {
+					method: "DELETE",
+					headers: {Authorization: `Bearer ${token}`}
+				});
+				if (!res.ok) throw new Error("Delete failed");
+				showToast("Trainer deleted.", "success");
+				await loadTrainers();
+			} catch (error) {
+				console.error(error);
+				showToast("Failed to delete trainer.", "error");
+			}
+		}
+
+		/* ===== EVENT LISTENERS ===== */
+		document.getElementById("openTrainerCreate").addEventListener("click", () => toggleModal(true));
+		document.getElementById("closeTrainerCreate").addEventListener("click", () => toggleModal(false));
+		document.getElementById("cancelTrainerCreate").addEventListener("click", () => toggleModal(false));
+		document.getElementById("submitTrainerCreate").addEventListener("click", createTrainer);
+
+		document.getElementById("closeEditModal").addEventListener("click", () => toggleEditModal(false));
+		document.getElementById("cancelEditModal").addEventListener("click", () => toggleEditModal(false));
+		document.getElementById("submitEditTrainer").addEventListener("click", updateTrainer);
+
+		// Close modals on backdrop click
+		trainerModal.addEventListener("click", (e) => {if (e.target === trainerModal) toggleModal(false);});
+		editTrainerModal.addEventListener("click", (e) => {if (e.target === editTrainerModal) toggleEditModal(false);});
+
+		loadTrainers();
+	</script>
+</body>
+
+</html>

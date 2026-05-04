@@ -239,44 +239,68 @@
 
 <body class="bg-surface font-body text-on-surface">
 	<!-- Navigation Drawer (SideNav) -->
+	<!-- Navigation Drawer (SideNav) -->
 	<aside
 		class="fixed left-0 top-0 bottom-0 z-40 flex flex-col h-screen w-64 bg-[#2d3133] shadow-xl shadow-black/10 font-['Inter'] text-sm font-medium">
+
 		<div class="p-8">
-			<h1 class="text-lg font-bold tracking-tighter text-[#f8f9fb]">PRECISION LEDGER</h1>
+			<h1 class="text-lg font-bold tracking-tighter text-[#f8f9fb]">FORTUNE CLOUD</h1>
 		</div>
+
 		<nav class="flex-1 px-0">
+
+			<!-- ✅ Dashboard (ACTIVE) -->
 			<a class="border-l-4 border-[#9df0f4] bg-[#3f484a] text-[#9df0f4] py-3 px-6 flex items-center gap-3 transition-all"
 				href="/dashboard.html">
-				<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+				<span class="material-symbols-outlined">dashboard</span>
 				Dashboard
 			</a>
+
+			<!-- Batch -->
 			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
 				href="/BatchDetailPage.html">
-				<span class="material-symbols-outlined" data-icon="Layers">layers</span>
+				<span class="material-symbols-outlined">layers</span>
 				Batch Management
 			</a>
+			
+			
+
+			<!-- Trainer -->
 			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
 				href="/TrainerManagmentpage.html">
-				<span class="material-symbols-outlined" data-icon="groups">groups</span>
+				<span class="material-symbols-outlined">groups</span>
 				Trainer Directory
 			</a>
+
+			<!-- Reports -->
 			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
 				href="/report.html">
-				<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+				<span class="material-symbols-outlined">analytics</span>
 				Reports
 			</a>
+
+			<!-- 🆕 History -->
+			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
+				href="/HistoryPage.html">
+				<span class="material-symbols-outlined">history</span>
+				History
+			</a>
+
 		</nav>
+
+		<!-- User Section -->
 		<div class="p-6 mt-auto bg-[#3f484a]/20">
 			<div class="flex items-center gap-3">
-				<img alt="Admin User Avatar" class="w-10 h-10 rounded-full object-cover"
-					data-alt="Professional portrait of a male administrator in a modern office setting with soft background lighting"
+				<img class="w-10 h-10 rounded-full object-cover"
 					src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpmhAnvMerJrMPWPd8DCzd0yvcNpBt9GhKK92qTMcmQcXyAJ-vClCObmCFDCA4trCZLYuHsOFYLA0pn_D3_jQO-JYy5DD6TGUGwXf1sod6zy67yils_sAqt74fDEdfZd-yfxtCdWjXwq9ccZItEvEzViceUIlQXZ3s_t_x6GwQFjMaULs33j7_dj_mCfZoFPrLUtYWval97nQI-Bv94K9g85e7LuQLBz9zEy2ZpRss7ePXW4Gy2YL9IKWfPJr45MAODBkUZyXzjIQQ" />
+
 				<div class="overflow-hidden">
 					<p class="text-[#9df0f4] truncate font-semibold">Lead Administrator</p>
 					<p class="text-[#bfc8cb] text-xs truncate">System Controller</p>
 				</div>
 			</div>
 		</div>
+
 	</aside>
 	<!-- Main Content Area -->
 	<main class="ml-64 min-h-screen">
@@ -284,17 +308,14 @@
 		<header
 			class="flex justify-between items-center w-full px-8 py-4 sticky top-0 z-30 bg-[#f8f9fb] font-['Manrope'] text-sm tracking-wide uppercase">
 			<div class="flex items-center gap-4">
-				<span class="material-symbols-outlined text-[#0d7377]" data-icon="menu">menu</span>
-				<span class="text-lg font-bold tracking-tighter text-[#191c1e] lowercase">OVERVIEW</span>
+				<h1 class="text-lg font-bold tracking-tighter text-[#191c1e] font-headline">PRECISION LEDGER</h1>
+				      
 			</div>
 			<div class="flex items-center gap-6">
-				<div class="relative group">
-					<span class="material-symbols-outlined text-outline cursor-pointer"
-						data-icon="notifications">notifications</span>
-					<span class="absolute top-0 right-0 w-2 h-2 bg-tertiary rounded-full"></span>
-				</div>
+				
 				<button onclick="logout()"
 					class="text-[#0d7377] font-bold hover:bg-[#c9e9ea] px-4 py-2 rounded transition-colors uppercase">Logout</button>
+			
 			</div>
 		</header>
 		<div class="p-8 space-y-8 bg-surface-container-low">
@@ -369,18 +390,30 @@
 				</div>
 			</div>
 			<!-- Main Data Section: Asymmetric Layout -->
-			<div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+			<div class="grid grid-cols-1 xl:grid-cols-1 gap-8">
 				<!-- Batch Progress Table (Lg Column) -->
 				<div class="xl:col-span-2 bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm">
 					<div class="px-8 py-6 flex justify-between items-center border-b border-surface-container-low">
 						<h3 class="font-headline text-xl font-bold text-on-surface">Active Batch Trajectory</h3>
-						<div class="flex gap-2">
-							<span
-								class="material-symbols-outlined text-outline cursor-pointer hover:text-primary transition-colors"
-								data-icon="filter_list">filter_list</span>
-							<span
-								class="material-symbols-outlined text-outline cursor-pointer hover:text-primary transition-colors"
-								data-icon="download">download</span>
+						<div class="flex flex-col gap-1">
+				
+						<select  id ="yearFilter"" class="bg-surface-container-low border-none rounded-lg text-sm font-medium py-2.5 px-4 focus:ring-2 focus:ring-primary/20 appearance-none pr-10 relative cursor-pointer min-w-[160px]">
+						<option value="">All Years</option>
+						<option value="2026">Year: 2026</option>
+						<option value="2025">Year: 2025</option>
+						<option value="2024">Year: 2024</option>
+						<option value="2023">Year: 2023</option>
+						<option value="2022">Year: 2022</option>
+						<option value="2021">Year: 2021</option>
+
+						</select>
+						</div>
+						<div class="flex flex-col gap-1">
+						
+						<div class="relative">
+						<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+						<input id ="searchInput"class="bg-surface-container-low border-none rounded-lg text-sm font-medium py-2.5 pl-10 pr-4 focus:ring-2 focus:ring-primary/20 w-64" placeholder="Search batch or trainer..." type="text"/>
+						</div>
 						</div>
 					</div>
 					<div class="overflow-x-auto">
@@ -399,32 +432,17 @@
 							</tbody>
 
 
-
-
 						</table>
 					</div>
 				</div>
-				<!-- Trainer Quick Stats (Sm Column) -->
-				<div class="relative">
-					<div id="trainerBox"
-					     class="bg-inverse-surface rounded-xl p-8 text-white space-y-6 top-0 right-0 w-full xl:w-[350px] z-20">
-					<div class="space-y-1">
-						<h3 class="font-headline text-xl font-bold text-primary-fixed">Trainer Directory</h3>
-						<p class="text-outline-variant text-xs uppercase tracking-widest">Active Mentorship
-							High-Performers</p>
-					</div>
-							<div id="trainerQuickStats" class="space-y-4 overflow-hidden flex-1"></div>					<button id="toggleBtn" onclick="openTrainerModal()"
-					    class="w-full py-3 border border-outline-variant/30 rounded-lg text-sm font-bold text-primary-fixed hover:bg-white/5 transition-all">
-					    View Full Directory
-					</button>
-					</div>
-				</div>
+				
 			</div>
 			<!-- Detailed Trainer Table -->
 			<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm">
 				<div class="px-8 py-6 border-b border-surface-container-low">
 					<h3 class="font-headline text-xl font-bold text-on-surface">Lead Trainer Performance</h3>
 				</div>
+				
 				<table class="w-full text-left">
 					<thead
 						class="bg-surface-container-low/50 font-label text-[10px] uppercase tracking-[0.1em] text-outline">
@@ -432,6 +450,8 @@
 							<th class="px-8 py-4 font-semibold">Trainer Profile</th>
 							<th class="px-6 py-4 font-semibold">Assigned Batches</th>
 							<th class="px-6 py-4 font-semibold">Contact</th>
+							<!-- NEW STATUS COLUMN -->
+							<th class="px-6 py-4 font-semibold">Trainer Status</th>
 							<th class="px-6 py-4 text-center font-semibold">Management</th>
 						</tr>
 					</thead>
@@ -522,6 +542,11 @@
 
 	    </div>
 	</div>
+	
+	
+	
+		
+	
 	<script>
 		
 		//let showAll = false;
@@ -592,7 +617,12 @@
 				const tableBody = document.getElementById("batchTableBody");
 				tableBody.innerHTML = "";
 
-				data.forEach(batch => {
+				const activeBatches = data.filter(batch => 
+				    (batch.progress ?? 0) < 100 && 
+				    String(batch.status).toUpperCase() !== "COMPLETED"
+				);
+
+				activeBatches.forEach(batch => {
 					const row = `
 						<tr class="hover:bg-secondary-container transition-all">
 							<td class="px-8 py-4 font-semibold">${batch.domainName || "N/A"}</td>
@@ -609,76 +639,185 @@
 			}
 		}
 
+		// ================= LOAD TRAINERS WITH SORTED ACTIVE BATCH COUNT =================
 		async function loadTrainers() {
-			try {
-				const res = await fetch(`${API_BASE_URL}/api/admin/trainers`, {headers: authHeaders()});
-				if (!res.ok) throw new Error("Failed to load trainers");
-				const data = await res.json();
-				trainerData = data;
-				const trainerBody = document.getElementById("trainerPerformanceBody");
-				const quickStats = document.getElementById("trainerQuickStats");
-				trainerBody.innerHTML = "";
-				quickStats.innerHTML = "";
-				data.forEach((trainer) => {
-					trainerBody.insertAdjacentHTML("beforeend", `
-						<tr class="hover:bg-secondary-container transition-all">
-							<td class="px-8 py-5">
-								<div class="font-bold text-on-surface">${trainer.name || "N/A"}</div>
-								<div class="text-xs text-on-surface-variant">Trainer</div>
-							</td>
-							<td class="px-6 py-5">
-							    <div class="flex flex-wrap gap-1">
-							        <span class="text-[10px] font-bold px-2 py-0.5 bg-primary-fixed text-on-primary-fixed-variant rounded">
-							            ${trainer.totalBatches} Batches
-							        </span>
-							    </div>
-							</td>
-							<td class="px-6 py-5 text-sm text-on-surface-variant">${trainer.email || "N/A"}</td>
-							<td class="px-6 py-5 text-right">
-								<span class="text-xs font-semibold text-on-surface-variant">Live</span>
-							</td>
-						</tr>
-					`);
-				});
-				renderTrainerQuickStats();
-			} catch (err) {
-				console.error("Trainer Error:", err);
+		  try {
+		    /* ===== FETCH TRAINERS ===== */
+		    const trainerRes = await fetch(`${API_BASE_URL}/api/admin/trainers`, {
+		      headers: authHeaders()
+		    });
+
+		    if (!trainerRes.ok) throw new Error("Failed to load trainers");
+
+		    const trainers = await trainerRes.json();
+
+		    /* ===== FETCH BATCHES ===== */
+		    const batchRes = await fetch(`${API_BASE_URL}/api/admin/batches`, {
+		      headers: authHeaders()
+		    });
+
+		    if (!batchRes.ok) throw new Error("Failed to load batches");
+
+		    const batches = await batchRes.json();
+
+			const trainerBody = document.getElementById("trainerPerformanceBody");
+			const quickStats = document.getElementById("trainerQuickStats");
+
+			if (!trainerBody) {
+			    console.error("trainerPerformanceBody not found");
+			    return;
 			}
+
+			trainerBody.innerHTML = "";
+
+			if (quickStats) {
+			    quickStats.innerHTML = "";
+			}
+
+			trainerBody.innerHTML = "";
+		    /* ===== CALCULATE ACTIVE BATCH COUNT ===== */
+		    const trainersWithBatchCount = trainers.map((trainer) => {
+		      const activeBatchCount = batches.filter(
+		        (batch) =>
+		          batch.trainerId === trainer.id &&
+		          (batch.progress ?? 0) < 100 &&
+		          String(batch.status).toUpperCase() !== "COMPLETED"
+		      ).length;
+
+		      return {
+		        ...trainer,
+		        activeBatchCount
+		      };
+		    });
+
+		    /* ===== SORT DESCENDING (HIGHEST FIRST) ===== */
+		    trainersWithBatchCount.sort(
+		      (a, b) => b.activeBatchCount - a.activeBatchCount
+		    );
+
+		    trainerData = trainersWithBatchCount;
+
+		    /* ===== RENDER TRAINERS ===== */
+		    trainersWithBatchCount.forEach((trainer) => {
+		      trainerBody.insertAdjacentHTML(
+		        "beforeend",
+		        `
+		        <tr class="hover:bg-secondary-container transition-all">
+
+		          <!-- Trainer Profile -->
+		          <td class="px-8 py-5">
+		            <div class="font-bold text-on-surface">
+		              ${trainer.name || "N/A"}
+		            </div>
+		            <div class="text-xs text-on-surface-variant">
+		              Trainer
+		            </div>
+		          </td>
+
+		          <!-- Active Assigned Batches -->
+		          <td class="px-6 py-5">
+		            <div class="flex flex-wrap gap-1">
+		              <span class="text-[10px] font-bold px-2 py-0.5 bg-primary-fixed text-on-primary-fixed-variant rounded">
+		                ${trainer.activeBatchCount} Batches
+		              </span>
+		            </div>
+		          </td>
+
+		          <!-- Contact -->
+		          <td class="px-6 py-5 text-sm text-on-surface-variant">
+		            ${trainer.email || "N/A"}
+		          </td>
+
+		          <!-- Trainer Status -->
+		          <td class="px-6 py-5">
+		            <select
+		              class="bg-surface-container-low border-none rounded-lg px-3 py-2 text-sm font-medium text-on-surface focus:ring-2 focus:ring-primary-fixed"
+		              onchange="updateTrainerStatus(${trainer.id}, this.value)"
+		            >
+		              <option value="ACTIVE" ${
+		                trainer.status === "ACTIVE" ? "selected" : ""
+		              }>
+		                Active
+		              </option>
+
+		              <option value="INACTIVE" ${
+		                trainer.status === "INACTIVE" ? "selected" : ""
+		              }>
+		                Inactive
+		              </option>
+		            </select>
+		          </td>
+
+				  <!-- Management -->
+				  <td class="px-6 py-5 text-center">
+				    <select
+				      class="bg-surface-container-low border-none rounded-lg px-3 py-2 text-sm font-medium text-on-surface focus:ring-2 focus:ring-primary-fixed"
+				      onchange="updateTrainerAvailability(${trainer.id}, this.value)"
+				    >
+				      <option value="LIVE" ${
+				        trainer.availability === "LIVE" ? "selected" : ""
+				      }>
+				        Live
+				      </option>
+
+				      <option value="BUSY" ${
+				        trainer.availability === "BUSY" ? "selected" : ""
+				      }>
+				        Busy
+				      </option>
+
+				      <option value="ON_LEAVE" ${
+				        trainer.availability === "ON_LEAVE" ? "selected" : ""
+				      }>
+				        On Leave
+				      </option>
+				    </select>
+				  </td>
+
+		        </tr>
+		        `
+		      );
+		    });
+
+			if (quickStats) {
+			    renderTrainerQuickStats();
+			}
+
+		  } catch (err) {
+		    console.error("Trainer Error:", err);
+		  }
 		}
 
 		
-		setLoggedInName();
-		loadDashboard();
-		loadBatches();
-		loadTrainers();
+		
 		
 		//let expanded = false;
 		
-		function renderTrainerQuickStats() {
-		    const quickStats = document.getElementById("trainerQuickStats");
-		    quickStats.innerHTML = "";
+//function renderTrainerQuickStats() {
+//    const quickStats = document.getElementById("trainerQuickStats");
+  //  quickStats.innerHTML = "";
 
-		    // Estimate how many trainers fit
-		    const boxHeight = quickStats.clientHeight;
-		    const itemHeight = 70; // approx height per trainer
-		    const count = Math.floor(boxHeight / itemHeight) || 1;
+    // Estimate how many trainers fit
+//    const boxHeight = quickStats.clientHeight;
+  //  const itemHeight = 70; // approx height per trainer
+    //const count = Math.floor(boxHeight / itemHeight) || 1;
 
-		    const list = trainerData.slice(0, 3);
+//    const list = trainerData.slice(0, 3);
 
-		    list.forEach((trainer) => {
-		        quickStats.insertAdjacentHTML("beforeend", `
-		            <div class="flex items-center justify-between p-4 bg-surface-variant/10 rounded-lg">
-		                <div>
-		                    <p class="font-bold text-sm">${trainer.name || "N/A"}</p>
-		                    <p class="text-[10px] text-outline-variant uppercase">${trainer.email || "N/A"}</p>
-		                </div>
-		                <span class="material-symbols-outlined text-primary-fixed text-sm">arrow_forward_ios</span>
-		            </div>
-		        `);
-		    });
-		}
+  //  list.forEach((trainer) => {
+    //    quickStats.insertAdjacentHTML("beforeend", `
+      //      <div class="flex items-center justify-between p-4 bg-surface-variant/10 rounded-lg">
+        //        <div>
+          //          <p class="font-bold text-sm">${trainer.name || "N/A"}</p>
+            //        <p class="text-[10px] text-outline-variant uppercase">${trainer.email || "N/A"}</p>
+              //  </div>
+                //<span class="material-symbols-outlined text-primary-fixed text-sm">arrow_forward_ios</span>
+            //</div>
+    //    `);
+   // });
+//}
 
-		
+
 		
 		function openTrainerModal() {
 		    const modal = document.getElementById("trainerModal");
@@ -708,39 +847,232 @@
 		    modal.classList.add("hidden");
 		}
 
-		function closeTrainerModal() {
-		    const modal = document.getElementById("trainerModal");
-		    modal.classList.add("hidden");
+		
+		/* =========================
+		   DASHBOARD ACTIVE BATCH FILTER
+		   Search by:
+		   - Batch Name (domainName)
+		   - Trainer Name
+		   - Year (from startDate)
+		========================= */
+
+		const yearFilter = document.getElementById("yearFilter");
+		const searchInput = document.getElementById("searchInput");
+		const tableBody = document.getElementById("batchTableBody");
+
+		let allBatches = []; // Filled from API
+
+		// =========================
+		// GET YEAR FROM DATE
+		// =========================
+		function getYearFromDate(dateStr) {
+		    if (!dateStr) return null;
+
+		    const d = new Date(dateStr);
+		    return isNaN(d) ? null : d.getFullYear().toString();
+		}
+
+		// =========================
+		// APPLY FILTERS
+		// =========================
+		function applyDashboardFilters() {
+
+		    const selectedYear = yearFilter.value;
+		    const searchText = searchInput.value.toLowerCase().trim();
+
+		    let filtered = allBatches;
+
+		    // Only ACTIVE / ONGOING batches
+		    filtered = filtered.filter(batch =>
+		        (batch.status || "").toUpperCase() === "ONGOING"
+		    );
+
+		    // YEAR FILTER
+		    if (selectedYear) {
+		        filtered = filtered.filter(batch => {
+		            const year = getYearFromDate(batch.startDate);
+		            return year == selectedYear;
+		        });
+		    }
+
+		    // SEARCH FILTER
+		    if (searchText) {
+		        filtered = filtered.filter(batch =>
+		            (batch.domainName || "").toLowerCase().includes(searchText) ||
+		            (batch.trainerName || "").toLowerCase().includes(searchText)
+		        );
+		    }
+
+		    renderDashboardTable(filtered);
+		}
+
+		// =========================
+		// FIXED DASHBOARD PROGRESS
+		// Use syllabus/topics progress instead of date progress
+		// =========================
+
+		// =========================
+		// FIXED PROGRESS CALCULATION
+		// Supports multiple backend field names
+		// =========================
+		function calculateBatchProgress(batch) {
+
+		    /* Possible backend fields:
+		       totalTopics
+		       syllabusCount
+		       totalSyllabus
+		       totalItems
+		       topicCount
+
+		       completedTopics
+		       completedCount
+		       completedSyllabus
+		       completedItems
+		       progress
+		    */
+
+		    const totalTopics =
+		        batch.totalTopics ??
+		        batch.syllabusCount ??
+		        batch.totalSyllabus ??
+		        batch.totalItems ??
+		        batch.topicCount ??
+		        0;
+
+		    const completedTopics =
+		        batch.completedTopics ??
+		        batch.completedCount ??
+		        batch.completedSyllabus ??
+		        batch.completedItems ??
+		        null;
+
+		    // If backend already provides exact progress
+		    if (batch.progress !== undefined && batch.progress !== null) {
+		        return Math.max(0, Math.min(100, Number(batch.progress)));
+		    }
+
+		    // If no syllabus exists
+		    if (!totalTopics || totalTopics <= 0) {
+		        return 0;
+		    }
+
+		    // If completed topics exist
+		    if (completedTopics !== null) {
+		        return Math.max(
+		            0,
+		            Math.min(
+		                100,
+		                Math.round((completedTopics / totalTopics) * 100)
+		            )
+		        );
+		    }
+
+		    return 0;
 		}
 		
+		// =========================
+		// RENDER DASHBOARD TABLE
+		// =========================
+		function renderDashboardTable(records) {
+
+		    tableBody.innerHTML = "";
+
+		    if (!records.length) {
+		        tableBody.innerHTML = `
+		            <tr>
+		                <td colspan="5" class="text-center py-10 text-outline">
+		                    No active batches found
+		                </td>
+		            </tr>
+		        `;
+		        return;
+		    }
+
+			records.forEach(batch => {
+
+			    let progress = calculateBatchProgress(batch);
+
+			    tableBody.insertAdjacentHTML("beforeend", `
+			        <tr class="hover:bg-secondary-container/30 transition-colors">
+
+			            <td class="px-8 py-5 font-semibold text-on-surface">
+			                ${batch.domainName || "N/A"}
+			            </td>
+
+			            <td class="px-6 py-5 text-on-surface-variant">
+			                ${batch.trainerName || "Unassigned"}
+			            </td>
+
+			            <td class="px-6 py-5 text-on-surface-variant">
+			                ${formatDate(batch.startDate)}
+			            </td>
+
+			            <td class="px-6 py-5">
+			                <span class="px-3 py-1 rounded-full text-xs font-bold
+			                    ${batch.status === "ONGOING"
+			                        ? "bg-green-100 text-green-700"
+			                        : "bg-gray-100 text-gray-700"}">
+			                    ${batch.status || "N/A"}
+			                </span>
+			            </td>
+
+			            <td class="px-6 py-5">
+			                <div class="w-full bg-surface-container-high rounded-full h-2 overflow-hidden">
+			                    <div class="h-full bg-primary rounded-full"
+			                         style="width:${progress}%">
+			                    </div>
+			                </div>
+			                <span class="text-xs font-medium text-outline mt-1 inline-block">
+			                    ${progress}%
+			                </span>
+			            </td>
+
+			        </tr>
+			    `);
+			});
+
+			}
+		// =========================
+		// EVENT LISTENERS
+		// =========================
+		if (yearFilter) {
+		    yearFilter.addEventListener("change", applyDashboardFilters);
+		}
+
+		if (searchInput) {
+		    searchInput.addEventListener("input", applyDashboardFilters);
+		}
+		// =========================
+		// LOAD DASHBOARD DATA f
+		// =========================
+		async function loadDashboardBatches() {
+		    try {
+		        const res = await fetch(`${API_BASE_URL}/api/admin/batches`, {
+		            headers: authHeaders()
+		        });
+
+		        if (!res.ok) throw new Error("Failed to load batches");
+
+		        allBatches = await res.json();
+
+		        applyDashboardFilters();
+
+		    } catch (err) {
+		        console.error("Dashboard batch loading error:", err);
+		    }
+		}
+
+		// =========================
+		// INIT push
+		// =========================
+		
+		setLoggedInName();
+		loadDashboard();
+		loadTrainers();
+		loadDashboardBatches();
 	</script>
 	
-	<div id="trainerModal"
-	     class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
-
-	    <div class="bg-[#2d3133] w-[500px] max-h-[600px] rounded-xl p-6 shadow-2xl text-[#9df0f4]">
-
-	        <!-- Header -->
-	        <div class="flex justify-between items-center mb-4">
-	            <h2 class="font-headline text-xl font-bold text-[#9df0f4]">
-	                Trainer Directory
-	            </h2>
-	            <button onclick="closeTrainerModal()" 
-	                class="text-red-400 hover:text-red-600 text-lg font-bold">
-	                ✕
-	            </button>
-	        </div>
-
-	        <!-- Trainer List -->
-	        <div id="modalTrainerList" 
-	             class="space-y-3 overflow-y-auto max-h-[450px] pr-2">
-
-	            <!-- Trainers will be injected here -->
-
-	        </div>
-
-	    </div>
-	</div>
+	
 	
 </body>
 
