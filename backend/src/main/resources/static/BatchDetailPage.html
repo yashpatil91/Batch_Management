@@ -163,7 +163,7 @@
 	<aside
 		class="fixed left-0 top-0 bottom-0 z-40 flex flex-col h-screen w-64 bg-[#2d3133] shadow-xl shadow-black/10 font-['Inter'] text-sm font-medium">
 		<div class="p-8">
-			<h1 class="text-lg font-bold tracking-tighter text-[#f8f9fb]">PRECISION LEDGER</h1>
+			<h1 class="text-lg font-bold tracking-tighter text-[#f8f9fb]">FORTUNE CLOUD</h1>
 		</div>
 		<nav class="flex-1 px-0">
 			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
@@ -187,16 +187,7 @@
 				<span class="material-symbols-outlined">history</span>History
 			</a>
 		</nav>
-		<div class="p-6 mt-auto bg-[#3f484a]/20">
-			<div class="flex items-center gap-3">
-				<img class="w-10 h-10 rounded-full object-cover"
-					src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpmhAnvMerJrMPWPd8DCzd0yvcNpBt9GhKK92qTMcmQcXyAJ-vClCObmCFDCA4trCZLYuHsOFYLA0pn_D3_jQO-JYy5DD6TGUGwXf1sod6zy67yils_sAqt74fDEdfZd-yfxtCdWjXwq9ccZItEvEzViceUIlQXZ3s_t_x6GwQFjMaULs33j7_dj_mCfZoFPrLUtYWval97nQI-Bv94K9g85e7LuQLBz9zEy2ZpRss7ePXW4Gy2YL9IKWfPJr45MAODBkUZyXzjIQQ" />
-				<div class="overflow-hidden">
-					<p class="text-[#9df0f4] truncate font-semibold">Lead Administrator</p>
-					<p class="text-[#bfc8cb] text-xs truncate">System Controller</p>
-				</div>
-			</div>
-		</div>
+
 	</aside>
 
 	<!-- ===== MAIN ===== -->
@@ -206,7 +197,7 @@
 		<header class="sticky top-0 z-30 flex justify-between items-center w-full px-8 py-4 bg-[#f8f9fb]">
 			<div class="flex items-center gap-4">
 
-				<h1 class="text-lg font-bold tracking-tighter text-[#191c1e] font-headline">PRECISION LEDGER</h1>
+				<h2 class="text-xl font-headline font-bold text-slate-900 tracking-tight">BATCH MANGMENT</h2>
 
 			</div>
 			<div class="flex items-center gap-4">
@@ -346,7 +337,7 @@
 							<label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">
 								Start Time
 							</label>
-							<input id="editStartTime" type="time"
+							<input id="editStartTime" type="time"  
 								class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-fixed text-on-surface" />
 						</div>
 
@@ -380,6 +371,15 @@
 						</select>
 					</div>
 
+					<div class="field-group space-y-1.5">
+						<label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">
+							Meet Link
+						</label>
+						<input id="editMeetLink"
+							class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium text-on-surface px-4 py-3"
+							placeholder="https://meet.google.com/xyz-abc" type="url" />
+					</div>
+
 					<!-- Buttons -->
 					<div class="flex gap-2">
 						<button type="button" onclick="closeEditModal()"
@@ -399,272 +399,331 @@
 
 		</div>
 	</div>
+	
+	
 	<script>
 		const API_BASE_URL = "http://localhost:8080";
 
 		function authHeaders() {
-			return {
-				Authorization: `Bearer ${localStorage.getItem("token")}`,
-				"Content-Type": "application/json"
-			};
+		    return {
+		        Authorization: `Bearer ${localStorage.getItem("token")}`,
+		        "Content-Type": "application/json"
+		    };
 		}
 
 		const token = localStorage.getItem("token");
-		const role = localStorage.getItem("role");
+		const role  = localStorage.getItem("role");
+
 		if (!token) window.location.href = "index.html";
 		if (!role || role !== "ADMIN") {
-			window.location.href = role === "TRAINER" ? "Trainerdashboard.html" : "index.html";
+		    window.location.href = role === "TRAINER" ? "Trainerdashboard.html" : "index.html";
 		}
 
-		function logout() {localStorage.clear(); window.location.href = "index.html";}
+		function logout() {
+		    localStorage.clear();
+		    window.location.href = "index.html";
+		}
 
 		function formatDate(v) {
-			if (!v) return "N/A";
-			const d = new Date(v);
-			return isNaN(d.getTime()) ? v : d.toLocaleDateString();
+		    if (!v) return "N/A";
+		    const d = new Date(v);
+		    return isNaN(d.getTime()) ? v : d.toLocaleDateString();
 		}
 
+		// ----------------------------
+		// TIME UTILITIES
+		// ----------------------------
+
+		// "09:00 AM - 11:00 AM" → ["09:00 AM", "11:00 AM"]
+		// FIX: split on " - " with spaces to avoid breaking "AM"/"PM" tokens
+		function splitBatchTime(timeStr) {
+		    if (!timeStr) return ["", ""];
+		    const idx = timeStr.indexOf(" - ");
+		    if (idx === -1) return [timeStr, ""];
+		    return [timeStr.substring(0, idx).trim(), timeStr.substring(idx + 3).trim()];
+		}
+
+		// "09:00 AM" → "09:00" (for <input type="time">)
+		function convertTo24(t) {
+		    if (!t) return "";
+		    t = t.trim();
+		    if (!t.includes("AM") && !t.includes("PM")) return t; // already 24hr
+
+		    const parts    = t.split(" ");
+		    const modifier = parts[parts.length - 1];
+		    const timePart = parts[0];
+		    let [hours, minutes] = timePart.split(":");
+
+		    if (modifier === "PM" && hours !== "12") hours = String(parseInt(hours) + 12);
+		    if (modifier === "AM" && hours === "12")  hours = "00";
+
+		    return `${hours.padStart(2, "0")}:${minutes}`;
+		}
+
+		// "09:00" (24hr) → "09:00 AM" (12hr with AM/PM)
+		function formatTime(t) {
+		    if (!t) return "";
+		    const [h, m] = t.split(":").map(Number);
+		    const period = h >= 12 ? "PM" : "AM";
+		    const hour   = ((h + 11) % 12 + 1).toString().padStart(2, "0");
+		    return `${hour}:${m.toString().padStart(2, "0")} ${period}`;
+		}
+
+		function isWithinAllowedHours(startTime, endTime) {
+			    const [startH] = startTime.split(":").map(Number);
+			    const [endH, endM] = endTime.split(":").map(Number);
+
+			    const startMinutes = startH * 60;
+			    const endMinutes   = endH * 60 + endM;
+
+			    const allowedStart = 7 * 60;  // 7:00 AM = 420 mins
+			    const allowedEnd   = 19 * 60; // 7:00 PM = 1140 mins
+
+			    return startMinutes >= allowedStart && endMinutes <= allowedEnd;
+			}
+		// ----------------------------
+		// STORE ALL BATCHES (used by openEditForm)
+		// ----------------------------
+		let allBatchesCache = [];
+
+		// ----------------------------
+		// LOAD ADMIN BATCHES
+		// ----------------------------
 		async function loadAdminBatches() {
-			try {
-				const res = await fetch(`${API_BASE_URL}/api/admin/batches`, {headers: authHeaders()});
-				if (!res.ok) throw new Error("Failed to load batches");
+		    try {
+		        const res = await fetch(`${API_BASE_URL}/api/admin/batches`, { headers: authHeaders() });
+		        if (!res.ok) throw new Error("Failed to load batches");
 
-				const allBatches = await res.json();
+		        const allBatches = await res.json();
+		        allBatchesCache  = allBatches; // cache for edit
 
-				const showAll = window.showAllBatches || false;
-				const filtered = allBatches.filter(b => (b.progress ?? 0) < 100 && String(b.status).toUpperCase() !== "COMPLETED");
-				const batches = showAll ? filtered : filtered.slice(0, 4);
-				const total = filtered.length;
-				const completed = allBatches.filter(b => String(b.status).toUpperCase() === "COMPLETED").length;
-				const avg = total ? Math.round(filtered.reduce((a, b) => a + (b.progress ?? 0), 0) / total) : 0;
+		        const showAll  = window.showAllBatches || false;
+		        const filtered = allBatches.filter(
+		            b => (b.progress ?? 0) < 100 && String(b.status).toUpperCase() !== "COMPLETED"
+		        );
+		        const batches   = showAll ? filtered : filtered.slice(0, 4);
+		        const total     = filtered.length;
+		        const completed = allBatches.filter(b => String(b.status).toUpperCase() === "COMPLETED").length;
+		        const avg       = total
+		            ? Math.round(filtered.reduce((a, b) => a + (b.progress ?? 0), 0) / total)
+		            : 0;
 
-				document.getElementById("kpiTotal").innerText = total;
-				document.getElementById("kpiCompleted").innerText = completed;
-				document.getElementById("kpiProgress").innerText = `${avg}%`;
-				document.getElementById("kpiTotalBar").style.width = `${Math.min(total * 10, 100)}%`;
-				document.getElementById("kpiProgressBar").style.width = `${avg}%`;
+		        document.getElementById("kpiTotal").innerText         = total;
+		        document.getElementById("kpiCompleted").innerText     = completed;
+		        document.getElementById("kpiProgress").innerText      = `${avg}%`;
+		        document.getElementById("kpiTotalBar").style.width    = `${Math.min(total * 10, 100)}%`;
+		        document.getElementById("kpiProgressBar").style.width = `${avg}%`;
 
-				document.getElementById("adminBatchCards").innerHTML = batches.length
-					? batches.map(batch => `
-            <div class="batch-card bg-surface-container-lowest p-6 rounded-xl glow-border">
-              <div class="flex justify-between items-start mb-6">
-                <div>
-                  <h3 class="text-xl font-headline font-bold text-on-surface">${batch.domainName || "Untitled Batch"}</h3>
-                  <p class="text-sm text-on-surface-variant mt-1">Trainer: ${batch.trainerName || "Unassigned"}</p>
-                  <p class="text-sm text-on-surface-variant mt-1">Lab No: ${batch.labNo || "N/A"}</p>
-                  <p class="text-sm text-on-surface-variant mt-1">Students: ${batch.noOfStudents ?? 0}</p>
-                  <p class="text-sm text-on-surface-variant mt-1">Timing: ${batch.time || "Not set"}</p>
-                </div>
-                <div class="text-right">
-                  <span class="block text-xs font-label text-outline uppercase tracking-wider">Timeline</span>
-                  <span class="text-sm font-medium text-on-surface">${formatDate(batch.startDate)} – ${formatDate(batch.endDate)}</span>
-                </div>
-              </div>
-			  <div class="flex items-center gap-4">
-			    <div class="flex-1 h-3 bg-surface-container-high rounded-full overflow-hidden">
-			      <div class="bg-gradient-to-r from-primary to-primary-container h-full rounded-full transition-all duration-700"
-			           style="width:${batch.progress ?? 0}%"></div>
-			    </div>
-			    <span class="font-headline font-bold text-lg text-primary">${batch.progress ?? 0}%</span>
-			  </div>
+		        document.getElementById("adminBatchCards").innerHTML = batches.length
+		            ? batches.map(batch => {
+		                const meetLinkHtml = batch.meetLink && batch.meetLink.trim() !== ""
+		                    ? `<a href="${batch.meetLink}" target="_blank" class="underline">${batch.meetLink}</a>`
+		                    : "Not available";
 
-			  <!-- ✅ NEW BUTTONS -->
-			  <div class="flex justify-end gap-3 mt-4">
+		                return `
+		                <div class="batch-card bg-surface-container-lowest p-6 rounded-xl glow-border">
+		                  <div class="flex justify-between items-start mb-6">
+		                    <div>
+		                      <h3 class="text-xl font-headline font-bold text-on-surface">
+		                        ${batch.domainName || "Untitled Batch"}
+		                      </h3>
+		                      <p class="text-sm text-on-surface-variant mt-1">Trainer: ${batch.trainerName || "Unassigned"}</p>
+		                      <p class="text-sm text-on-surface-variant mt-1">Lab No: ${batch.labNo || "N/A"}</p>
+		                      <p class="text-sm text-on-surface-variant mt-1">Students: ${batch.noOfStudents ?? 0}</p>
+		                      <p class="text-sm text-on-surface-variant mt-1">Timing: ${batch.time || "Not set"}</p>
+		                      <p class="text-sm text-blue-600 mt-1">Meeting Link: ${meetLinkHtml}</p>
+		                    </div>
+		                    <div class="text-right">
+		                      <span class="block text-xs font-label text-outline uppercase tracking-wider">Timeline</span>
+		                      <span class="text-sm font-medium text-on-surface">
+		                        ${formatDate(batch.startDate)} – ${formatDate(batch.endDate)}
+		                      </span>
+		                    </div>
+		                  </div>
 
-				<button 
-				  onclick="openEditForm(${batch.id}, '${batch.domainName}', '${batch.startDate}', '${batch.endDate}', '${batch.time}', '${batch.labNo}', ${batch.noOfStudents})"
-				  class="px-4 py-1.5 border border-gray-400 rounded-full text-sm font-medium">
-				  Edit
-				</button>
+		                  <div class="flex items-center gap-4">
+		                    <div class="flex-1 h-3 bg-surface-container-high rounded-full overflow-hidden">
+		                      <div class="bg-gradient-to-r from-primary to-primary-container h-full rounded-full transition-all duration-700"
+		                           style="width:${batch.progress ?? 0}%"></div>
+		                    </div>
+		                    <span class="font-headline font-bold text-lg text-primary">${batch.progress ?? 0}%</span>
+		                  </div>
 
-				<button 
-				onclick="deleteBatch(${batch.id})"
-				  class="px-4 py-1.5 bg-error text-white rounded-full text-sm font-medium 
-				         hover:opacity-90 transition-all">
-				  Delete
-				</button>
+		                  <div class="flex justify-end gap-3 mt-4">
+		                    <!-- FIX: Pass only batch.id — read full data from cache in openEditForm -->
+		                    <button
+		                      onclick="openEditForm(${batch.id})"
+		                      class="px-4 py-1.5 border border-gray-400 rounded-full text-sm font-medium">
+		                      Edit
+		                    </button>
+		                    <button
+		                      onclick="deleteBatch(${batch.id})"
+		                      class="px-4 py-1.5 bg-error text-white rounded-full text-sm font-medium hover:opacity-90 transition-all">
+		                      Delete
+		                    </button>
+		                  </div>
+		                </div>`;
+		            }).join("")
+		            : `<div class="col-span-2 text-center py-16 text-on-surface-variant">
+		                 <span class="material-symbols-outlined text-5xl">layers_clear</span>
+		                 <p class="mt-2 font-headline font-bold">No active batches found</p>
+		                 <button onclick="window.location.href='/CreateBatch.html'"
+		                   class="mt-4 bg-primary text-white px-6 py-2 rounded-lg font-bold text-sm">
+		                   Create First Batch
+		                 </button>
+		               </div>`;
 
-			  </div>
-			  
-			  
-            </div>
-          `).join("")
-					: `<div class="col-span-2 text-center py-16 text-on-surface-variant">
-               <span class="material-symbols-outlined text-5xl">layers_clear</span>
-               <p class="mt-2 font-headline font-bold">No active batches found</p>
-               <button onclick="window.location.href='/CreateBatch.html'"
-                 class="mt-4 bg-primary text-white px-6 py-2 rounded-lg font-bold text-sm">Create First Batch</button>
-             </div>`;
-			} catch (e) {
-				console.error("Load batches error:", e);
-				document.getElementById("adminBatchCards").innerHTML =
-					`<div class="col-span-2 text-center py-16 text-error">
-             <span class="material-symbols-outlined text-5xl">error</span>
-             <p class="mt-2 font-headline font-bold">Failed to load batches</p>
-           </div>`;
-			}
+		    } catch (e) {
+		        console.error("Load batches error:", e);
+		        document.getElementById("adminBatchCards").innerHTML =
+		            `<div class="col-span-2 text-center py-16 text-error">
+		               <span class="material-symbols-outlined text-5xl">error</span>
+		               <p class="mt-2 font-headline font-bold">Failed to load batches</p>
+		             </div>`;
+		    }
 		}
 
-		/* ===== LOAD ALL BATCHES (ADMIN + TRAINER CREATED) ===== */
-		async function fetchAllBatches() {
-			try {
-				/* 
-				   Admin batches endpoint 
-				   Trainer-created batches endpoint
-				   Make sure backend provides both APIs
-				*/
-				const [adminRes, trainerRes] = await Promise.all([
-					fetch(`${API_BASE_URL}/api/admin/batches`, {
-						headers: authHeaders()
-					}),
-					fetch(`${API_BASE_URL}/api/trainer/batches`, {
-						headers: authHeaders()
-					})
-				]);
-
-				if (!adminRes.ok) throw new Error("Failed to load admin batches");
-				if (!trainerRes.ok) throw new Error("Failed to load trainer batches");
-
-				const adminBatches = await adminRes.json();
-				const trainerBatches = await trainerRes.json();
-
-				/* ===== MERGE BOTH ===== */
-				const allBatches = [
-					...adminBatches.map(batch => ({
-						...batch,
-						createdSource: "ADMIN"
-					})),
-					...trainerBatches.map(batch => ({
-						...batch,
-						createdSource: "TRAINER"
-					}))
-				];
-
-				/* ===== REMOVE DUPLICATES IF SAME ID ===== */
-				const uniqueBatches = Array.from(
-					new Map(allBatches.map(batch => [batch.id, batch])).values()
-				);
-
-				/* ===== SORT NEWEST FIRST ===== */
-				uniqueBatches.sort((a, b) => {
-					const dateA = new Date(a.createdAt || a.startDate || 0);
-					const dateB = new Date(b.createdAt || b.startDate || 0);
-					return dateB - dateA;
-				});
-
-				return uniqueBatches;
-
-			} catch (error) {
-				console.error("Error fetching all batches:", error);
-				return [];
-			}
-		}
-
+		// ----------------------------
+		// TOGGLE VIEW
+		// ----------------------------
 		const toggleBtn = document.getElementById("toggleViewBtn");
 		toggleBtn.addEventListener("click", () => {
-			window.showAllBatches = !window.showAllBatches;
-			toggleBtn.innerHTML = window.showAllBatches
-				? `<span class="material-symbols-outlined text-lg">expand_less</span>View Less`
-				: `<span class="material-symbols-outlined text-lg">expand_more</span>View All`;
-			loadAdminBatches();
+		    window.showAllBatches = !window.showAllBatches;
+		    toggleBtn.innerHTML = window.showAllBatches
+		        ? `<span class="material-symbols-outlined text-lg">expand_less</span>View Less`
+		        : `<span class="material-symbols-outlined text-lg">expand_more</span>View All`;
+		    loadAdminBatches();
 		});
 
-		loadAdminBatches();
-
+		// ----------------------------
+		// DELETE BATCH
+		// ----------------------------
 		async function deleteBatch(batchId) {
-			try {
-				const confirmDelete = confirm("Are you sure you want to delete this batch?");
-				if (!confirmDelete) return;
+		    if (!confirm("Are you sure you want to delete this batch?")) return;
 
-				const res = await fetch(`${API_BASE_URL}/api/admin/batches/${batchId}`, {
-					method: "DELETE",
-					headers: authHeaders()
-				});
+		    try {
+		        const res = await fetch(`${API_BASE_URL}/api/admin/batches/${batchId}`, {
+		            method: "DELETE",
+		            headers: authHeaders()
+		        });
 
-				if (!res.ok) {
-					throw new Error("Failed to delete batch");
-				}
+		        if (!res.ok) throw new Error("Failed to delete batch");
 
-				// ✅ Reload UI after delete
-				loadAdminBatches();
+		        alert("Batch deleted successfully");
+		        loadAdminBatches();
 
-				alert("Batch deleted successfully");
-
-			} catch (err) {
-				console.error("Delete Error:", err);
-				alert("Error deleting batch");
-			}
+		    } catch (err) {
+		        console.error("Delete Error:", err);
+		        alert("Error deleting batch");
+		    }
 		}
 
+		// ----------------------------
+		// EDIT MODAL
+		// ----------------------------
 		let editingBatchId = null;
 
-		/* OPEN MODAL */
-		function openEditForm(id, name, start, end, time, lab, students) {
-			editingBatchId = id;
+		// FIX: Only takes id — reads full batch from cache
+		// This avoids ALL quote-breaking issues with meetLink / time strings in onclick
+		function openEditForm(id) {
+		    const batch = allBatchesCache.find(b => String(b.id) === String(id));
+		    if (!batch) {
+		        alert("Batch data not found. Please refresh.");
+		        return;
+		    }
 
-			document.getElementById("editDomainName").value = name || "";
-			document.getElementById("editStartDate").value = start || "";
-			document.getElementById("editEndDate").value = end || "";
-			document.getElementById("editStudents").value = students || "";
+		    editingBatchId = id;
 
-			// ✅ FIX LAB (IMPORTANT)
-			if (lab) {
-				const formattedLab = lab.trim().toUpperCase();
-				document.getElementById("editLabNo").value = formattedLab;
-			}
+		    document.getElementById("editDomainName").value = batch.domainName || "";
+		    document.getElementById("editStartDate").value  = batch.startDate  || "";
+		    document.getElementById("editEndDate").value    = batch.endDate    || "";
+		    document.getElementById("editStudents").value   = batch.noOfStudents || "";
+		    document.getElementById("editLabNo").value      = batch.labNo      || "";
+		    document.getElementById("editMeetLink").value   = batch.meetLink   || "";
 
-			// ✅ FIX TIME (IMPORTANT)
-			if (time) {
-				const cleaned = time.replace(/\s+/g, ""); // remove spaces
-				const parts = cleaned.split("-");
+		    // FIX: Split time correctly using " - " separator
+		    const [startRaw, endRaw] = splitBatchTime(batch.time);
+		    document.getElementById("editStartTime").value = convertTo24(startRaw); // → "09:00"
+		    document.getElementById("editEndTime").value   = convertTo24(endRaw);   // → "11:00"
 
-				document.getElementById("editStartTime").value = parts[0] || "";
-				document.getElementById("editEndTime").value = parts[1] || "";
-			}
-
-			document.getElementById("editModal").classList.remove("hidden");
-			document.getElementById("editModal").classList.add("flex");
+		    document.getElementById("editModal").classList.remove("hidden");
+		    document.getElementById("editModal").classList.add("flex");
 		}
 
-		/* CLOSE MODAL */
 		function closeEditModal() {
-			editingBatchId = null;
-			document.getElementById("editModal").classList.add("hidden");
-			document.getElementById("editModal").classList.remove("flex");
+		    editingBatchId = null;
+		    document.getElementById("editModal").classList.add("hidden");
+		    document.getElementById("editModal").classList.remove("flex");
 		}
 
-		/* SUBMIT EDIT */
+		// ----------------------------
+		// SUBMIT EDIT
+		// ----------------------------
 		document.getElementById("editBatchForm").addEventListener("submit", async (e) => {
-			e.preventDefault();
+		    e.preventDefault();
 
-			const payload = {
-				domainName: document.getElementById("editDomainName").value,
-				startDate: document.getElementById("editStartDate").value,
-				endDate: document.getElementById("editEndDate").value,
-				noOfStudents: document.getElementById("editStudents").value,
-				labNo: document.getElementById("editLabNo").value,
-				time: `${document.getElementById("editStartTime").value} - ${document.getElementById("editEndTime").value}`
-			};
+		    const startTime = document.getElementById("editStartTime").value; // "09:00"
+		    const endTime   = document.getElementById("editEndTime").value;   // "11:00"
 
-			try {
-				const res = await fetch(`${API_BASE_URL}/api/admin/batches/${editingBatchId}`, {
-					method: "PUT",
-					headers: authHeaders(),
-					body: JSON.stringify(payload)
-				});
+		    if (!startTime || !endTime) {
+		        alert("Please set both start and end time.");
+		        return;
+		    }
+			
+			if (startDate > endDate) {
+				    showToast("End date must be after start date.", "error");
+				    return;
+				  }
 
-				if (!res.ok) throw new Error();
+				  if (startTime >= endTime) {
+				    showToast("End time must be later than start time.", "error");
+				    return;
+				  }
+				  if (!isWithinAllowedHours(startTime, endTime)) {
+				      showToast("Batches can only be scheduled between 7:00 AM and 7:00 PM.", "error");
+				      return;
+				  }
 
-				alert("Batch updated successfully");
+		    const payload = {
+		        domainName:   document.getElementById("editDomainName").value.trim(),
+		        startDate:    document.getElementById("editStartDate").value,
+		        endDate:      document.getElementById("editEndDate").value,
+		        noOfStudents: parseInt(document.getElementById("editStudents").value),
+		        labNo:        document.getElementById("editLabNo").value,
+		        // FIX: Convert 24hr back to AM/PM format before sending to backend
+		        time:         `${formatTime(startTime)} - ${formatTime(endTime)}`,
+		        meetLink:     document.getElementById("editMeetLink").value.trim()
+		    };
 
-				closeEditModal();
-				loadAdminBatches(); // refresh UI
+		    console.log("Edit payload:", payload);
 
-			} catch (err) {
-				console.error(err);
-				alert("Update failed");
-			}
+		    try {
+		        const res = await fetch(`${API_BASE_URL}/api/admin/batches/${editingBatchId}`, {
+		            method: "PUT",
+		            headers: authHeaders(),
+		            body: JSON.stringify(payload)
+		        });
+
+		        if (!res.ok) {
+		            const errText = await res.text();
+		            console.error("Backend error:", errText);
+		            throw new Error(errText || "Update failed");
+		        }
+
+		        alert("Batch updated successfully");
+		        closeEditModal();
+		        loadAdminBatches();
+
+		    } catch (err) {
+		        console.error(err);
+		        alert("Update failed: " + err.message);
+		    }
 		});
+
+		// ----------------------------
+		// INITIAL LOAD
+		// ----------------------------
+		loadAdminBatches();
 	</script>
 
 

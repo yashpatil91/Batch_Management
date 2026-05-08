@@ -53,6 +53,8 @@ public class TrainerService {
         System.out.println("Time: " + request.getTime());
         System.out.println("Lab No: " + request.getLabNo());
         System.out.println("Students: " + request.getNoOfStudents());
+        System.out.println("Meet: " + request.getMeetLink());
+
 
         User trainer = findTrainerByEmail(trainerEmail);
 
@@ -124,6 +126,7 @@ public class TrainerService {
         batch.setTime(request.getTime());
         batch.setLabNo(request.getLabNo());
         batch.setNoOfStudents(request.getNoOfStudents());
+        batch.setMeetLink(request.getMeetLink());
 
         System.out.println("Saving batch...");
 
@@ -332,6 +335,7 @@ public class TrainerService {
         batch.setTime(request.getTime());
         batch.setLabNo(request.getLabNo());
         batch.setNoOfStudents(request.getNoOfStudents());
+        batch.setMeetLink(request.getMeetLink());
 
         Batch updated = batchRepository.save(batch);
 

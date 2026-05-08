@@ -29,7 +29,19 @@ public class BatchRequest {
     @Min(0)
     @Max(100)
     private Integer progress;
+    
+    @NotBlank
+    private String meetLink;
 
+    public String getMeetLink() {
+		return meetLink;
+	}
+
+	public void setMeetLink(String meetLink) {
+		this.meetLink = meetLink;
+	}
+
+	
     public String getDomainName() {
         return domainName;
     }

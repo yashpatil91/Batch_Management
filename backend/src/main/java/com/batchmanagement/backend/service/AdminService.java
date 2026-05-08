@@ -154,6 +154,7 @@ public class AdminService {
         batch.setNoOfStudents(request.getNoOfStudents());
         batch.setProgress(request.getProgress() == null ? 0 : request.getProgress());
         batch.setStatus(BatchStatus.ONGOING);
+        batch.setMeetLink(request.getMeetLink());
 
         User trainer = null;
 
@@ -356,6 +357,8 @@ public class AdminService {
         batch.setTime(request.getTime());
         batch.setLabNo(request.getLabNo());
         batch.setNoOfStudents(request.getNoOfStudents());
+        batch.setMeetLink(request.getMeetLink());
+        
 
         Batch updated = batchRepository.save(batch);
 

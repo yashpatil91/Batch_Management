@@ -289,17 +289,7 @@
 		</nav>
 
 		<!-- User Section -->
-		<div class="p-6 mt-auto bg-[#3f484a]/20">
-			<div class="flex items-center gap-3">
-				<img class="w-10 h-10 rounded-full object-cover"
-					src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpmhAnvMerJrMPWPd8DCzd0yvcNpBt9GhKK92qTMcmQcXyAJ-vClCObmCFDCA4trCZLYuHsOFYLA0pn_D3_jQO-JYy5DD6TGUGwXf1sod6zy67yils_sAqt74fDEdfZd-yfxtCdWjXwq9ccZItEvEzViceUIlQXZ3s_t_x6GwQFjMaULs33j7_dj_mCfZoFPrLUtYWval97nQI-Bv94K9g85e7LuQLBz9zEy2ZpRss7ePXW4Gy2YL9IKWfPJr45MAODBkUZyXzjIQQ" />
-
-				<div class="overflow-hidden">
-					<p class="text-[#9df0f4] truncate font-semibold">Lead Administrator</p>
-					<p class="text-[#bfc8cb] text-xs truncate">System Controller</p>
-				</div>
-			</div>
-		</div>
+		
 
 	</aside>
 	<!-- Main Content Area -->
@@ -308,7 +298,7 @@
 		<header
 			class="flex justify-between items-center w-full px-8 py-4 sticky top-0 z-30 bg-[#f8f9fb] font-['Manrope'] text-sm tracking-wide uppercase">
 			<div class="flex items-center gap-4">
-				<h1 class="text-lg font-bold tracking-tighter text-[#191c1e] font-headline">PRECISION LEDGER</h1>
+				<h2 class="text-xl font-headline font-bold text-slate-900 tracking-tight">DASHBOARD</h2>
 				      
 			</div>
 			<div class="flex items-center gap-6">
@@ -380,7 +370,6 @@
 					<div class="flex justify-between items-start">
 						<span class="material-symbols-outlined text-tertiary p-2 bg-tertiary-fixed rounded-lg"
 							data-icon="verified">verified</span>
-						<span class="text-xs font-bold text-on-surface-variant">98.2% Rate</span>
 					</div>
 					<div>
 						<p class="font-label text-xs uppercase tracking-widest text-outline">Completed</p>
@@ -424,7 +413,8 @@
 									<th class="px-8 py-4 font-semibold">Batch Identity</th>
 									<th class="px-6 py-4 font-semibold">Trainer</th>
 									<th class="px-6 py-4 font-semibold">Start Date</th>
-									<th class="px-6 py-4 font-semibold">Status</th>
+									<th class="px-6 py-4 font-semibold">Time</th>
+									<th class="px-6 py-4 font-semibold">Lab No</th>
 									<th class="px-6 py-4 font-semibold">Progress</th>
 								</tr>
 							</thead>
@@ -628,7 +618,8 @@
 							<td class="px-8 py-4 font-semibold">${batch.domainName || "N/A"}</td>
 							<td class="px-6 py-4">${batch.trainerName || "Unassigned"}</td>
 							<td class="px-6 py-4">${formatDate(batch.startDate)}</td>
-							<td class="px-6 py-4">${batch.status || "N/A"}</td>
+							<td class="px-6 py-4">${batch.startTime || "N/A"}</td>
+							<td class="px-6 py-4">${batch.labNo || "N/A"}</td>
 							<td class="px-6 py-4">${batch.progress ?? 0}%</td>
 						</tr>
 					`;
@@ -1007,14 +998,19 @@
 			                ${formatDate(batch.startDate)}
 			            </td>
 
-			            <td class="px-6 py-5">
-			                <span class="px-3 py-1 rounded-full text-xs font-bold
-			                    ${batch.status === "ONGOING"
-			                        ? "bg-green-100 text-green-700"
-			                        : "bg-gray-100 text-gray-700"}">
-			                    ${batch.status || "N/A"}
-			                </span>
-			            </td>
+						<!-- ✅ TIME -->
+									
+										
+						<td class="px-6 py-5 text-on-surface-variant">
+										${batch.time || "N/A"}
+									</td>
+
+									
+
+									<!-- ✅ LAB NO -->
+									<td class="px-6 py-5 text-on-surface-variant">
+										${batch.labNo || batch.labNumber || "N/A"}
+									</td>
 
 			            <td class="px-6 py-5">
 			                <div class="w-full bg-surface-container-high rounded-full h-2 overflow-hidden">

@@ -27,6 +27,7 @@ public final class BatchMapper {
         response.setTime(batch.getTime());
         response.setLabNo(batch.getLabNo());
         response.setNoOfStudents(batch.getNoOfStudents());
+        response.setMeetLink(batch.getMeetLink());
 
         return response;
     }

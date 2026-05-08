@@ -41,13 +41,16 @@ public class Batch {
 
     @Column(name = "no_of_students", nullable = false)
     private Integer noOfStudents;
+    
+    @Column(name = "meet_link")
+    private String meetLink;
 
     // Constructor
     public Batch() {}
 
     public Batch(Long id, String domainName, LocalDate startDate, LocalDate endDate,
                  User trainer, Integer progress, BatchStatus status,
-                 String time, String labNo, Integer noOfStudents) {
+                 String time, String labNo, Integer noOfStudents, String meetLink) {
         this.id = id;
         this.domainName = domainName;
         this.startDate = startDate;
@@ -58,9 +61,18 @@ public class Batch {
         this.time = time;
         this.labNo = labNo;
         this.noOfStudents = noOfStudents;
-    }
+        this.meetLink = meetLink;
+        }
 
-    // GETTERS
+    public String getMeetLink() {
+		return meetLink;
+	}
+
+	public void setMeetLink(String meetLink) {
+		this.meetLink = meetLink;
+	}
+
+	// GETTERS
     public Long getId() { return id; }
     public String getDomainName() { return domainName; }
     public LocalDate getStartDate() { return startDate; }

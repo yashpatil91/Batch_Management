@@ -31,8 +31,19 @@ public class CreateBatchRequest {
     private Integer progress;
 
     private Long trainerId;
+    
+    private String meetLink;
 
-    public String getDomainName() {
+
+    public String getMeetLink() {
+		return meetLink;
+	}
+
+	public void setMeetLink(String meetLink) {
+		this.meetLink = meetLink;
+	}
+
+	public String getDomainName() {
         return domainName;
     }
 
