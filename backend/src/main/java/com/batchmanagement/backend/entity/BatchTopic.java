@@ -18,15 +18,25 @@ public class BatchTopic {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+  
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "batch_id", nullable = false)
     private Batch batch;
+
+    // NEW RELATION FOR MODULE SYSTEM
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "module_id")
+    private Module module;
 
     @Column(nullable = false)
     private String title;
 
     @Column(nullable = false)
     private boolean completed;
+
+    // =========================
+    // Getters and Setters
+    // =========================
 
     public Long getId() {
         return id;
@@ -42,6 +52,14 @@ public class BatchTopic {
 
     public void setBatch(Batch batch) {
         this.batch = batch;
+    }
+
+    public Module getModule() {
+        return module;
+    }
+
+    public void setModule(Module module) {
+        this.module = module;
     }
 
     public String getTitle() {

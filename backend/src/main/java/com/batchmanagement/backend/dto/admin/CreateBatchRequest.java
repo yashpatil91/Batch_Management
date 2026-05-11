@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CreateBatchRequest {
     @NotBlank
@@ -33,6 +35,29 @@ public class CreateBatchRequest {
     private Long trainerId;
     
     private String meetLink;
+    private List<ModuleRequest> modules = new ArrayList<>();
+
+    public static class ModuleRequest {
+        @NotBlank
+        private String name;
+        private Long trainerId;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public Long getTrainerId() {
+            return trainerId;
+        }
+
+        public void setTrainerId(Long trainerId) {
+            this.trainerId = trainerId;
+        }
+    }
 
 
     public String getMeetLink() {
@@ -42,6 +67,14 @@ public class CreateBatchRequest {
 	public void setMeetLink(String meetLink) {
 		this.meetLink = meetLink;
 	}
+
+    public List<ModuleRequest> getModules() {
+        return modules;
+    }
+
+    public void setModules(List<ModuleRequest> modules) {
+        this.modules = modules;
+    }
 
 	public String getDomainName() {
         return domainName;

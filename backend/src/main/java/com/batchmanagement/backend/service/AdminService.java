@@ -4,18 +4,22 @@ import com.batchmanagement.backend.dto.admin.AssignBatchRequest;
 import com.batchmanagement.backend.dto.admin.CreateBatchRequest;
 import com.batchmanagement.backend.dto.admin.DashboardResponse;
 import com.batchmanagement.backend.dto.common.BatchResponse;
+import com.batchmanagement.backend.dto.common.BatchWithModulesResponse;
 import com.batchmanagement.backend.dto.common.UserCreateRequest;
 import com.batchmanagement.backend.dto.common.UserResponse;
 import com.batchmanagement.backend.dto.common.UserUpdateRequest;
 import com.batchmanagement.backend.entity.Batch;
+import com.batchmanagement.backend.entity.Module;
 import com.batchmanagement.backend.entity.User;
 import com.batchmanagement.backend.entity.enums.BatchStatus;
 import com.batchmanagement.backend.entity.enums.Role;
 import com.batchmanagement.backend.exception.BadRequestException;
 import com.batchmanagement.backend.exception.ResourceNotFoundException;
 import com.batchmanagement.backend.mapper.BatchMapper;
+import com.batchmanagement.backend.mapper.ModuleMapper;
 import com.batchmanagement.backend.mapper.UserMapper;
 import com.batchmanagement.backend.repository.BatchRepository;
+import com.batchmanagement.backend.repository.ModuleRepository;
 import com.batchmanagement.backend.repository.UserRepository;
 
 import java.util.List;
@@ -29,6 +33,7 @@ public class AdminService {
 
     private final UserRepository userRepository;
     private final BatchRepository batchRepository;
+    private final ModuleRepository moduleRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -36,9 +41,11 @@ public class AdminService {
 
     public AdminService(UserRepository userRepository,
                         BatchRepository batchRepository,
+                        ModuleRepository moduleRepository,
                         PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.batchRepository = batchRepository;
+        this.moduleRepository = moduleRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -113,6 +120,30 @@ public class AdminService {
                 .toList();
     }
 
+    public List<BatchWithModulesResponse> getAllBatchesWithModules() {
+        return batchRepository.findAll()
+                .stream()
+                .map(batch -> {
+                    BatchWithModulesResponse response = new BatchWithModulesResponse();
+                    response.setId(batch.getId());
+                    response.setDomainName(batch.getDomainName());
+                    response.setStartDate(batch.getStartDate());
+                    response.setEndDate(batch.getEndDate());
+                    response.setProgress(batch.getProgress());
+                    response.setStatus(batch.getStatus());
+                    response.setTime(batch.getTime());
+                    response.setLabNo(batch.getLabNo());
+                    response.setNoOfStudents(batch.getNoOfStudents());
+                    response.setMeetLink(batch.getMeetLink());
+                    response.setModules(moduleRepository.findByBatch(batch)
+                            .stream()
+                            .map(ModuleMapper::toResponse)
+                            .toList());
+                    return response;
+                })
+                .toList();
+    }
+
     // 🔥 ASSIGN BATCH + HTML EMAIL
     public BatchResponse assignBatch(AssignBatchRequest request) {
 
@@ -128,6 +159,13 @@ public class AdminService {
         Batch savedBatch = batchRepository.save(batch);
 
         // 🔥 HTML EMAIL
+        moduleRepository.findByBatch(savedBatch).forEach(module -> {
+            if (module.getTrainer() == null) {
+                module.setTrainer(trainer);
+                moduleRepository.save(module);
+            }
+        });
+
         try {
             emailService.sendBatchEmail(
                     trainer.getEmail(),
@@ -140,6 +178,32 @@ public class AdminService {
         }
 
         return BatchMapper.toResponse(savedBatch);
+    }
+
+    private void createModulesForBatch(Batch batch, List<CreateBatchRequest.ModuleRequest> modules, User defaultTrainer) {
+        if (modules == null || modules.isEmpty()) {
+            return;
+        }
+        for (CreateBatchRequest.ModuleRequest moduleRequest : modules) {
+            if (moduleRequest.getName() == null || moduleRequest.getName().trim().isEmpty()) {
+                continue;
+            }
+            Module module = new Module();
+            module.setBatch(batch);
+            module.setName(moduleRequest.getName().trim());
+            module.setProgress(0);
+            module.setStatus("NOT_STARTED");
+
+            if (moduleRequest.getTrainerId() != null) {
+                User trainer = userRepository.findById(moduleRequest.getTrainerId())
+                        .filter(user -> user.getRole() == Role.TRAINER)
+                        .orElseThrow(() -> new ResourceNotFoundException("Trainer not found for module"));
+                module.setTrainer(trainer);
+            } else if (defaultTrainer != null) {
+                module.setTrainer(defaultTrainer);
+            }
+            moduleRepository.save(module);
+        }
     }
 
     // 🔥 CREATE BATCH + HTML EMAIL
@@ -221,6 +285,7 @@ public class AdminService {
         // SAVE ONLY AFTER VALIDATION
         // =========================
         Batch savedBatch = batchRepository.save(batch);
+        createModulesForBatch(savedBatch, request.getModules(), trainer);
 
         // =========================
         // EMAIL

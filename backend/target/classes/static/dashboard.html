@@ -316,7 +316,7 @@
 					<p class="text-on-surface-variant font-body">Operational metrics and batch oversight for Q3
 						Lifecycle.</p>
 				</div>
-				<button onclick="window.location.href='BatchDetailPage.html'"
+				<button onclick="window.location.href='createBatch.html'"
 				    class="primary-gradient text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">
 				    
 				    <span class="material-symbols-outlined">add_circle</span>
@@ -415,7 +415,9 @@
 									<th class="px-6 py-4 font-semibold">Start Date</th>
 									<th class="px-6 py-4 font-semibold">Time</th>
 									<th class="px-6 py-4 font-semibold">Lab No</th>
+									<th class="px-6 py-4 font-semibold">Modules</th>
 									<th class="px-6 py-4 font-semibold">Progress</th>
+									<th class="px-6 py-4 font-semibold">Assign</th>
 								</tr>
 							</thead>
 							<tbody id="batchTableBody" class="divide-y-0">
@@ -541,6 +543,7 @@
 		
 		//let showAll = false;
 		let trainerData = [];
+		let allTrainerOptions = [];
 		//const API_BASE_URL = "";
 		const API_BASE_URL = "http://localhost:8080";
 		const token = localStorage.getItem("token");
@@ -641,6 +644,7 @@
 		    if (!trainerRes.ok) throw new Error("Failed to load trainers");
 
 		    const trainers = await trainerRes.json();
+			allTrainerOptions = trainers;
 
 		    /* ===== FETCH BATCHES ===== */
 		    const batchRes = await fetch(`${API_BASE_URL}/api/admin/batches`, {
@@ -852,6 +856,7 @@
 		const tableBody = document.getElementById("batchTableBody");
 
 		let allBatches = []; // Filled from API
+		let batchModulesMap = {};
 
 		// =========================
 		// GET YEAR FROM DATE
@@ -971,7 +976,7 @@
 		    if (!records.length) {
 		        tableBody.innerHTML = `
 		            <tr>
-		                <td colspan="5" class="text-center py-10 text-outline">
+		                <td colspan="8" class="text-center py-10 text-outline">
 		                    No active batches found
 		                </td>
 		            </tr>
@@ -982,6 +987,15 @@
 			records.forEach(batch => {
 
 			    let progress = calculateBatchProgress(batch);
+				const modules = batchModulesMap[batch.id] || [];
+				const moduleSummary = modules.length
+					? modules.map(m => `${m.name} (${m.trainer?.name || "Unassigned"}) - ${m.progress || 0}%`).join("<br>")
+					: "No modules";
+				const trainerOptions = allTrainerOptions.map(trainer => `
+					<option value="${trainer.id}" ${Number(batch.trainerId) === Number(trainer.id) ? "selected" : ""}>
+						${trainer.name || "Trainer"}
+					</option>
+				`).join("");
 
 			    tableBody.insertAdjacentHTML("beforeend", `
 			        <tr class="hover:bg-secondary-container/30 transition-colors">
@@ -1012,6 +1026,10 @@
 										${batch.labNo || batch.labNumber || "N/A"}
 									</td>
 
+						<td class="px-6 py-5 text-xs text-on-surface-variant leading-5">
+							${moduleSummary}
+						</td>
+
 			            <td class="px-6 py-5">
 			                <div class="w-full bg-surface-container-high rounded-full h-2 overflow-hidden">
 			                    <div class="h-full bg-primary rounded-full"
@@ -1023,11 +1041,50 @@
 			                </span>
 			            </td>
 
+						<td class="px-6 py-5">
+							<select
+								onchange="assignBatchTrainer(${batch.id}, this.value)"
+								class="bg-surface-container-low border border-outline-variant rounded-lg text-xs font-medium px-3 py-2 min-w-[150px]">
+								<option value="">Unassigned</option>
+								${trainerOptions}
+							</select>
+						</td>
+
 			        </tr>
 			    `);
 			});
 
 			}
+		async function assignBatchTrainer(batchId, trainerId) {
+			if (!trainerId) return;
+
+			try {
+				const res = await fetch(`${API_BASE_URL}/api/admin/assign-batch`, {
+					method: "POST",
+					headers: {
+						...authHeaders(),
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify({
+						batchId: Number(batchId),
+						trainerId: Number(trainerId)
+					})
+				});
+
+				if (!res.ok) {
+					const errorText = await res.text();
+					throw new Error(errorText || "Failed to assign trainer");
+				}
+
+				await loadDashboardBatches();
+				await loadTrainers();
+				await loadDashboard();
+			} catch (err) {
+				console.error("Assign trainer error:", err);
+				alert("Unable to assign trainer: " + err.message);
+				await loadDashboardBatches();
+			}
+		}
 		// =========================
 		// EVENT LISTENERS
 		// =========================
@@ -1050,6 +1107,16 @@
 		        if (!res.ok) throw new Error("Failed to load batches");
 
 		        allBatches = await res.json();
+				const moduleEntries = await Promise.all(allBatches.map(async batch => {
+					try {
+						const moduleRes = await fetch(`${API_BASE_URL}/api/modules/batch/${batch.id}`, {headers: authHeaders()});
+						if (!moduleRes.ok) return [batch.id, []];
+						return [batch.id, await moduleRes.json()];
+					} catch {
+						return [batch.id, []];
+					}
+				}));
+				batchModulesMap = Object.fromEntries(moduleEntries);
 
 		        applyDashboardFilters();
 
@@ -1062,10 +1129,14 @@
 		// INIT push
 		// =========================
 		
-		setLoggedInName();
-		loadDashboard();
-		loadTrainers();
-		loadDashboardBatches();
+		async function initializeDashboard() {
+			setLoggedInName();
+			await loadDashboard();
+			await loadTrainers();
+			await loadDashboardBatches();
+		}
+
+		initializeDashboard();
 	</script>
 	
 	

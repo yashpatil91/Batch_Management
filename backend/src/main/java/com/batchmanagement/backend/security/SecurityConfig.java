@@ -57,6 +57,7 @@ public class SecurityConfig {
                 // 🔐 Role-based APIs
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/trainer/**").hasRole("TRAINER")
+                .requestMatchers("/api/modules/**").hasAnyRole("ADMIN", "TRAINER")
 
                 // 🔒 Everything else secured
                 .anyRequest().authenticated()

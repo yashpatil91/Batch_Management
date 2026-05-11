@@ -3,83 +3,175 @@ package com.batchmanagement.backend.service;
 import com.batchmanagement.backend.dto.common.BatchRequest;
 import com.batchmanagement.backend.dto.common.BatchResponse;
 import com.batchmanagement.backend.dto.trainer.ProgressUpdateRequest;
-import com.batchmanagement.backend.dto.trainer.TopicCreateRequest;
-import com.batchmanagement.backend.dto.trainer.TopicResponse;
-import com.batchmanagement.backend.dto.trainer.TopicStatusUpdateRequest;
 import com.batchmanagement.backend.entity.Batch;
 import com.batchmanagement.backend.entity.BatchTopic;
+import com.batchmanagement.backend.entity.Module;
 import com.batchmanagement.backend.entity.User;
 import com.batchmanagement.backend.entity.enums.BatchStatus;
 import com.batchmanagement.backend.entity.enums.Role;
+import com.batchmanagement.backend.exception.BadRequestException;
 import com.batchmanagement.backend.exception.ResourceNotFoundException;
 import com.batchmanagement.backend.mapper.BatchMapper;
 import com.batchmanagement.backend.repository.BatchRepository;
 import com.batchmanagement.backend.repository.BatchTopicRepository;
+import com.batchmanagement.backend.repository.ModuleRepository;
 import com.batchmanagement.backend.repository.UserRepository;
+
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
-import com.batchmanagement.backend.exception.BadRequestException;
+
 @Service
 public class TrainerService {
 
     private final UserRepository userRepository;
     private final BatchRepository batchRepository;
     private final BatchTopicRepository batchTopicRepository;
+    private final ModuleRepository moduleRepository;
 
-    public TrainerService(UserRepository userRepository, BatchRepository batchRepository, BatchTopicRepository batchTopicRepository) {
+    public TrainerService(
+            UserRepository userRepository,
+            BatchRepository batchRepository,
+            BatchTopicRepository batchTopicRepository,
+            ModuleRepository moduleRepository) {
+
         this.userRepository = userRepository;
         this.batchRepository = batchRepository;
         this.batchTopicRepository = batchTopicRepository;
+        this.moduleRepository = moduleRepository;
     }
 
-    public List<BatchResponse> getAssignedBatches(String trainerEmail) {
-        User trainer = findTrainerByEmail(trainerEmail);
+    // =========================
+    // GET TRAINER BATCHES
+    // =========================
 
-        return batchRepository.findByTrainer(trainer)
-                .stream()
-                .map(BatchMapper::toResponse)
+    public List<BatchResponse> getAssignedBatches(
+            String trainerEmail) {
+
+        User trainer =
+                findTrainerByEmail(trainerEmail);
+
+        List<Module> trainerModules =
+                moduleRepository.findByTrainer(trainer);
+
+        Set<Batch> batches =
+                trainerModules.stream()
+                        .map(Module::getBatch)
+                        .collect(Collectors.toSet());
+
+        // IMPORTANT:
+        // BATCH RESPONSE SHOULD CONTAIN
+        // UPDATED COMBINED BATCH PROGRESS
+
+        return batches.stream()
+                .map(batch -> {
+
+                    List<Module> batchModules =
+                            moduleRepository.findByBatchId(
+                                    batch.getId()
+                            );
+
+                    int totalProgress =
+                            batchModules.stream()
+                                    .mapToInt(module ->
+                                            module.getProgress() == null
+                                                    ? 0
+                                                    : module.getProgress()
+                                    )
+                                    .sum();
+
+                    int avgProgress =
+                            batchModules.isEmpty()
+                                    ? 0
+                                    : totalProgress / batchModules.size();
+
+                    batch.setProgress(avgProgress);
+
+                    boolean allCompleted =
+                            !batchModules.isEmpty() &&
+                            batchModules.stream()
+                                    .allMatch(module ->
+                                            "COMPLETED"
+                                                    .equalsIgnoreCase(
+                                                            module.getStatus()
+                                                    )
+                                    );
+
+                    if (allCompleted) {
+
+                        batch.setStatus(
+                                BatchStatus.COMPLETED
+                        );
+
+                    } else {
+
+                        batch.setStatus(
+                                BatchStatus.ONGOING
+                        );
+                    }
+
+                    batchRepository.save(batch);
+
+                    return BatchMapper.toResponse(batch);
+
+                })
                 .toList();
     }
 
- // ================= CREATE BATCH =================
- // ================= CREATE BATCH =================
-    public BatchResponse createBatch(String trainerEmail, BatchRequest request) {
+    // =========================
+    // CREATE BATCH
+    // =========================
 
-        System.out.println("===== CREATE BATCH REQUEST =====");
-        System.out.println("Trainer Email: " + trainerEmail);
-        System.out.println("Domain Name: " + request.getDomainName());
-        System.out.println("Start Date: " + request.getStartDate());
-        System.out.println("End Date: " + request.getEndDate());
-        System.out.println("Time: " + request.getTime());
-        System.out.println("Lab No: " + request.getLabNo());
-        System.out.println("Students: " + request.getNoOfStudents());
-        System.out.println("Meet: " + request.getMeetLink());
+    public BatchResponse createBatch(
+            String trainerEmail,
+            BatchRequest request) {
 
+        User trainer =
+                findTrainerByEmail(trainerEmail);
 
-        User trainer = findTrainerByEmail(trainerEmail);
+        if (request.getModuleName() == null ||
+                request.getModuleName().trim().isEmpty()) {
+
+            throw new BadRequestException(
+                    "Starter module is required."
+            );
+        }
 
         // =========================
         // TRAINER CONFLICT CHECK
         // =========================
-        List<Batch> activeBatches =
-            batchRepository.findByTrainerAndStatusNot(
-                trainer,
-                BatchStatus.COMPLETED
-            );
 
-        for (Batch existing : activeBatches) {
+        List<Module> trainerModules =
+                moduleRepository.findByTrainer(trainer);
 
-            System.out.println("Checking trainer batch: " + existing.getDomainName());
+        for (Module module : trainerModules) {
+
+            Batch existing =
+                    module.getBatch();
+
+            if (existing == null ||
+                    existing.getStatus() ==
+                            BatchStatus.COMPLETED) {
+
+                continue;
+            }
 
             boolean dateOverlap =
-                !request.getStartDate().isAfter(existing.getEndDate()) &&
-                !request.getEndDate().isBefore(existing.getStartDate());
+                    !request.getStartDate()
+                            .isAfter(existing.getEndDate()) &&
+                    !request.getEndDate()
+                            .isBefore(existing.getStartDate());
 
             if (!dateOverlap) continue;
 
-            if (isTimeConflict(request.getTime(), existing.getTime())) {
+            if (isTimeConflict(
+                    request.getTime(),
+                    existing.getTime())) {
+
                 throw new BadRequestException(
-                    "Trainer already has an active batch during this time."
+                        "Trainer already has another module during this time."
                 );
             }
         }
@@ -87,25 +179,29 @@ public class TrainerService {
         // =========================
         // LAB CONFLICT CHECK
         // =========================
+
         List<Batch> labBatches =
-            batchRepository.findByLabNoAndStatusNot(
-                request.getLabNo(),
-                BatchStatus.COMPLETED
-            );
+                batchRepository.findByLabNoAndStatusNot(
+                        request.getLabNo(),
+                        BatchStatus.COMPLETED
+                );
 
         for (Batch existing : labBatches) {
 
-            System.out.println("Checking lab batch: " + existing.getDomainName());
-
             boolean dateOverlap =
-                !request.getStartDate().isAfter(existing.getEndDate()) &&
-                !request.getEndDate().isBefore(existing.getStartDate());
+                    !request.getStartDate()
+                            .isAfter(existing.getEndDate()) &&
+                    !request.getEndDate()
+                            .isBefore(existing.getStartDate());
 
             if (!dateOverlap) continue;
 
-            if (isTimeConflict(request.getTime(), existing.getTime())) {
+            if (isTimeConflict(
+                    request.getTime(),
+                    existing.getTime())) {
+
                 throw new BadRequestException(
-                    "Lab already occupied during this time."
+                        "Lab already occupied during this time."
                 );
             }
         }
@@ -113,289 +209,408 @@ public class TrainerService {
         // =========================
         // CREATE BATCH
         // =========================
+
         Batch batch = new Batch();
 
-        batch.setDomainName(request.getDomainName());
-        batch.setStartDate(request.getStartDate());
-        batch.setEndDate(request.getEndDate());
-        batch.setTrainer(trainer);
-        batch.setProgress(
-            request.getProgress() == null ? 0 : request.getProgress()
+        batch.setDomainName(
+                request.getDomainName()
         );
-        batch.setStatus(BatchStatus.ONGOING);
-        batch.setTime(request.getTime());
-        batch.setLabNo(request.getLabNo());
-        batch.setNoOfStudents(request.getNoOfStudents());
-        batch.setMeetLink(request.getMeetLink());
 
-        System.out.println("Saving batch...");
+        batch.setStartDate(
+                request.getStartDate()
+        );
 
-        Batch savedBatch = batchRepository.save(batch);
+        batch.setEndDate(
+                request.getEndDate()
+        );
 
-        System.out.println("Batch saved successfully: " + savedBatch.getId());
+        batch.setProgress(0);
+
+        batch.setStatus(
+                BatchStatus.ONGOING
+        );
+
+        batch.setTime(
+                request.getTime()
+        );
+
+        batch.setLabNo(
+                request.getLabNo()
+        );
+
+        batch.setNoOfStudents(
+                request.getNoOfStudents()
+        );
+
+        batch.setMeetLink(
+                request.getMeetLink()
+        );
+
+        Batch savedBatch =
+                batchRepository.save(batch);
+
+        // =========================
+        // CREATE STARTER MODULE
+        // =========================
+
+        Module module = new Module();
+
+        module.setBatch(savedBatch);
+
+        module.setName(
+                request.getModuleName().trim()
+        );
+
+        module.setTrainer(trainer);
+
+        module.setProgress(0);
+
+        module.setStatus("NOT_STARTED");
+
+        moduleRepository.save(module);
 
         return BatchMapper.toResponse(savedBatch);
     }
 
-    public BatchResponse updateProgress(String trainerEmail, Long batchId, ProgressUpdateRequest request) {
+    // =========================
+    // UPDATE PROGRESS
+    // =========================
+    // IMPORTANT:
+    // DO NOT MANUALLY UPDATE
+    // BATCH PROGRESS ANYMORE
+    // =========================
 
-        Batch batch = findTrainerBatch(trainerEmail, batchId);
+    public BatchResponse updateProgress(
+            String trainerEmail,
+            Long batchId,
+            ProgressUpdateRequest request) {
 
-        batch.setProgress(request.getProgress());
+        Batch batch =
+                findTrainerBatch(
+                        trainerEmail,
+                        batchId
+                );
 
-        if (request.getProgress() == 100) {
-            batch.setStatus(BatchStatus.COMPLETED);
-        } else {
-            batch.setStatus(BatchStatus.ONGOING);
-        }
-
-        return BatchMapper.toResponse(batchRepository.save(batch));
+        return BatchMapper.toResponse(batch);
     }
 
-    public BatchResponse markComplete(String trainerEmail, Long batchId) {
+    // =========================
+    // COMPLETE BATCH
+    // =========================
+    // IMPORTANT:
+    // BATCH COMPLETION NOW
+    // DEPENDS ON ALL MODULES
+    // =========================
 
-        Batch batch = findTrainerBatch(trainerEmail, batchId);
+    public BatchResponse markComplete(
+            String trainerEmail,
+            Long batchId) {
 
-        batch.setProgress(100);
-        batch.setStatus(BatchStatus.COMPLETED);
+        Batch batch =
+                findTrainerBatch(
+                        trainerEmail,
+                        batchId
+                );
 
-        return BatchMapper.toResponse(batchRepository.save(batch));
+        return BatchMapper.toResponse(batch);
     }
 
-    public List<TopicResponse> getTopics(String trainerEmail, Long batchId) {
-        Batch batch = findTrainerBatch(trainerEmail, batchId);
-        return batchTopicRepository.findByBatch(batch).stream().map(this::toTopicResponse).toList();
-    }
+    // =========================
+    // FIND TRAINER BATCH
+    // =========================
 
-    public TopicResponse addTopic(String trainerEmail, Long batchId, TopicCreateRequest request) {
-        Batch batch = findTrainerBatch(trainerEmail, batchId);
-        BatchTopic topic = new BatchTopic();
-        topic.setBatch(batch);
-        topic.setTitle(request.getTitle());
-        topic.setCompleted(false);
-        BatchTopic saved = batchTopicRepository.save(topic);
-        recalculateProgress(batch);
-        return toTopicResponse(saved);
-    }
+    private Batch findTrainerBatch(
+            String trainerEmail,
+            Long batchId) {
 
-    public TopicResponse updateTopicStatus(String trainerEmail, Long topicId, TopicStatusUpdateRequest request) {
-        BatchTopic topic = batchTopicRepository.findById(topicId)
-                .orElseThrow(() -> new ResourceNotFoundException("Topic not found"));
-        Batch batch = findTrainerBatch(trainerEmail, topic.getBatch().getId());
-        topic.setCompleted(Boolean.TRUE.equals(request.getCompleted()));
-        BatchTopic saved = batchTopicRepository.save(topic);
-        recalculateProgress(batch);
-        return toTopicResponse(saved);
-    }
+        User trainer =
+                findTrainerByEmail(trainerEmail);
 
-    private void recalculateProgress(Batch batch) {
-        long total = batchTopicRepository.countByBatch(batch);
+        Batch batch =
+                batchRepository.findById(batchId)
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Batch not found"
+                                )
+                        );
 
-        if (total == 0) {
-            batch.setProgress(0);
-            batchRepository.save(batch);
-            return;
-        }
+        boolean moduleOwnerInBatch =
+                moduleRepository.findByBatchId(batchId)
+                        .stream()
+                        .anyMatch(module ->
+                                module.getTrainer() != null &&
+                                        module.getTrainer()
+                                                .getId()
+                                                .equals(
+                                                        trainer.getId()
+                                                )
+                        );
 
-        long completed = batchTopicRepository.countByBatchAndCompletedTrue(batch);
+        if (!moduleOwnerInBatch) {
 
-        int progress = (int) Math.round((completed * 100.0) / total);
-
-        batch.setProgress(progress);
-
-        // ❌ DO NOT change status here
-
-        batchRepository.save(batch);
-    }
-
-    private TopicResponse toTopicResponse(BatchTopic topic) {
-        TopicResponse response = new TopicResponse();
-        response.setId(topic.getId());
-        response.setTitle(topic.getTitle());
-        response.setCompleted(topic.isCompleted());
-        return response;
-    }
-
-    private Batch findTrainerBatch(String trainerEmail, Long batchId) {
-
-        User trainer = findTrainerByEmail(trainerEmail);
-
-        Batch batch = batchRepository.findById(batchId)
-                .orElseThrow(() -> new ResourceNotFoundException("Batch not found"));
-
-        if (batch.getTrainer() == null ||
-                !batch.getTrainer().getId().equals(trainer.getId())) {
-            throw new ResourceNotFoundException("Batch not assigned to this trainer");
+            throw new ResourceNotFoundException(
+                    "Batch not assigned to this trainer"
+            );
         }
 
         return batch;
     }
 
-    private User findTrainerByEmail(String email) {
+    // =========================
+    // FIND TRAINER
+    // =========================
+
+    private User findTrainerByEmail(
+            String email) {
+
         return userRepository.findByEmail(email)
-                .filter(user -> user.getRole() == Role.TRAINER)
-                .orElseThrow(() -> new ResourceNotFoundException("Trainer not found"));
+                .filter(user ->
+                        user.getRole() == Role.TRAINER
+                )
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Trainer not found"
+                        )
+                );
     }
-    ///adding things from here
-    
-    public void deleteTopic(String trainerEmail, Long topicId) {
 
-        BatchTopic topic = batchTopicRepository.findById(topicId)
-                .orElseThrow(() -> new ResourceNotFoundException("Topic not found"));
+    // =========================
+    // UPDATE BATCH
+    // =========================
 
-        Batch batch = findTrainerBatch(trainerEmail, topic.getBatch().getId());
+    public BatchResponse updateBatch(
+            String trainerEmail,
+            Long batchId,
+            BatchRequest request) {
 
-        batchTopicRepository.delete(topic);
+        Batch batch =
+                findTrainerBatch(
+                        trainerEmail,
+                        batchId
+                );
 
-        recalculateProgress(batch);
-    }
-    
-    public TopicResponse updateTopicTitle(String trainerEmail, Long topicId, TopicCreateRequest request) {
+        User trainer =
+                findTrainerByEmail(trainerEmail);
 
-        BatchTopic topic = batchTopicRepository.findById(topicId)
-                .orElseThrow(() -> new ResourceNotFoundException("Topic not found"));
+        List<Module> trainerModules =
+                moduleRepository.findByTrainer(trainer);
 
-        Batch batch = findTrainerBatch(trainerEmail, topic.getBatch().getId());
+        for (Module module : trainerModules) {
 
-        topic.setTitle(request.getTitle());
+            Batch existing =
+                    module.getBatch();
 
-        BatchTopic saved = batchTopicRepository.save(topic);
+            if (existing == null ||
+                    existing.getId().equals(batchId) ||
+                    existing.getStatus() ==
+                            BatchStatus.COMPLETED) {
 
-        return toTopicResponse(saved);
-    }
-    
-    
-    ///doing extra stuff, just in case for error handling
-    
-    public BatchResponse updateBatch(String trainerEmail, Long batchId, BatchRequest request) {
-
-        Batch batch = findTrainerBatch(trainerEmail, batchId);
-
-        User trainer = findTrainerByEmail(trainerEmail);
-
-        // =========================
-        // TRAINER CONFLICT CHECK
-        // =========================
-        List<Batch> activeBatches =
-            batchRepository.findByTrainerAndStatusNot(
-                trainer,
-                BatchStatus.COMPLETED
-            );
-
-        for (Batch existing : activeBatches) {
-
-            if (existing.getId().equals(batchId)) continue;
+                continue;
+            }
 
             boolean dateOverlap =
-                !request.getStartDate().isAfter(existing.getEndDate()) &&
-                !request.getEndDate().isBefore(existing.getStartDate());
+                    !request.getStartDate()
+                            .isAfter(existing.getEndDate()) &&
+                    !request.getEndDate()
+                            .isBefore(existing.getStartDate());
 
             if (!dateOverlap) continue;
 
-            if (isTimeConflict(request.getTime(), existing.getTime())) {
+            if (isTimeConflict(
+                    request.getTime(),
+                    existing.getTime())) {
+
                 throw new BadRequestException(
-                    "Trainer already has an active batch during this time."
+                        "Trainer already has another module during this time."
                 );
             }
-            
         }
 
-        // =========================
-        // LAB CONFLICT CHECK
-        // =========================
         List<Batch> labBatches =
-            batchRepository.findByLabNoAndStatusNot(
-                request.getLabNo(),
-                BatchStatus.COMPLETED
-            );
+                batchRepository.findByLabNoAndStatusNot(
+                        request.getLabNo(),
+                        BatchStatus.COMPLETED
+                );
 
         for (Batch existing : labBatches) {
 
-            if (existing.getId().equals(batchId)) continue;
+            if (existing.getId().equals(batchId)) {
+                continue;
+            }
 
             boolean dateOverlap =
-                !request.getStartDate().isAfter(existing.getEndDate()) &&
-                !request.getEndDate().isBefore(existing.getStartDate());
+                    !request.getStartDate()
+                            .isAfter(existing.getEndDate()) &&
+                    !request.getEndDate()
+                            .isBefore(existing.getStartDate());
 
             if (!dateOverlap) continue;
 
-            if (isTimeConflict(request.getTime(), existing.getTime())) {
-            	throw new BadRequestException(
-                    "Lab already occupied during this time."
+            if (isTimeConflict(
+                    request.getTime(),
+                    existing.getTime())) {
+
+                throw new BadRequestException(
+                        "Lab already occupied during this time."
                 );
             }
         }
 
-        // =========================
-        // UPDATE FIELDS
-        // =========================
-        batch.setDomainName(request.getDomainName());
-        batch.setStartDate(request.getStartDate());
-        batch.setEndDate(request.getEndDate());
-        batch.setTime(request.getTime());
-        batch.setLabNo(request.getLabNo());
-        batch.setNoOfStudents(request.getNoOfStudents());
-        batch.setMeetLink(request.getMeetLink());
+        batch.setDomainName(
+                request.getDomainName()
+        );
 
-        Batch updated = batchRepository.save(batch);
+        batch.setStartDate(
+                request.getStartDate()
+        );
+
+        batch.setEndDate(
+                request.getEndDate()
+        );
+
+        batch.setTime(
+                request.getTime()
+        );
+
+        batch.setLabNo(
+                request.getLabNo()
+        );
+
+        batch.setNoOfStudents(
+                request.getNoOfStudents()
+        );
+
+        batch.setMeetLink(
+                request.getMeetLink()
+        );
+
+        Batch updated =
+                batchRepository.save(batch);
 
         return BatchMapper.toResponse(updated);
     }
-    public void deleteBatch(String trainerEmail, Long batchId) {
 
-        // Validate trainer + batch ownership
-        Batch batch = findTrainerBatch(trainerEmail, batchId);
+    // =========================
+    // DELETE BATCH
+    // =========================
 
-        // 🔥 IMPORTANT: delete topics first (to avoid FK error)
-        batchTopicRepository.deleteAll(
-            batchTopicRepository.findByBatch(batch)
-        );
+    public void deleteBatch(
+            String trainerEmail,
+            Long batchId) {
 
-        // Delete batch
+        Batch batch =
+                findTrainerBatch(
+                        trainerEmail,
+                        batchId
+                );
+
+        List<Module> modules =
+                moduleRepository.findByBatchId(batchId);
+
+        for (Module module : modules) {
+
+            List<BatchTopic> topics =
+                    batchTopicRepository.findByModule(module);
+
+            batchTopicRepository.deleteAll(topics);
+        }
+
+        moduleRepository.deleteAll(modules);
+
         batchRepository.delete(batch);
     }
-    
-    
-    private boolean isTimeConflict(String newTime, String existingTime) {
 
-        // Safety check
-        if (newTime == null || existingTime == null ||
-            !newTime.contains("-") || !existingTime.contains("-")) {
+    // =========================
+    // TIME CONFLICT
+    // =========================
+
+    private boolean isTimeConflict(
+            String newTime,
+            String existingTime) {
+
+        if (newTime == null ||
+                existingTime == null ||
+                !newTime.contains("-") ||
+                !existingTime.contains("-")) {
+
             return false;
         }
 
-        String[] newParts = newTime.split("-");
-        String[] existingParts = existingTime.split("-");
+        String[] newParts =
+                newTime.split("-");
 
-        // Prevent invalid format crash
-        if (newParts.length < 2 || existingParts.length < 2) {
+        String[] existingParts =
+                existingTime.split("-");
+
+        if (newParts.length < 2 ||
+                existingParts.length < 2) {
+
             return false;
         }
 
-        int newStart = convertToMinutes(newParts[0].trim());
-        int newEnd   = convertToMinutes(newParts[1].trim());
+        int newStart =
+                convertToMinutes(
+                        newParts[0].trim()
+                );
 
-        int oldStart = convertToMinutes(existingParts[0].trim());
-        int oldEnd   = convertToMinutes(existingParts[1].trim());
+        int newEnd =
+                convertToMinutes(
+                        newParts[1].trim()
+                );
 
-        return newStart < oldEnd && newEnd > oldStart;
+        int oldStart =
+                convertToMinutes(
+                        existingParts[0].trim()
+                );
+
+        int oldEnd =
+                convertToMinutes(
+                        existingParts[1].trim()
+                );
+
+        return newStart < oldEnd &&
+                newEnd > oldStart;
     }
 
-    private int convertToMinutes(String time) {
+    // =========================
+    // CONVERT TIME
+    // =========================
+
+    private int convertToMinutes(
+            String time) {
+
         time = time.trim().toUpperCase();
 
-        boolean isPM = time.contains("PM");
-        boolean isAM = time.contains("AM");
+        boolean isPM =
+                time.contains("PM");
 
-        time = time.replace("AM", "").replace("PM", "").trim();
+        boolean isAM =
+                time.contains("AM");
 
-        String[] parts = time.split(":");
+        time = time.replace("AM", "")
+                .replace("PM", "")
+                .trim();
 
-        int hour   = Integer.parseInt(parts[0].trim());
-        int minute = Integer.parseInt(parts[1].trim()); // ✅ parts[1] is now clean "00", not "00 - 17"
+        String[] parts =
+                time.split(":");
 
-        if (isPM && hour != 12) hour += 12;
-        if (isAM && hour == 12) hour = 0;
+        int hour =
+                Integer.parseInt(
+                        parts[0].trim()
+                );
+
+        int minute =
+                Integer.parseInt(
+                        parts[1].trim()
+                );
+
+        if (isPM && hour != 12) {
+            hour += 12;
+        }
+
+        if (isAM && hour == 12) {
+            hour = 0;
+        }
 
         return hour * 60 + minute;
     }
