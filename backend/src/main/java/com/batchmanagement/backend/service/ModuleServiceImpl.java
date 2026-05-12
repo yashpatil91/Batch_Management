@@ -1,24 +1,26 @@
 package com.batchmanagement.backend.service;
 
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+
+import com.batchmanagement.backend.dto.common.ModuleResponse;
 import com.batchmanagement.backend.entity.Batch;
 import com.batchmanagement.backend.entity.Module;
 import com.batchmanagement.backend.entity.ModuleTrainerHistory;
 import com.batchmanagement.backend.entity.User;
 import com.batchmanagement.backend.entity.enums.BatchStatus;
 import com.batchmanagement.backend.entity.enums.Role;
-
+import com.batchmanagement.backend.mapper.ModuleMapper;
 import com.batchmanagement.backend.repository.BatchRepository;
 import com.batchmanagement.backend.repository.BatchTopicRepository;
 import com.batchmanagement.backend.repository.ModuleRepository;
 import com.batchmanagement.backend.repository.ModuleTrainerHistoryRepository;
 import com.batchmanagement.backend.repository.UserRepository;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Service
 public class ModuleServiceImpl implements ModuleService {
@@ -51,6 +53,11 @@ public class ModuleServiceImpl implements ModuleService {
     public Module createModule(
             Module module,
             String requesterEmail) {
+
+        System.out.println("[DEBUG][createModule] enter requester=" + requesterEmail
+                + " batchId=" + (module.getBatch() == null ? "null" : module.getBatch().getId())
+                + " trainerId=" + (module.getTrainer() == null ? "null" : module.getTrainer().getId())
+                + " name=" + module.getName());
 
         User requester = userRepository
                 .findByEmail(requesterEmail)
@@ -86,7 +93,7 @@ public class ModuleServiceImpl implements ModuleService {
         module.setStatus("NOT_STARTED");
 
         // =========================
-        // TRAINER SELF ASSIGN
+        // TRAINER SELF ASSIGN / ADMIN ASSIGN
         // =========================
 
         if (requester.getRole() == Role.TRAINER) {
@@ -116,10 +123,21 @@ public class ModuleServiceImpl implements ModuleService {
             module.setTrainer(requester);
         }
 
+        if (module.getTrainer() != null) {
+
+            System.out.println("[DEBUG][createModule] validating schedule trainerId=" + module.getTrainer().getId()
+                    + " batchId=" + batch.getId());
+            validateTrainerScheduleForBatch(
+                    module.getTrainer().getId(),
+                    batch.getId(),
+                    null
+            );
+        }
+
+        System.out.println("[DEBUG][createModule] saving module now.");
         Module savedModule =
                 moduleRepository.save(module);
 
-        // IMPORTANT
         updateBatchProgress(batch.getId());
 
         return savedModule;
@@ -158,6 +176,17 @@ public class ModuleServiceImpl implements ModuleService {
     public List<Module> getModulesByBatch(Long batchId) {
 
         return moduleRepository.findByBatchId(batchId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ModuleResponse> getModuleResponsesByBatch(Long batchId) {
+
+        return moduleRepository
+                .findByBatchIdFetchingAssociations(batchId)
+                .stream()
+                .map(ModuleMapper::toResponse)
+                .toList();
     }
 
     // =========================
@@ -210,6 +239,9 @@ public class ModuleServiceImpl implements ModuleService {
             Long trainerId,
             String requesterEmail) {
 
+        System.out.println("[DEBUG][assignTrainer] enter moduleId=" + moduleId
+                + " trainerId=" + trainerId + " requester=" + requesterEmail);
+
         Module module = moduleRepository.findById(moduleId)
                 .orElseThrow(() ->
                         new RuntimeException(
@@ -224,13 +256,21 @@ public class ModuleServiceImpl implements ModuleService {
 
         User newTrainer =
                 userRepository.findById(trainerId)
+                        .filter(user -> user.getRole() == Role.TRAINER)
                         .orElseThrow(() ->
                                 new RuntimeException(
                                         "Trainer not found"
                                 )
                         );
 
-        // SAVE OLD TRAINER HISTORY
+        System.out.println("[DEBUG][assignTrainer] validate schedule newTrainerId=" + newTrainer.getId()
+                + " batchId=" + (module.getBatch() == null ? "null" : module.getBatch().getId())
+                + " excludeModuleId=" + module.getId());
+        validateTrainerScheduleForBatch(
+                newTrainer.getId(),
+                module.getBatch().getId(),
+                module.getId()
+        );
 
         if (module.getTrainer() != null) {
 
@@ -254,14 +294,13 @@ public class ModuleServiceImpl implements ModuleService {
             historyRepository.save(history);
         }
 
-        // ASSIGN NEW TRAINER
-
         module.setTrainer(newTrainer);
 
+        System.out.println("[DEBUG][assignTrainer] saving module now. moduleId=" + module.getId()
+                + " newTrainerId=" + newTrainer.getId());
         Module updatedModule =
                 moduleRepository.save(module);
 
-        // IMPORTANT
         updateBatchProgress(
                 module.getBatch().getId()
         );
@@ -278,6 +317,8 @@ public class ModuleServiceImpl implements ModuleService {
             Long moduleId,
             String requesterEmail) {
 
+        System.out.println("[DEBUG][selfAssign] enter moduleId=" + moduleId + " requester=" + requesterEmail);
+
         Module module = moduleRepository.findById(moduleId)
                 .orElseThrow(() ->
                         new RuntimeException(
@@ -287,14 +328,26 @@ public class ModuleServiceImpl implements ModuleService {
 
         User trainer = userRepository
                 .findByEmail(requesterEmail)
+                .filter(user -> user.getRole() == Role.TRAINER)
                 .orElseThrow(() ->
                         new RuntimeException(
                                 "Trainer not found"
                         )
                 );
 
+        System.out.println("[DEBUG][selfAssign] validate schedule trainerId=" + trainer.getId()
+                + " batchId=" + (module.getBatch() == null ? "null" : module.getBatch().getId())
+                + " excludeModuleId=" + module.getId());
+        validateTrainerScheduleForBatch(
+                trainer.getId(),
+                module.getBatch().getId(),
+                module.getId()
+        );
+
         module.setTrainer(trainer);
 
+        System.out.println("[DEBUG][selfAssign] saving module now. moduleId=" + module.getId()
+                + " trainerId=" + trainer.getId());
         Module updatedModule =
                 moduleRepository.save(module);
 
@@ -422,8 +475,6 @@ public class ModuleServiceImpl implements ModuleService {
 
         module.setProgress(progress);
 
-        // AUTO STATUS
-
         if (progress == 100) {
 
             module.setStatus("COMPLETED");
@@ -439,7 +490,6 @@ public class ModuleServiceImpl implements ModuleService {
 
         moduleRepository.save(module);
 
-        // IMPORTANT
         updateBatchProgress(
                 module.getBatch().getId()
         );
@@ -463,8 +513,6 @@ public class ModuleServiceImpl implements ModuleService {
         List<Module> modules =
                 moduleRepository.findByBatchId(batchId);
 
-        // NO MODULES
-
         if (modules.isEmpty()) {
 
             batch.setProgress(0);
@@ -477,9 +525,6 @@ public class ModuleServiceImpl implements ModuleService {
 
             return;
         }
-
-        // IMPORTANT
-        // AVERAGE OF ALL MODULES
 
         int totalProgress =
                 modules.stream()
@@ -494,8 +539,6 @@ public class ModuleServiceImpl implements ModuleService {
                 totalProgress / modules.size();
 
         batch.setProgress(averageProgress);
-
-        // COMPLETE ONLY IF ALL DONE
 
         boolean allCompleted =
                 modules.stream()
@@ -546,6 +589,39 @@ public class ModuleServiceImpl implements ModuleService {
     }
 
     // =========================
+    // DELETE MODULE
+    // =========================
+
+    @Override
+    public void deleteModule(
+            Long moduleId,
+            String requesterEmail) {
+
+        Module module =
+                moduleRepository.findById(moduleId)
+                        .orElseThrow(() ->
+                                new ResponseStatusException(
+                                        HttpStatus.NOT_FOUND,
+                                        "Module not found"
+                                )
+                        );
+
+        validateModuleAccess(
+                module,
+                requesterEmail
+        );
+
+        Long batchId =
+                module.getBatch() == null ? null : module.getBatch().getId();
+
+        moduleRepository.delete(module);
+
+        if (batchId != null) {
+            updateBatchProgress(batchId);
+        }
+    }
+
+    // =========================
     // VALIDATE MODULE ACCESS
     // =========================
 
@@ -556,7 +632,8 @@ public class ModuleServiceImpl implements ModuleService {
         User requester =
                 userRepository.findByEmail(requesterEmail)
                         .orElseThrow(() ->
-                                new RuntimeException(
+                                new ResponseStatusException(
+                                        HttpStatus.UNAUTHORIZED,
                                         "User not found"
                                 )
                         );
@@ -591,7 +668,8 @@ public class ModuleServiceImpl implements ModuleService {
         User requester =
                 userRepository.findByEmail(requesterEmail)
                         .orElseThrow(() ->
-                                new RuntimeException(
+                                new ResponseStatusException(
+                                        HttpStatus.UNAUTHORIZED,
                                         "User not found"
                                 )
                         );
@@ -632,5 +710,189 @@ public class ModuleServiceImpl implements ModuleService {
                 HttpStatus.FORBIDDEN,
                 "Not authorized to reassign"
         );
+    }
+
+    @Override
+    public void validateTrainerScheduleForBatch(
+            Long trainerId,
+            Long batchId,
+            Long excludeModuleId) {
+
+        System.out.println("[DEBUG][validateTrainerScheduleForBatch] enter trainerId=" + trainerId
+                + " batchId=" + batchId + " excludeModuleId=" + excludeModuleId);
+
+        User trainer = userRepository.findById(trainerId)
+                .filter(user -> user.getRole() == Role.TRAINER)
+                .orElseThrow(() ->
+                        new ResponseStatusException(
+                                HttpStatus.BAD_REQUEST,
+                                "Trainer not found"
+                        )
+                );
+
+        Batch targetBatch = batchRepository.findById(batchId)
+                .orElseThrow(() ->
+                        new ResponseStatusException(
+                                HttpStatus.NOT_FOUND,
+                                "Batch not found"
+                        )
+                );
+
+        if (targetBatch.getStartDate() == null ||
+                targetBatch.getEndDate() == null ||
+                targetBatch.getTime() == null) {
+            System.out.println("[DEBUG][validateTrainerScheduleForBatch] skip missing target fields startDate="
+                    + targetBatch.getStartDate() + " endDate=" + targetBatch.getEndDate()
+                    + " time=" + targetBatch.getTime());
+            return;
+        }
+
+        System.out.println("[DEBUG][validateTrainerScheduleForBatch] target startDate=" + targetBatch.getStartDate()
+                + " endDate=" + targetBatch.getEndDate()
+                + " time=" + targetBatch.getTime()
+                + " status=" + targetBatch.getStatus());
+
+        List<Module> trainerModules =
+                moduleRepository.findByTrainerFetchingBatch(trainer);
+
+        System.out.println("[DEBUG][validateTrainerScheduleForBatch] trainerModules=" + trainerModules.size());
+
+        for (Module existingModule : trainerModules) {
+
+            if (excludeModuleId != null &&
+                    excludeModuleId.equals(existingModule.getId())) {
+                continue;
+            }
+
+            Batch existingBatch = existingModule.getBatch();
+
+            if (existingBatch == null ||
+                    existingBatch.getId() == null ||
+                    existingBatch.getId().equals(targetBatch.getId()) ||
+                    existingBatch.getStatus() == BatchStatus.COMPLETED ||
+                    existingBatch.getStartDate() == null ||
+                    existingBatch.getEndDate() == null ||
+                    existingBatch.getTime() == null) {
+                continue;
+            }
+
+            System.out.println("[DEBUG][validateTrainerScheduleForBatch] compare batchId=" + existingBatch.getId()
+                    + " startDate=" + existingBatch.getStartDate()
+                    + " endDate=" + existingBatch.getEndDate()
+                    + " time=" + existingBatch.getTime()
+                    + " status=" + existingBatch.getStatus()
+                    + " moduleId=" + existingModule.getId());
+
+            boolean dateOverlap =
+                    !targetBatch.getStartDate().isAfter(existingBatch.getEndDate()) &&
+                    !targetBatch.getEndDate().isBefore(existingBatch.getStartDate());
+
+            if (!dateOverlap) {
+                continue;
+            }
+
+            boolean timeOverlap = isTimeConflict(
+                    targetBatch.getTime(),
+                    existingBatch.getTime()
+            );
+            System.out.println("[DEBUG][validateTrainerScheduleForBatch] dateOverlap=true timeOverlap=" + timeOverlap);
+
+            if (timeOverlap) {
+
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "Trainer already has another module during this time."
+                );
+            }
+        }
+    }
+
+    // =========================
+    // TIME CONFLICT CHECK
+    // =========================
+
+    private boolean isTimeConflict(
+            String time1,
+            String time2) {
+
+        String[] first =
+                splitTimeRange(time1);
+
+        String[] second =
+                splitTimeRange(time2);
+
+        if (first == null || second == null) {
+            return false;
+        }
+
+        int start1 =
+                convertToMinutes(first[0]);
+
+        int end1 =
+                convertToMinutes(first[1]);
+
+        int start2 =
+                convertToMinutes(second[0]);
+
+        int end2 =
+                convertToMinutes(second[1]);
+
+        return start1 < end2 &&
+                end1 > start2;
+    }
+
+    // =========================
+    // SPLIT TIME RANGE
+    // =========================
+
+    private String[] splitTimeRange(
+            String timeRange) {
+
+        if (timeRange == null ||
+                !timeRange.contains(" - ")) {
+
+            return null;
+        }
+
+        return timeRange.split(" - ");
+    }
+
+    // =========================
+    // CONVERT TIME TO MINUTES
+    // =========================
+
+    private int convertToMinutes(
+            String time) {
+
+        time = time.trim().toUpperCase();
+
+        boolean isPM =
+                time.contains("PM");
+
+        boolean isAM =
+                time.contains("AM");
+
+        time = time.replace("AM", "")
+                .replace("PM", "")
+                .trim();
+
+        String[] parts =
+                time.split(":");
+
+        int hour =
+                Integer.parseInt(parts[0]);
+
+        int minute =
+                Integer.parseInt(parts[1]);
+
+        if (isPM && hour != 12) {
+            hour += 12;
+        }
+
+        if (isAM && hour == 12) {
+            hour = 0;
+        }
+
+        return (hour * 60) + minute;
     }
 }

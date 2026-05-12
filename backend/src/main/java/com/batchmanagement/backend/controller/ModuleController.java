@@ -62,19 +62,19 @@ public class ModuleController {
     }
 
     // =========================
+    // Get Modules By Batch (must be before /{id} so "batch" is not captured as an id)
+    // =========================
+    @GetMapping("/batch/{batchId}")
+    public ResponseEntity<List<ModuleResponse>> getModulesByBatch(@PathVariable Long batchId) {
+        return ResponseEntity.ok(moduleService.getModuleResponsesByBatch(batchId));
+    }
+
+    // =========================
     // Get Module By ID
     // =========================
     @GetMapping("/{id}")
     public ResponseEntity<Module> getModuleById(@PathVariable Long id) {
         return ResponseEntity.ok(moduleService.getModuleById(id));
-    }
-
-    // =========================
-    // Get Modules By Batch
-    // =========================
-    @GetMapping("/batch/{batchId}")
-    public ResponseEntity<List<Module>> getModulesByBatch(@PathVariable Long batchId) {
-        return ResponseEntity.ok(moduleService.getModulesByBatch(batchId));
     }
 
     // =========================
@@ -122,6 +122,9 @@ public class ModuleController {
             @PathVariable Long trainerId,
             Authentication authentication) {
 
+        System.out.println("[DEBUG][ModuleController] PUT /api/modules/" + moduleId + "/assign-trainer/" + trainerId
+                + " requester=" + authentication.getName());
+
         return ResponseEntity.ok(
                 ModuleMapper.toResponse(moduleService.assignTrainer(moduleId, trainerId, authentication.getName()))
         );
@@ -132,6 +135,9 @@ public class ModuleController {
             @PathVariable Long moduleId,
             Authentication authentication) {
 
+        System.out.println("[DEBUG][ModuleController] PUT /api/modules/" + moduleId + "/self-assign requester="
+                + authentication.getName());
+
         return ResponseEntity.ok(
                 ModuleMapper.toResponse(moduleService.selfAssign(moduleId, authentication.getName()))
         );
@@ -141,13 +147,15 @@ public class ModuleController {
     // Update Module Status
     // =========================
     @PutMapping("/{moduleId}/status")
-    public ResponseEntity<Module> updateStatus(
+    public ResponseEntity<ModuleResponse> updateStatus(
             @PathVariable Long moduleId,
             @RequestParam String status,
             Authentication authentication) {
 
         return ResponseEntity.ok(
-                moduleService.updateStatus(moduleId, status, authentication.getName())
+                ModuleMapper.toResponse(
+                        moduleService.updateStatus(moduleId, status, authentication.getName())
+                )
         );
     }
 
@@ -167,6 +175,18 @@ public class ModuleController {
                         )
                 )
         );
+    }
+
+    // =========================
+    // Delete Module
+    // =========================
+    @DeleteMapping("/{moduleId}")
+    public ResponseEntity<Void> deleteModule(
+            @PathVariable Long moduleId,
+            Authentication authentication) {
+
+        moduleService.deleteModule(moduleId, authentication.getName());
+        return ResponseEntity.noContent().build();
     }
 
  // =========================

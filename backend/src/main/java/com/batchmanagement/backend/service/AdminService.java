@@ -34,6 +34,7 @@ public class AdminService {
     private final UserRepository userRepository;
     private final BatchRepository batchRepository;
     private final ModuleRepository moduleRepository;
+    private final ModuleService moduleService;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -42,10 +43,12 @@ public class AdminService {
     public AdminService(UserRepository userRepository,
                         BatchRepository batchRepository,
                         ModuleRepository moduleRepository,
+                        ModuleService moduleService,
                         PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.batchRepository = batchRepository;
         this.moduleRepository = moduleRepository;
+        this.moduleService = moduleService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -198,8 +201,22 @@ public class AdminService {
                 User trainer = userRepository.findById(moduleRequest.getTrainerId())
                         .filter(user -> user.getRole() == Role.TRAINER)
                         .orElseThrow(() -> new ResourceNotFoundException("Trainer not found for module"));
+                System.out.println("[DEBUG][adminCreateBatch] validating module trainer schedule trainerId=" + trainer.getId()
+                        + " batchId=" + batch.getId() + " moduleName=" + moduleRequest.getName());
+                moduleService.validateTrainerScheduleForBatch(
+                        trainer.getId(),
+                        batch.getId(),
+                        null
+                );
                 module.setTrainer(trainer);
             } else if (defaultTrainer != null) {
+                System.out.println("[DEBUG][adminCreateBatch] validating default trainer schedule trainerId=" + defaultTrainer.getId()
+                        + " batchId=" + batch.getId() + " moduleName=" + moduleRequest.getName());
+                moduleService.validateTrainerScheduleForBatch(
+                        defaultTrainer.getId(),
+                        batch.getId(),
+                        null
+                );
                 module.setTrainer(defaultTrainer);
             }
             moduleRepository.save(module);
@@ -313,7 +330,7 @@ public class AdminService {
         response.setTotalTrainers(userRepository.findByRole(Role.TRAINER).size());
         response.setTotalBatches(batchRepository.count());
         response.setOngoingBatches(batchRepository.countByStatus(BatchStatus.ONGOING));
-
+     
         return response;
     }
 

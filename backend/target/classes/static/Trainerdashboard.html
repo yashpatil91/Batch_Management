@@ -486,6 +486,24 @@
 			});
 		}
 
+		async function getApiErrorMessage(res, fallbackMessage) {
+			try {
+				const data = await res.json();
+				if (data && typeof data.message === "string" && data.message.trim()) {
+					return data.message.trim();
+				}
+			} catch (_) {
+				// ignore parse failures
+			}
+			try {
+				const text = await res.text();
+				if (text && text.trim()) return text.trim();
+			} catch (_) {
+				// ignore text failures
+			}
+			return fallbackMessage;
+		}
+
 		// ----------------------------
 		// TIME UTILITIES
 		// ----------------------------
@@ -942,7 +960,7 @@
 
 									        <option
 									            value="${trainer.id}"
-									            ${module.trainer?.id === trainer.id ? "selected" : ""}>
+									            ${Number(module.trainerId) === Number(trainer.id) ? "selected" : ""}>
 
 									            ${trainer.name}
 
@@ -952,7 +970,7 @@
 
 									</select>
 									<p class="text-xs text-on-surface-variant mt-1">
-										Current Trainer: ${module.trainer?.name || "Unassigned"}
+										Current Trainer: ${module.trainerName || "Unassigned"}
 									</p>
 
 		                        </div>
@@ -1140,8 +1158,8 @@
 		        );
 
 		        if (!res.ok) {
-
-		            alert("Unable to assign trainer: " + await res.text());
+		            const message = await getApiErrorMessage(res, "Unable to assign trainer");
+		            alert("Unable to assign trainer: " + message);
 
 		            return;
 		        }
@@ -1278,10 +1296,8 @@
 				);
 
 				if (!res.ok) {
-
-					const error = await res.text();
-
-					alert("Unable to create module: " + error);
+					const message = await getApiErrorMessage(res, "Unable to create module");
+					alert("Unable to create module: " + message);
 
 					return;
 				}

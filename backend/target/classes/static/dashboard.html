@@ -594,7 +594,8 @@
 		</div>
 	</div>
 	<script>
-		const API_BASE_URL = "http://localhost:8080";
+		// Same-origin relative URLs (matches Trainerdashboard.html); avoids host/port mismatches vs hardcoded localhost.
+		const API_BASE_URL = "";
 		const token = localStorage.getItem("token");
 		const role = localStorage.getItem("role");
 
@@ -638,6 +639,7 @@
 		let allTrainerOptions = [];
 		let allBatches = [];
 		let selectedBatchId = null;
+		let reassigningBatchId = null;
 
 		// ================= LOAD TRAINERS =================
 		async function loadTrainers() {
@@ -1015,6 +1017,26 @@
 			setTimeout(() => { toast.classList.replace('opacity-100', 'opacity-0'); setTimeout(() => toast.remove(), 500); }, 3500);
 		}
 
+		async function getApiErrorMessage(res, fallbackMessage) {
+			try {
+				const data = await res.json();
+				if (data && typeof data.message === 'string' && data.message.trim()) {
+					return data.message.trim();
+				}
+			} catch (_) {
+				// ignore json parse failures
+			}
+			try {
+				const txt = await res.text();
+				if (txt && txt.trim()) {
+					return txt.trim();
+				}
+			} catch (_) {
+				// ignore text read failures
+			}
+			return fallbackMessage;
+		}
+
 		// =====================
 		// EDIT BATCH MODAL
 		// =====================
@@ -1179,6 +1201,21 @@
 			modal.classList.remove("flex");
 		}
 
+		function fillReassignModuleSelect(selectEl, modules) {
+			selectEl.innerHTML = '<option value="">Select Module</option>';
+			if (!modules || modules.length === 0) {
+				selectEl.innerHTML = '<option value="">No modules found</option>';
+				return;
+			}
+			modules.forEach((module) => {
+				selectEl.innerHTML += `
+					<option value="${module.id}">
+						${module.name}
+					</option>
+				`;
+			});
+		}
+
 		async function openReassignModal(batchId) {
 
 			console.log("Opening reassign modal for batch:", batchId);
@@ -1204,54 +1241,53 @@
 
 			modal.classList.add('flex');
 
-			try {
+			if (batchId == null || batchId === '' || Number.isNaN(Number(batchId))) {
+				showToast('Invalid batch for reassignment', 'error');
+				moduleSelect.innerHTML = '<option value="">Invalid batch</option>';
+				trainerSelect.innerHTML = '<option value="">Invalid batch</option>';
+				return;
+			}
 
-				// =========================
-				// LOAD MODULES
-				// =========================
+			const cachedBatch = allBatches.find((b) => Number(b.id) === Number(batchId));
+			const cachedMods = cachedBatch && Array.isArray(cachedBatch.modules) ? cachedBatch.modules : [];
+
+			// LOAD MODULES — API + fallback to modules already on this page (batches-with-modules)
+			try {
 				const modulesRes = await fetch(
-				    `http://localhost:8080/api/modules/batch/${batchId}`,
-				    {
-				        method: 'GET',
-				        headers: {
-				            ...authHeaders()
-				        }
-				    }
+					`${API_BASE_URL}/api/modules/batch/${batchId}`,
+					{
+						method: 'GET',
+						headers: {
+							...authHeaders()
+						}
+					}
 				);
 
 				console.log("Modules API status:", modulesRes.status);
 
-				if (!modulesRes.ok) {
-					throw new Error("Failed to load modules");
-				}
-
-				const modules = await modulesRes.json();
-
-				moduleSelect.innerHTML =
-					'<option value="">Select Module</option>';
-
-				if (!modules || modules.length === 0) {
-
-					moduleSelect.innerHTML =
-						'<option value="">No modules found</option>';
-
+				if (modulesRes.ok) {
+					const modules = await modulesRes.json();
+					fillReassignModuleSelect(moduleSelect, modules);
+				} else if (cachedMods.length) {
+					fillReassignModuleSelect(moduleSelect, cachedMods);
+					showToast('Showing modules from dashboard (server returned ' + modulesRes.status + ')', 'error');
 				} else {
-
-					modules.forEach(module => {
-
-						moduleSelect.innerHTML += `
-							<option value="${module.id}">
-								${module.name}
-							</option>
-						`;
-
-					});
+					throw new Error('Failed to load modules (' + modulesRes.status + ')');
 				}
+			} catch (err) {
+				console.error('Reassign modal modules error:', err);
+				if (cachedMods.length) {
+					fillReassignModuleSelect(moduleSelect, cachedMods);
+					showToast(err.message ? err.message + ' — using dashboard list' : 'Could not refresh modules — using dashboard list', 'error');
+				} else {
+					showToast(err.message || 'Failed to load modules', 'error');
+					moduleSelect.innerHTML =
+						'<option value="">Error loading modules</option>';
+				}
+			}
 
-				// =========================
-				// LOAD TRAINERS
-				// =========================
-
+			// LOAD TRAINERS — admin list (trainers use /api/modules/trainers on trainer dashboard)
+			try {
 				const trainersRes = await fetch(
 					`${API_BASE_URL}/api/admin/trainers`,
 					{
@@ -1263,7 +1299,7 @@
 				console.log("Trainers API status:", trainersRes.status);
 
 				if (!trainersRes.ok) {
-					throw new Error("Failed to load trainers");
+					throw new Error('Failed to load trainers (' + trainersRes.status + ')');
 				}
 
 				const trainers = await trainersRes.json();
@@ -1271,7 +1307,7 @@
 				trainerSelect.innerHTML =
 					'<option value="">Select Trainer</option>';
 
-				trainers.forEach(trainer => {
+				(trainers || []).forEach(trainer => {
 
 					trainerSelect.innerHTML += `
 						<option value="${trainer.id}">
@@ -1280,21 +1316,79 @@
 					`;
 
 				});
-
-			}
-			catch (err) {
-
-				console.error("Reassign Modal Error:", err);
-
-				showToast(err.message, "error");
-
-				moduleSelect.innerHTML =
-					'<option value="">Error loading modules</option>';
-
+			} catch (err) {
+				console.error('Reassign modal trainers error:', err);
+				showToast(err.message || 'Failed to load trainers', 'error');
 				trainerSelect.innerHTML =
 					'<option value="">Error loading trainers</option>';
 			}
 		}
+
+		function closeReassignModal() {
+			const modal = document.getElementById('reassignModal');
+			if (modal) {
+				modal.classList.add('hidden');
+				modal.classList.remove('flex');
+			}
+			const form = document.getElementById('reassignForm');
+			if (form) {
+				form.reset();
+			}
+			reassigningBatchId = null;
+		}
+
+		document.addEventListener('DOMContentLoaded', () => {
+			const reassignFormEl = document.getElementById('reassignForm');
+			if (!reassignFormEl) {
+				return;
+			}
+			reassignFormEl.addEventListener('submit', async function (e) {
+				e.preventDefault();
+				const moduleId = document.getElementById('reassignModuleSelect')?.value;
+				const trainerId = document.getElementById('reassignTrainerSelect')?.value;
+				const saveBtn = document.getElementById('reassignSaveBtn');
+
+				if (!moduleId || !trainerId) {
+					showToast('Select a module and a trainer', 'error');
+					return;
+				}
+
+				if (saveBtn) {
+					saveBtn.disabled = true;
+					saveBtn.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">refresh</span> Saving...';
+				}
+
+				try {
+					const res = await fetch(
+						`${API_BASE_URL}/api/modules/${moduleId}/assign-trainer/${trainerId}`,
+						{
+							method: 'PUT',
+							headers: { ...authHeaders() }
+						}
+					);
+
+					if (!res.ok) {
+						throw new Error(
+							await getApiErrorMessage(res, 'Failed to reassign trainer')
+						);
+					}
+
+					showToast('Trainer reassigned successfully', 'success');
+					closeReassignModal();
+					await loadDashboardBatches();
+					await loadTrainers();
+				} catch (err) {
+					console.error('Reassign submit error:', err);
+					showToast(err.message || 'Failed to reassign trainer', 'error');
+				} finally {
+					if (saveBtn) {
+						saveBtn.disabled = false;
+						saveBtn.innerHTML = '<span class="material-symbols-outlined text-lg">swap_horiz</span> Confirm Reassignment';
+					}
+				}
+			});
+		});
+
 		// =====================
 		// ASSIGN NEW BATCH MODAL
 		// =====================
@@ -1678,8 +1772,10 @@
 					);
 
 					if (!res.ok) {
-
-						showToast("Failed to create module", "error");
+						showToast(
+							await getApiErrorMessage(res, "Failed to create module"),
+							"error"
+						);
 
 						return;
 					}

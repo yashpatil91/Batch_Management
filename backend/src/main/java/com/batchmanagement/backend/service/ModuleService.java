@@ -1,5 +1,6 @@
 package com.batchmanagement.backend.service;
 
+import com.batchmanagement.backend.dto.common.ModuleResponse;
 import com.batchmanagement.backend.entity.Module;
 
 import java.util.List;
@@ -33,6 +34,9 @@ public interface ModuleService {
 
     List<Module> getModulesByBatch(Long batchId);
 
+    /** Modules for a batch as DTOs (mapping runs inside a read transaction for lazy loads). */
+    List<ModuleResponse> getModuleResponsesByBatch(Long batchId);
+
     // =========================
     // GET MODULES BY TRAINER
     // =========================
@@ -64,6 +68,16 @@ public interface ModuleService {
     Module selfAssign(
             Long moduleId,
             String requesterEmail
+    );
+
+    // =========================
+    // TRAINER SLOT VALIDATION
+    // =========================
+
+    void validateTrainerScheduleForBatch(
+            Long trainerId,
+            Long batchId,
+            Long excludeModuleId
     );
 
     // =========================
@@ -104,6 +118,15 @@ public interface ModuleService {
     // =========================
 
     void validateModuleManagementAccess(
+            Long moduleId,
+            String requesterEmail
+    );
+
+    // =========================
+    // DELETE MODULE
+    // =========================
+
+    void deleteModule(
             Long moduleId,
             String requesterEmail
     );

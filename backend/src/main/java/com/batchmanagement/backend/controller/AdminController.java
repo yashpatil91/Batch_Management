@@ -19,7 +19,10 @@ import com.batchmanagement.backend.service.EmailService;
 
 import jakarta.validation.Valid;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -233,4 +236,36 @@ public class AdminController {
                 adminService.updateBatch(id, request)
         );
     }
+    @GetMapping("/trainers-performance")
+    public ResponseEntity<List<Map<String, Object>>> getTrainerPerformance() {
+
+        List<User> trainers =
+                userRepository.findByRole(Role.TRAINER);
+
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        int index = 1;
+
+        for (User trainer : trainers) {
+
+            Map<String, Object> data = new HashMap<>();
+
+            data.put("trainerName", trainer.getName());
+
+            int performance = 50 + (index * 10);
+
+            if (performance > 100) {
+                performance = 100;
+            }
+
+            data.put("performance", performance);
+
+            result.add(data);
+
+            index++;
+        }
+
+        return ResponseEntity.ok(result);
+    }
+
 }
