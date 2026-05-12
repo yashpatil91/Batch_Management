@@ -298,4 +298,5 @@ public class ModuleController {
                 "completed", topic.isCompleted()
         );
     }
+    
 }
