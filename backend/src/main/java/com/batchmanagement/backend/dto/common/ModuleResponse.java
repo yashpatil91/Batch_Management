@@ -19,6 +19,7 @@ public class ModuleResponse {
     private Integer batchNoOfStudents;
     private String batchMeetLink;
     private Integer batchProgress;
+    private String batchStatus;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -64,5 +65,12 @@ public class ModuleResponse {
 
     public Integer getBatchProgress() { return batchProgress; }
     public void setBatchProgress(Integer batchProgress) { this.batchProgress = batchProgress; }
+    public String getBatchStatus() {
+        return batchStatus;
+    }
+
+    public void setBatchStatus(String batchStatus) {
+        this.batchStatus = batchStatus;
+    }
 }
  

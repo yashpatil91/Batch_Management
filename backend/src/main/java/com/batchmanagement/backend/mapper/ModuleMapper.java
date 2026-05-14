@@ -32,6 +32,11 @@ public final class ModuleMapper {
             response.setBatchNoOfStudents(batch.getNoOfStudents());
             response.setBatchMeetLink(batch.getMeetLink());
             response.setBatchProgress(batch.getProgress() != null ? batch.getProgress() : 0);
+            response.setBatchStatus(
+            	    batch.getStatus() != null
+            	        ? batch.getStatus().name()
+            	        : "ONGOING"
+            	);
         }
 
         return response;

@@ -475,18 +475,16 @@ public class ModuleServiceImpl implements ModuleService {
 
         module.setProgress(progress);
 
-        if (progress == 100) {
+        if (progress > 0 &&
+        	    !"COMPLETED".equalsIgnoreCase(module.getStatus())) {
 
-            module.setStatus("COMPLETED");
+        	    module.setStatus("ONGOING");
 
-        } else if (progress > 0) {
+        	} else if (progress == 0 &&
+        	           !"COMPLETED".equalsIgnoreCase(module.getStatus())) {
 
-            module.setStatus("ONGOING");
-
-        } else {
-
-            module.setStatus("NOT_STARTED");
-        }
+        	    module.setStatus("NOT_STARTED");
+        	}
 
         moduleRepository.save(module);
 
@@ -540,22 +538,7 @@ public class ModuleServiceImpl implements ModuleService {
 
         batch.setProgress(averageProgress);
 
-        boolean allCompleted =
-                modules.stream()
-                        .allMatch(module ->
-                                "COMPLETED"
-                                        .equalsIgnoreCase(
-                                                module.getStatus()
-                                        )
-                        );
-
-        if (allCompleted) {
-
-            batch.setStatus(
-                    BatchStatus.COMPLETED
-            );
-
-        } else {
+        if (!BatchStatus.COMPLETED.equals(batch.getStatus())) {
 
             batch.setStatus(
                     BatchStatus.ONGOING
