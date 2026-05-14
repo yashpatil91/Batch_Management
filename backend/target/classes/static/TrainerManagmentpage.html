@@ -285,13 +285,16 @@
 								<th
 									class="text-left py-4 px-8 font-label text-[10px] uppercase tracking-widest text-outline">
 									Contact Credentials</th>
+
+								<th
+									class="text-left py-4 px-8 font-label text-[10px] uppercase tracking-widest text-outline">
+									Mobile Number
+								</th>
+
 								<th
 									class="text-left py-4 px-8 font-label text-[10px] uppercase tracking-widest text-outline">
 									Primary Expertise</th>
-								<th
-									class="text-left py-4 px-8 font-label text-[10px] uppercase tracking-widest text-outline">
-									Batch Status</th>
-								<th
+								
 									class="text-right py-4 px-8 font-label text-[10px] uppercase tracking-widest text-outline">
 									Administrative Actions</th>
 							</tr>
@@ -358,15 +361,10 @@
 						Mobile Number
 					</label>
 
-					<input 
-						id="trainerMobile"
+					<input id="trainerMobile"
 						class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container"
-						placeholder="Enter 10 Digit Mobile Number"
-						type="tel"
-						maxlength="10"
-						pattern="[0-9]{10}"
-						inputmode="numeric"
-					/>
+						placeholder="Enter 10 Digit Mobile Number" type="tel" maxlength="10" pattern="[0-9]{10}"
+						inputmode="numeric" />
 				</div>
 				<div class="space-y-2">
 					<label class="block text-[11px] font-bold uppercase tracking-widest text-outline">Login
@@ -427,21 +425,16 @@
 						class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container"
 						placeholder="name@ledger.edu" type="email" />
 				</div>
-				
+
 				<div class="space-y-2">
 					<label class="block text-[11px] font-bold uppercase tracking-widest text-outline">
 						Mobile Number
 					</label>
 
-					<input 
-						id="editTrainerMobile"
+					<input id="editTrainerMobile"
 						class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container"
-						placeholder="Enter 10 Digit Mobile Number"
-						type="tel"
-						maxlength="10"
-						pattern="[0-9]{10}"
-						inputmode="numeric"
-					/>
+						placeholder="Enter 10 Digit Mobile Number" type="tel" maxlength="10" pattern="[0-9]{10}"
+						inputmode="numeric" />
 				</div>
 				<div class="space-y-2">
 					<label class="block text-[11px] font-bold uppercase tracking-widest text-outline">New Password <span
@@ -540,21 +533,23 @@
           <p class="font-bold text-on-surface">${trainer.name || "N/A"}</p>
           <p class="text-[11px] text-outline font-medium">ID: ${trainer.id}</p>
         </td>
-        <td class="py-5 px-8">
-			<p class="text-sm font-medium text-on-surface">${trainer.email || "N/A"}</p>
-			<p class="text-xs text-outline">${trainer.mobile || "No Mobile"}</p>
-        </td>
+		<td class="py-5 px-8">
+			<p class="text-sm font-medium text-on-surface">
+				${trainer.email || "N/A"}
+			</p>
+		</td>
+
+		<td class="py-5 px-8">
+			<p class="text-sm font-medium text-on-surface">
+				${trainer.mobile || "No Mobile"}
+			</p>
+		</td>
         <td class="py-5 px-8">
           <span class="bg-primary/10 text-primary text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
             ${trainer.expertise || "General"}
           </span>
         </td>
-        <td class="py-5 px-8">
-          <div class="flex items-center gap-2">
-            <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
-            <span class="text-sm font-semibold text-on-surface">Active</span>
-          </div>
-        </td>
+      
         <td class="py-5 px-8 text-right">
           <div class="flex items-center justify-end gap-2">
             <!-- Edit Button -->
@@ -655,7 +650,7 @@
 				showToast("Enter valid 10 digit mobile number.", "error");
 				return;
 			}
-		const payload = {name, email, mobile, expertise};
+			const payload = {name, email, mobile, expertise};
 			if (password) payload.password = password; // only send if filled
 
 			try {
