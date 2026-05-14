@@ -418,8 +418,7 @@
 			</div>
 
 			<!-- Main Data Section: Asymmetric Layout -->
-			<div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
-				<!-- Batch Progress Cards (Lg Column) -->
+			<div class="grid grid-cols-1 gap-8"> <!-- Batch Progress Cards (Lg Column) -->
 				<div
 					class="xl:col-span-2 bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/20 p-6">
 					<div class="flex justify-between items-center border-b border-surface-container-low pb-4 mb-6">
@@ -465,7 +464,7 @@
 							<th class="px-6 py-4 font-semibold">Contact</th>
 							<th class="px-6 py-4 font-semibold">Mobile Number</th>
 							<!-- NEW STATUS COLUMN -->
-							
+
 						</tr>
 					</thead>
 					<tbody id="trainerPerformanceBody" class="divide-y-0"></tbody>
@@ -617,7 +616,7 @@
 		function formatDate(value) {
 			if (!value) return "N/A";
 			const parsed = new Date(value);
-			return Number.isNaN(parsed.getTime()) ? value : parsed.toLocaleDateString();
+			return Number.isNaN(parsed.getTime()) ? value : parsed.toLocaleDateString('en-GB');
 		}
 
 		function logout() {
@@ -632,7 +631,7 @@
 			const name = localStorage.getItem("name");
 			if (!name) return;
 			const targets = document.querySelectorAll("p.text-\\[\\#9df0f4\\].truncate.font-semibold");
-			targets.forEach((node) => { node.textContent = name; });
+			targets.forEach((node) => {node.textContent = name;});
 		}
 
 		let trainerData = [];
@@ -644,12 +643,12 @@
 		// ================= LOAD TRAINERS =================
 		async function loadTrainers() {
 			try {
-				const trainerRes = await fetch(`${API_BASE_URL}/api/admin/trainers`, { headers: authHeaders() });
+				const trainerRes = await fetch(`${API_BASE_URL}/api/admin/trainers`, {headers: authHeaders()});
 				if (!trainerRes.ok) throw new Error("Failed to load trainers");
 				const trainers = await trainerRes.json();
 				allTrainerOptions = trainers;
 
-				const batchRes = await fetch(`${API_BASE_URL}/api/admin/batches`, { headers: authHeaders() });
+				const batchRes = await fetch(`${API_BASE_URL}/api/admin/batches`, {headers: authHeaders()});
 				if (!batchRes.ok) throw new Error("Failed to load batches");
 				const batches = await batchRes.json();
 
@@ -661,7 +660,7 @@
 					const activeBatchCount = batches.filter(
 						(batch) => batch.trainerId === trainer.id && (batch.progress ?? 0) < 100 && String(batch.status).toUpperCase() !== "COMPLETED"
 					).length;
-					return { ...trainer, activeBatchCount };
+					return {...trainer, activeBatchCount};
 				});
 
 				trainersWithBatchCount.sort((a, b) => b.activeBatchCount - a.activeBatchCount);
@@ -702,7 +701,7 @@
 		// =========================
 		async function loadDashboardBatches() {
 			try {
-				const res = await fetch(`${API_BASE_URL}/api/admin/batches-with-modules`, { headers: authHeaders() });
+				const res = await fetch(`${API_BASE_URL}/api/admin/batches-with-modules`, {headers: authHeaders()});
 				if (!res.ok) throw new Error("Failed to load batches");
 
 				allBatches = await res.json();
@@ -1001,14 +1000,14 @@
 				warning: 'bg-amber-500 text-white',
 				info: 'bg-secondary text-white'
 			};
-			const icons = { success: 'check_circle', error: 'error', warning: 'warning', info: 'info' };
+			const icons = {success: 'check_circle', error: 'error', warning: 'warning', info: 'info'};
 			const container = document.getElementById('toastContainer');
 			const toast = document.createElement('div');
 			toast.className = `flex items-center gap-3 px-5 py-3 rounded-xl shadow-2xl text-sm font-semibold ${colors[type]} transition-all duration-500 opacity-0 translate-y-2`;
 			toast.innerHTML = `<span class="material-symbols-outlined text-[18px]">${icons[type]}</span><span>${message}</span>`;
 			container.appendChild(toast);
-			requestAnimationFrame(() => { toast.classList.replace('opacity-0', 'opacity-100'); toast.classList.replace('translate-y-2', 'translate-y-0'); });
-			setTimeout(() => { toast.classList.replace('opacity-100', 'opacity-0'); setTimeout(() => toast.remove(), 500); }, 3500);
+			requestAnimationFrame(() => {toast.classList.replace('opacity-0', 'opacity-100'); toast.classList.replace('translate-y-2', 'translate-y-0');});
+			setTimeout(() => {toast.classList.replace('opacity-100', 'opacity-0'); setTimeout(() => toast.remove(), 500);}, 3500);
 		}
 
 		async function getApiErrorMessage(res, fallbackMessage) {
@@ -1038,7 +1037,7 @@
 
 		function openEditBatchModal(batchId) {
 			const batch = allBatches.find(b => b.id === batchId);
-			if (!batch) { showToast('Batch data not found', 'error'); return; }
+			if (!batch) {showToast('Batch data not found', 'error'); return;}
 			editingBatchId = batchId;
 
 			// Pre-fill fields
@@ -1106,7 +1105,7 @@
 			try {
 				const res = await fetch(`${API_BASE_URL}/api/admin/batches/${editingBatchId}`, {
 					method: 'PUT',
-					headers: { ...authHeaders(), 'Content-Type': 'application/json' },
+					headers: {...authHeaders(), 'Content-Type': 'application/json'},
 					body: JSON.stringify(payload)
 				});
 
@@ -1140,24 +1139,24 @@
 			try {
 				const res = await fetch(`${API_BASE_URL}/api/admin/trainers/${trainerId}`, {
 					method: 'PUT',
-					headers: { ...authHeaders(), 'Content-Type': 'application/json' },
-					body: JSON.stringify({ status })
+					headers: {...authHeaders(), 'Content-Type': 'application/json'},
+					body: JSON.stringify({status})
 				});
 				if (res.ok) showToast('Trainer status updated', 'success');
 				else showToast('Failed to update status', 'error');
-			} catch { showToast('Network error', 'error'); }
+			} catch {showToast('Network error', 'error');}
 		}
 
 		async function updateTrainerAvailability(trainerId, availability) {
 			try {
 				const res = await fetch(`${API_BASE_URL}/api/admin/trainers/${trainerId}`, {
 					method: 'PUT',
-					headers: { ...authHeaders(), 'Content-Type': 'application/json' },
-					body: JSON.stringify({ availability })
+					headers: {...authHeaders(), 'Content-Type': 'application/json'},
+					body: JSON.stringify({availability})
 				});
 				if (res.ok) showToast('Availability updated', 'success');
 				else showToast('Failed to update availability', 'error');
-			} catch { showToast('Network error', 'error'); }
+			} catch {showToast('Network error', 'error');}
 		}
 
 		function openAddModuleModal(batchId) {
@@ -1357,7 +1356,7 @@
 						`${API_BASE_URL}/api/modules/${moduleId}/assign-trainer/${trainerId}`,
 						{
 							method: 'PUT',
-							headers: { ...authHeaders() }
+							headers: {...authHeaders()}
 						}
 					);
 
@@ -1456,13 +1455,13 @@
 				noOfStudents: parseInt(document.getElementById('batchStudentsInput').value) || 1,
 				trainerId: document.getElementById('trainerSelectInput').value,
 				meetLink: document.getElementById('batchMeetLinkInput').value.trim(),
-				modules: [{ name: document.getElementById('batchModuleInput').value.trim() }]
+				modules: [{name: document.getElementById('batchModuleInput').value.trim()}]
 			};
 
 			try {
 				const res = await fetch(`${API_BASE_URL}/api/admin/batches`, {
 					method: 'POST',
-					headers: { ...authHeaders(), 'Content-Type': 'application/json' },
+					headers: {...authHeaders(), 'Content-Type': 'application/json'},
 					body: JSON.stringify(payload)
 				});
 
@@ -1745,7 +1744,7 @@
 						name: moduleName,
 						status: "NOT_STARTED",
 						progress: 0,
-						trainer: selectedTrainerId ? { id: selectedTrainerId } : null,
+						trainer: selectedTrainerId ? {id: selectedTrainerId} : null,
 						batch: {
 							id: selectedBatchId
 						}
