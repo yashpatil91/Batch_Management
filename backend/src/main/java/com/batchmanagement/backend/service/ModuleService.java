@@ -122,6 +122,17 @@ public interface ModuleService {
             String requesterEmail
     );
 
+    /**
+     * Topic CRUD: admin, module owner, or any trainer who has a module in the same batch
+     * (supports multi-trainer batches and collaborative completion).
+     */
+    void validateModuleTopicAccess(Long moduleId, String requesterEmail);
+
+    /**
+     * List modules for a batch: admin, or trainer who has at least one module in that batch.
+     */
+    void validateTrainerBatchAccess(Long batchId, String requesterEmail);
+
     // =========================
     // DELETE MODULE
     // =========================

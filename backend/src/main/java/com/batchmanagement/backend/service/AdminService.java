@@ -304,13 +304,26 @@ public class AdminService {
 	}
 
 	// delete batch
+	@org.springframework.transaction.annotation.Transactional(rollbackFor = Exception.class)
 	public void deleteBatch(Long id) {
-		Batch batch = batchRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Batch not found"));
+		try {
+			Batch batch = batchRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Batch not found"));
 
-		// 🔥 VERY IMPORTANT (fixes your error)
-		batch.setTrainer(null);
+			// 🔥 VERY IMPORTANT: Disconnect trainer
+			batch.setTrainer(null);
 
-		batchRepository.delete(batch);
+			// Delete child records in correct order to avoid FK constraints
+			batchRepository.deleteTrainerHistoryByBatchId(id);
+			batchRepository.deleteTopicsByBatchId(id);
+			batchRepository.deleteModulesByBatchId(id);
+
+			// Finally, delete the batch itself
+			batchRepository.delete(batch);
+		} catch (ResourceNotFoundException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new BadRequestException("Failed to delete batch due to existing dependencies: " + e.getMessage());
+		}
 	}
 
 	// edit

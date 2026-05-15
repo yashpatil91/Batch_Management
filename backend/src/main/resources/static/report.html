@@ -376,7 +376,7 @@
 					</div>
 				</div>
 
-				<div style="height:260px;">
+				<div style="height:380px;">
 					<canvas id="trainerChart"></canvas>
 				</div>
 
@@ -524,9 +524,11 @@
 			})
 				.then(res => res.json())
 				.then(data => {
-					console.log(data);
-					const names = data.map(t => t.trainerName);
-					const values = data.map(t => t.performance);
+
+				    data.sort((a, b) => b.performance - a.performance);
+
+				    const names = data.map(t => t.trainerName);
+				    const values = data.map(t => t.performance);
 
 					const ctx = document.getElementById("trainerChart").getContext("2d");
 
@@ -537,26 +539,95 @@
 						data: {
 							labels: names,
 							datasets: [{
-								data: values,
-								backgroundColor: '#0d7377'
+							    data: values,
+
+							    backgroundColor: function(context) {
+
+							        const chart = context.chart;
+							        const {ctx, chartArea} = chart;
+
+							        if (!chartArea) {
+							            return '#0d7377';
+							        }
+
+							        const gradient = ctx.createLinearGradient(
+							            0,
+							            chartArea.bottom,
+							            0,
+							            chartArea.top
+							        );
+
+							        gradient.addColorStop(0, '#0d7377');
+							        gradient.addColorStop(1, '#4fd1c5');
+
+							        return gradient;
+							    },
+
+							    borderRadius: 14,
+							    borderSkipped: false,
+							    barThickness: 55,
+							    maxBarThickness: 60
 							}]
 						},
 						options: {
-							responsive: true,
-							maintainAspectRatio: false,
+						    responsive: true,
+						    maintainAspectRatio: false,
 
-							plugins: {
-								legend: {
-									display: false
-								}
-							},
+						    layout: {
+						        padding: {
+						            top: 20,
+						            right: 20,
+						            left: 10,
+						            bottom: 10
+						        }
+						    },
 
-							scales: {
-								y: {
-									beginAtZero: true,
-									max: 100
-								}
-							}
+						    plugins: {
+
+						        legend: {
+						            display: false
+						        },
+
+						        tooltip: {
+						            callbacks: {
+						                label: function(context) {
+						                    return context.raw + "%";
+						                }
+						            }
+						        }
+						    },
+
+						    scales: {
+
+						        x: {
+						            ticks: {
+						                color: '#444',
+						                font: {
+						                    size: 13,
+						                    weight: '600'
+						                }
+						            },
+
+						            grid: {
+						                display: false
+						            }
+						        },
+
+						        y: {
+						            beginAtZero: true,
+						            max: 100,
+
+						            ticks: {
+						                stepSize: 10,
+						                callback: value => value + "%",
+						                color: '#666'
+						            },
+
+						            grid: {
+						                color: 'rgba(0,0,0,0.06)'
+						            }
+						        }
+						    }
 						}
 					});
 				});

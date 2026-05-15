@@ -468,10 +468,9 @@
 						<tr>
 							<th class="px-8 py-4 font-semibold">Trainer Profile</th>
 							<th class="px-6 py-4 font-semibold">Assigned Batches</th>
+							<th class="px-6 py-4 font-semibold">Total Modules</th>
 							<th class="px-6 py-4 font-semibold">Contact</th>
 							<th class="px-6 py-4 font-semibold">Mobile Number</th>
-							<!-- NEW STATUS COLUMN -->
-
 						</tr>
 					</thead>
 					<tbody id="trainerPerformanceBody" class="divide-y-0"></tbody>
@@ -655,25 +654,41 @@
 				const trainers = await trainerRes.json();
 				allTrainerOptions = trainers;
 
-				const batchRes = await fetch(`${API_BASE_URL}/api/admin/batches`, {headers: authHeaders()});
-				if (!batchRes.ok) throw new Error("Failed to load batches");
-				const batches = await batchRes.json();
-
 				const trainerBody = document.getElementById("trainerPerformanceBody");
 				if (!trainerBody) return;
 				trainerBody.innerHTML = "";
 
-				const trainersWithBatchCount = trainers.map((trainer) => {
-					const activeBatchCount = batches.filter(
-						(batch) => batch.trainerId === trainer.id && (batch.progress ?? 0) < 100 && String(batch.status).toUpperCase() !== "COMPLETED"
-					).length;
-					return {...trainer, activeBatchCount};
+				const trainersWithStats = trainers.map((trainer) => {
+					let assignedBatches = new Set();
+					let assignedModules = 0;
+
+					allBatches.forEach(batch => {
+						if (String(batch.status).toUpperCase() === "COMPLETED") return;
+						const modules = batch.modules || [];
+						let hasModule = false;
+						modules.forEach(m => {
+							const tId = m.trainerId || (m.trainer && m.trainer.id);
+							if (tId === trainer.id || m.trainerName === trainer.name) {
+								assignedModules++;
+								hasModule = true;
+							}
+						});
+						if (hasModule) {
+							assignedBatches.add(batch.id);
+						}
+					});
+
+					return {
+						...trainer, 
+						activeBatchCount: assignedBatches.size,
+						activeModuleCount: assignedModules
+					};
 				});
 
-				trainersWithBatchCount.sort((a, b) => b.activeBatchCount - a.activeBatchCount);
-				trainerData = trainersWithBatchCount;
+				trainersWithStats.sort((a, b) => b.activeBatchCount - a.activeBatchCount);
+				trainerData = trainersWithStats;
 
-				trainersWithBatchCount.forEach((trainer) => {
+				trainersWithStats.forEach((trainer) => {
 					trainerBody.insertAdjacentHTML("beforeend", `
 					<tr class="hover:bg-secondary-container transition-all">
 					<td class="px-8 py-5">
@@ -687,14 +702,19 @@
 						</span>
 						</div>
 					</td>
+					<td class="px-6 py-5">
+						<div class="flex flex-wrap gap-1">
+						<span class="text-[10px] font-bold px-2 py-0.5 bg-secondary-fixed text-on-secondary-fixed-variant rounded">
+							${trainer.activeModuleCount} Modules
+						</span>
+						</div>
+					</td>
 					<td class="px-6 py-5 text-sm text-on-surface-variant">
 						${trainer.email || "N/A"}
 					</td>
-
 					<td class="px-6 py-5 text-sm text-on-surface-variant">
 						${trainer.mobile || "No Mobile"}
 					</td>				
-				
 					</tr>
 				`);
 				});
@@ -865,7 +885,8 @@
 				modules.forEach(m => {
 					activeModulesCount++;
 					batchProgressSum += (m.progress || 0);
-					if (m.trainerId) trainersWorking.add(m.trainerId);
+					const tId = m.trainerId || m.trainerName || (m.trainer && m.trainer.id);
+					if (tId && String(tId).trim() !== "Unassigned") trainersWorking.add(tId);
 					if (m.progress === 0 && new Date(batch.startDate) < new Date()) {
 						delayedModulesCount++;
 					}
@@ -873,7 +894,10 @@
 
 				const avgBatchProgress = moduleCount > 0 ? Math.round(batchProgressSum / moduleCount) : (batch.progress || 0);
 				totalProgress += avgBatchProgress;
-				const batchUniqueTrainers = new Set(modules.filter(m => m.trainerId).map(m => m.trainerId)).size;
+				const batchUniqueTrainers = new Set(modules.filter(m => {
+					const tId = m.trainerId || m.trainerName || (m.trainer && m.trainer.id);
+					return tId && String(tId).trim() !== "Unassigned";
+				}).map(m => m.trainerId || m.trainerName || (m.trainer && m.trainer.id))).size;
 
 				let displayTime = batch.time || "N/A";
 				if (displayTime.includes(" - ")) {
@@ -963,8 +987,8 @@
 
 		async function initializeDashboard() {
 			setLoggedInName();
-			await loadTrainers();
 			await loadDashboardBatches();
+			await loadTrainers();
 		}
 
 		function formatToAmPm(time24) {

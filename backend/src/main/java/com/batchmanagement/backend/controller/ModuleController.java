@@ -65,7 +65,12 @@ public class ModuleController {
     // Get Modules By Batch (must be before /{id} so "batch" is not captured as an id)
     // =========================
     @GetMapping("/batch/{batchId}")
-    public ResponseEntity<List<ModuleResponse>> getModulesByBatch(@PathVariable Long batchId) {
+    public ResponseEntity<List<ModuleResponse>> getModulesByBatch(
+            @PathVariable Long batchId,
+            Authentication authentication) {
+
+        moduleService.validateTrainerBatchAccess(batchId, authentication.getName());
+
         return ResponseEntity.ok(moduleService.getModuleResponsesByBatch(batchId));
     }
 
@@ -217,7 +222,7 @@ public class ModuleController {
     public ResponseEntity<List<Map<String, Object>>> getTopicsByModule(
             @PathVariable Long moduleId,
             Authentication authentication) {
-        moduleService.validateModuleManagementAccess(moduleId, authentication.getName());
+        moduleService.validateModuleTopicAccess(moduleId, authentication.getName());
         Module module = moduleService.getModuleById(moduleId);
         List<Map<String, Object>> topics = batchTopicRepository.findByModule(module).stream()
                 .map(this::toTopicResponse)
@@ -230,7 +235,7 @@ public class ModuleController {
             @PathVariable Long moduleId,
             @RequestBody Map<String, String> request,
             Authentication authentication) {
-        moduleService.validateModuleManagementAccess(moduleId, authentication.getName());
+        moduleService.validateModuleTopicAccess(moduleId, authentication.getName());
         Module module = moduleService.getModuleById(moduleId);
 
         String title = request.get("title");
@@ -261,7 +266,7 @@ public class ModuleController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Topic is not linked to a module");
         }
 
-        moduleService.validateModuleManagementAccess(topic.getModule().getId(), authentication.getName());
+        moduleService.validateModuleTopicAccess(topic.getModule().getId(), authentication.getName());
         topic.setCompleted(Boolean.TRUE.equals(request.get("completed")));
 
         BatchTopic saved = batchTopicRepository.save(topic);
@@ -286,7 +291,7 @@ public class ModuleController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Topic title is required");
         }
 
-        moduleService.validateModuleManagementAccess(topic.getModule().getId(), authentication.getName());
+        moduleService.validateModuleTopicAccess(topic.getModule().getId(), authentication.getName());
         topic.setTitle(title.trim());
 
         BatchTopic saved = batchTopicRepository.save(topic);
@@ -305,7 +310,7 @@ public class ModuleController {
         }
 
         Long moduleId = topic.getModule().getId();
-        moduleService.validateModuleManagementAccess(moduleId, authentication.getName());
+        moduleService.validateModuleTopicAccess(moduleId, authentication.getName());
         batchTopicRepository.delete(topic);
         moduleService.updateModuleProgress(moduleId);
         return ResponseEntity.ok().build();

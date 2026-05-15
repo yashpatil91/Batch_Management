@@ -5,6 +5,8 @@ import com.batchmanagement.backend.entity.User;
 import com.batchmanagement.backend.entity.enums.BatchStatus;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
 public interface BatchRepository extends JpaRepository<Batch, Long> {
 
@@ -24,4 +26,16 @@ public interface BatchRepository extends JpaRepository<Batch, Long> {
 
     // Full count including history
     int countByTrainer(User trainer);
+
+    @Modifying
+    @Query(value = "DELETE FROM module_trainer_history WHERE module_id IN (SELECT id FROM modules WHERE batch_id = ?1)", nativeQuery = true)
+    void deleteTrainerHistoryByBatchId(Long batchId);
+
+    @Modifying
+    @Query(value = "DELETE FROM batch_topics WHERE batch_id = ?1", nativeQuery = true)
+    void deleteTopicsByBatchId(Long batchId);
+
+    @Modifying
+    @Query(value = "DELETE FROM modules WHERE batch_id = ?1", nativeQuery = true)
+    void deleteModulesByBatchId(Long batchId);
 }

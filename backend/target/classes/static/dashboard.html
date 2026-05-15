@@ -422,12 +422,10 @@
 			</div>
 
 			<!-- Main Data Section: Asymmetric Layout -->
-<<<<<<< Updated upstream
-			<div class="grid grid-cols-1 gap-8"> <!-- Batch Progress Cards (Lg Column) -->
-=======
+
 			<div class="grid grid-cols-1 xl:grid-cols-1 gap-8">
 				<!-- Batch Progress Cards (Lg Column) -->
->>>>>>> Stashed changes
+
 				<div
 					class="xl:col-span-2 bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/20 p-6">
 					<div class="flex justify-between items-center border-b border-surface-container-low pb-4 mb-6">
@@ -470,10 +468,9 @@
 						<tr>
 							<th class="px-8 py-4 font-semibold">Trainer Profile</th>
 							<th class="px-6 py-4 font-semibold">Assigned Batches</th>
+							<th class="px-6 py-4 font-semibold">Total Modules</th>
 							<th class="px-6 py-4 font-semibold">Contact</th>
 							<th class="px-6 py-4 font-semibold">Mobile Number</th>
-							<!-- NEW STATUS COLUMN -->
-
 						</tr>
 					</thead>
 					<tbody id="trainerPerformanceBody" class="divide-y-0"></tbody>
@@ -657,25 +654,41 @@
 				const trainers = await trainerRes.json();
 				allTrainerOptions = trainers;
 
-				const batchRes = await fetch(`${API_BASE_URL}/api/admin/batches`, {headers: authHeaders()});
-				if (!batchRes.ok) throw new Error("Failed to load batches");
-				const batches = await batchRes.json();
-
 				const trainerBody = document.getElementById("trainerPerformanceBody");
 				if (!trainerBody) return;
 				trainerBody.innerHTML = "";
 
-				const trainersWithBatchCount = trainers.map((trainer) => {
-					const activeBatchCount = batches.filter(
-						(batch) => batch.trainerId === trainer.id && (batch.progress ?? 0) < 100 && String(batch.status).toUpperCase() !== "COMPLETED"
-					).length;
-					return {...trainer, activeBatchCount};
+				const trainersWithStats = trainers.map((trainer) => {
+					let assignedBatches = new Set();
+					let assignedModules = 0;
+
+					allBatches.forEach(batch => {
+						if (String(batch.status).toUpperCase() === "COMPLETED") return;
+						const modules = batch.modules || [];
+						let hasModule = false;
+						modules.forEach(m => {
+							const tId = m.trainerId || (m.trainer && m.trainer.id);
+							if (tId === trainer.id || m.trainerName === trainer.name) {
+								assignedModules++;
+								hasModule = true;
+							}
+						});
+						if (hasModule) {
+							assignedBatches.add(batch.id);
+						}
+					});
+
+					return {
+						...trainer, 
+						activeBatchCount: assignedBatches.size,
+						activeModuleCount: assignedModules
+					};
 				});
 
-				trainersWithBatchCount.sort((a, b) => b.activeBatchCount - a.activeBatchCount);
-				trainerData = trainersWithBatchCount;
+				trainersWithStats.sort((a, b) => b.activeBatchCount - a.activeBatchCount);
+				trainerData = trainersWithStats;
 
-				trainersWithBatchCount.forEach((trainer) => {
+				trainersWithStats.forEach((trainer) => {
 					trainerBody.insertAdjacentHTML("beforeend", `
 					<tr class="hover:bg-secondary-container transition-all">
 					<td class="px-8 py-5">
@@ -689,14 +702,19 @@
 						</span>
 						</div>
 					</td>
+					<td class="px-6 py-5">
+						<div class="flex flex-wrap gap-1">
+						<span class="text-[10px] font-bold px-2 py-0.5 bg-secondary-fixed text-on-secondary-fixed-variant rounded">
+							${trainer.activeModuleCount} Modules
+						</span>
+						</div>
+					</td>
 					<td class="px-6 py-5 text-sm text-on-surface-variant">
 						${trainer.email || "N/A"}
 					</td>
-
 					<td class="px-6 py-5 text-sm text-on-surface-variant">
 						${trainer.mobile || "No Mobile"}
 					</td>				
-				
 					</tr>
 				`);
 				});
@@ -803,10 +821,9 @@
 					let currentlyAssigned = !isPrevious && versions.length > 1 ? '<span class="text-primary text-[10px] font-bold uppercase tracking-widest ml-1">(Currently Assigned)</span>' : '';
 
 					html += `
-						<div class="flex justify-between items-center bg-surface-container-lowest p-3 rounded-lg border border-outline-variant/10 shadow-sm ${opacityClass}">
-							<div class="flex-1">
+                               <div class="flex justify-between items-center bg-surface-container-low px-5 py-3 rounded-xl border border-outline-variant/10 hover:border-primary/20 transition-all ${opacityClass}">							<div class="flex-1">
 								<div class="flex items-center gap-2">
-									<p class="text-sm font-bold text-on-surface">${m.name}</p>
+									<p class="text-base font-semibold text-on-surface">${m.name}</p>
 									${statusBadge}
 								</div>
 								<p class="text-xs text-on-surface-variant flex items-center gap-1 mt-1">
@@ -814,18 +831,33 @@
 									${currentlyAssigned}
 								</p>
 							</div>
-							<div class="w-1/3 px-6">
-								<div class="flex justify-between items-center mb-1">
-									<span class="text-[10px] font-bold text-outline uppercase tracking-wider">Progress</span>
-									<span class="text-xs font-bold text-on-surface">${m.progress || 0}%</span>
+							<div class="w-80 px-6 mr-10">
+								<div class="flex justify-between items-center mb-2">
+									<span class="text-[10px] font-bold text-outline uppercase tracking-wider">
+										Progress
+									</span>
+
+									<div class="flex items-center justify-between gap-3">
+										
+										<span class="text-xs font-bold text-on-surface w-10 text-right">
+											${m.progress || 0}%
+										</span>
+
+										<span class="inline-flex items-center justify-center whitespace-nowrap min-w-[110px] px-3 py-1 bg-primary/10 text-primary rounded-full text-[10px] font-semibold uppercase tracking-wide">
+											${m.progress === 100 
+												? 'COMPLETED' 
+												: m.progress > 0 
+													? 'IN PROGRESS' 
+													: 'NOT STARTED'}
+										</span>
+
+									</div>
 								</div>
 								<div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
 									<div class="${progressColor} h-full rounded-full transition-all duration-700" style="width: ${m.progress || 0}%"></div>
 								</div>
-							</div>
-							<div class="w-24 text-right">
-								<span class="px-2 py-1 bg-surface-container-low text-on-surface-variant rounded text-[10px] font-bold uppercase tracking-wider">${m.status || 'NOT_STARTED'}</span>
-							</div>
+                            
+								</div>
 						</div>`;
 				});
 			});
@@ -853,7 +885,8 @@
 				modules.forEach(m => {
 					activeModulesCount++;
 					batchProgressSum += (m.progress || 0);
-					if (m.trainerId) trainersWorking.add(m.trainerId);
+					const tId = m.trainerId || m.trainerName || (m.trainer && m.trainer.id);
+					if (tId && String(tId).trim() !== "Unassigned") trainersWorking.add(tId);
 					if (m.progress === 0 && new Date(batch.startDate) < new Date()) {
 						delayedModulesCount++;
 					}
@@ -861,7 +894,10 @@
 
 				const avgBatchProgress = moduleCount > 0 ? Math.round(batchProgressSum / moduleCount) : (batch.progress || 0);
 				totalProgress += avgBatchProgress;
-				const batchUniqueTrainers = new Set(modules.filter(m => m.trainerId).map(m => m.trainerId)).size;
+				const batchUniqueTrainers = new Set(modules.filter(m => {
+					const tId = m.trainerId || m.trainerName || (m.trainer && m.trainer.id);
+					return tId && String(tId).trim() !== "Unassigned";
+				}).map(m => m.trainerId || m.trainerName || (m.trainer && m.trainer.id))).size;
 
 				let displayTime = batch.time || "N/A";
 				if (displayTime.includes(" - ")) {
@@ -910,8 +946,7 @@
 						<div id="expandedContent_${batch.id}" class="hidden border-t border-outline-variant/20 bg-surface-container-low/30 p-5">
 							<div class="flex justify-between items-center mb-4">
 								<h4 class="text-sm font-bold text-on-surface tracking-wide uppercase">Modules Overview</h4>
-								<span class="text-xs text-on-surface-variant italic">Last Updated: ${updatedDate}</span>
-							</div>
+                                  <span class="text-[11px] text-outline italic opacity-70">							</div>
 							
 							<div class="space-y-3 mb-6">
 								${renderModulesHTML(modules)}
@@ -952,8 +987,8 @@
 
 		async function initializeDashboard() {
 			setLoggedInName();
-			await loadTrainers();
 			await loadDashboardBatches();
+			await loadTrainers();
 		}
 
 		function formatToAmPm(time24) {

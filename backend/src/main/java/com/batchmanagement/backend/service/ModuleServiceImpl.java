@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.batchmanagement.backend.dto.common.ModuleResponse;
 import com.batchmanagement.backend.entity.Batch;
+import com.batchmanagement.backend.entity.BatchTopic;
 import com.batchmanagement.backend.entity.Module;
 import com.batchmanagement.backend.entity.ModuleTrainerHistory;
 import com.batchmanagement.backend.entity.User;
@@ -363,6 +364,7 @@ public class ModuleServiceImpl implements ModuleService {
     // =========================
 
     @Override
+    @Transactional
     public Module updateStatus(
             Long moduleId,
             String status,
@@ -380,7 +382,36 @@ public class ModuleServiceImpl implements ModuleService {
                 requesterEmail
         );
 
-        module.setStatus(status);
+        if (status == null ||
+                status.isBlank()) {
+
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Status is required"
+            );
+        }
+
+        if ("COMPLETED"
+                .equalsIgnoreCase(
+                        status.trim()
+                )) {
+
+            finalizeModuleCompletion(
+                    moduleId
+            );
+
+            return moduleRepository.findById(moduleId)
+                    .orElseThrow(() ->
+                            new RuntimeException(
+                                    "Module not found"
+                            )
+                    );
+        }
+
+        module.setStatus(
+                status.trim()
+                        .toUpperCase()
+        );
 
         Module updatedModule =
                 moduleRepository.save(module);
@@ -397,6 +428,7 @@ public class ModuleServiceImpl implements ModuleService {
     // =========================
 
     @Override
+    @Transactional
     public Module updateDetails(
             Long moduleId,
             String name,
@@ -424,9 +456,27 @@ public class ModuleServiceImpl implements ModuleService {
         if (status != null &&
                 !status.trim().isEmpty()) {
 
-            module.setStatus(
-                    status.trim().toUpperCase()
-            );
+            String normalized =
+                    status.trim()
+                            .toUpperCase();
+
+            if ("COMPLETED".equals(normalized)) {
+
+                moduleRepository.save(module);
+
+                finalizeModuleCompletion(
+                        moduleId
+                );
+
+                return moduleRepository.findById(moduleId)
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Module not found"
+                                )
+                        );
+            }
+
+            module.setStatus(normalized);
         }
 
         Module updatedModule =
@@ -439,11 +489,57 @@ public class ModuleServiceImpl implements ModuleService {
         return updatedModule;
     }
 
+    /**
+     * Marks every topic in the module complete, then recalculates module and batch progress
+     * so dashboards and reports stay consistent at 100%.
+     */
+    private void finalizeModuleCompletion(Long moduleId) {
+
+        Module mod =
+                moduleRepository.findById(moduleId)
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Module not found"
+                                )
+                        );
+
+        List<BatchTopic> topics =
+                batchTopicRepository.findByModule(mod);
+
+        if (topics.isEmpty()) {
+
+            mod.setProgress(100);
+
+            mod.setStatus("COMPLETED");
+
+            moduleRepository.save(mod);
+
+            updateBatchProgress(
+                    mod.getBatch().getId()
+            );
+
+            return;
+        }
+
+        for (BatchTopic topic : topics) {
+
+            if (!topic.isCompleted()) {
+
+                topic.setCompleted(true);
+
+                batchTopicRepository.save(topic);
+            }
+        }
+
+        updateModuleProgress(moduleId);
+    }
+
     // =========================
     // UPDATE MODULE PROGRESS
     // =========================
 
     @Override
+    @Transactional
     public void updateModuleProgress(Long moduleId) {
 
         Module module =
@@ -475,16 +571,18 @@ public class ModuleServiceImpl implements ModuleService {
 
         module.setProgress(progress);
 
-        if (progress > 0 &&
-        	    !"COMPLETED".equalsIgnoreCase(module.getStatus())) {
+        if (progress >= 100) {
 
-        	    module.setStatus("ONGOING");
+            module.setStatus("COMPLETED");
 
-        	} else if (progress == 0 &&
-        	           !"COMPLETED".equalsIgnoreCase(module.getStatus())) {
+        } else if (progress > 0) {
 
-        	    module.setStatus("NOT_STARTED");
-        	}
+            module.setStatus("ONGOING");
+
+        } else {
+
+            module.setStatus("NOT_STARTED");
+        }
 
         moduleRepository.save(module);
 
@@ -498,6 +596,7 @@ public class ModuleServiceImpl implements ModuleService {
     // =========================
 
     @Override
+    @Transactional
     public void updateBatchProgress(Long batchId) {
 
         Batch batch =
@@ -534,20 +633,34 @@ public class ModuleServiceImpl implements ModuleService {
                         .sum();
 
         int averageProgress =
-                totalProgress / modules.size();
+                (int) Math.round(
+                        (double) totalProgress / modules.size()
+                );
 
         batch.setProgress(averageProgress);
 
-        if (!BatchStatus.COMPLETED.equals(batch.getStatus())) {
+        boolean allCompleted =
+                modules.stream()
+                        .allMatch(module ->
+                                module.getProgress() != null
+                                && module.getProgress() >= 100
+                        );
 
-            batch.setStatus(
-                    BatchStatus.ONGOING
-            );
+        if (allCompleted) {
+
+            batch.setStatus(BatchStatus.COMPLETED);
+
+        } else if (averageProgress > 0) {
+
+            batch.setStatus(BatchStatus.ONGOING);
+
+        } else {
+
+            batch.setStatus(BatchStatus.ONGOING);
         }
 
         batchRepository.save(batch);
     }
-
     // =========================
     // VALIDATE MANAGEMENT ACCESS
     // =========================
@@ -571,11 +684,120 @@ public class ModuleServiceImpl implements ModuleService {
         );
     }
 
+    @Override
+    public void validateModuleTopicAccess(
+            Long moduleId,
+            String requesterEmail) {
+
+        Module module =
+                moduleRepository.findById(moduleId)
+                        .orElseThrow(() ->
+                                new ResponseStatusException(
+                                        HttpStatus.NOT_FOUND,
+                                        "Module not found"
+                                )
+                        );
+
+        User requester =
+                userRepository.findByEmail(requesterEmail)
+                        .orElseThrow(() ->
+                                new ResponseStatusException(
+                                        HttpStatus.UNAUTHORIZED,
+                                        "User not found"
+                                )
+                        );
+
+        if (requester.getRole() == Role.ADMIN) {
+            return;
+        }
+
+        if (requester.getRole() == Role.TRAINER) {
+
+            if (module.getTrainer() != null &&
+                    module.getTrainer()
+                            .getId()
+                            .equals(requester.getId())) {
+
+                return;
+            }
+
+            if (module.getBatch() != null) {
+
+                boolean participatesInSameBatch =
+                        moduleRepository.findByBatchId(
+                                        module.getBatch().getId()
+                                )
+                                .stream()
+                                .anyMatch(existing ->
+                                        existing.getTrainer() != null &&
+                                                existing.getTrainer()
+                                                        .getId()
+                                                        .equals(
+                                                                requester.getId()
+                                                        )
+                                );
+
+                if (participatesInSameBatch) {
+                    return;
+                }
+            }
+        }
+
+        throw new ResponseStatusException(
+                HttpStatus.FORBIDDEN,
+                "Not authorized"
+        );
+    }
+
+    @Override
+    public void validateTrainerBatchAccess(
+            Long batchId,
+            String requesterEmail) {
+
+        User requester =
+                userRepository.findByEmail(requesterEmail)
+                        .orElseThrow(() ->
+                                new ResponseStatusException(
+                                        HttpStatus.UNAUTHORIZED,
+                                        "User not found"
+                                )
+                        );
+
+        if (requester.getRole() == Role.ADMIN) {
+            return;
+        }
+
+        if (requester.getRole() == Role.TRAINER) {
+
+            boolean participates =
+                    moduleRepository.findByBatchId(batchId)
+                            .stream()
+                            .anyMatch(module ->
+                                    module.getTrainer() != null &&
+                                            module.getTrainer()
+                                                    .getId()
+                                                    .equals(
+                                                            requester.getId()
+                                                    )
+                            );
+
+            if (participates) {
+                return;
+            }
+        }
+
+        throw new ResponseStatusException(
+                HttpStatus.FORBIDDEN,
+                "Not authorized to view this batch"
+        );
+    }
+
     // =========================
     // DELETE MODULE
     // =========================
 
     @Override
+    @Transactional
     public void deleteModule(
             Long moduleId,
             String requesterEmail) {
@@ -596,6 +818,18 @@ public class ModuleServiceImpl implements ModuleService {
 
         Long batchId =
                 module.getBatch() == null ? null : module.getBatch().getId();
+
+        // Delete trainer history records first (FK constraint on module_id)
+        List<ModuleTrainerHistory> historyRecords = historyRepository.findByModule(module);
+        if (!historyRecords.isEmpty()) {
+            historyRepository.deleteAllInBatch(historyRecords);
+        }
+
+        // Delete topics explicitly (belt-and-suspenders alongside CascadeType.ALL)
+        List<BatchTopic> topics = batchTopicRepository.findByModule(module);
+        if (!topics.isEmpty()) {
+            batchTopicRepository.deleteAllInBatch(topics);
+        }
 
         moduleRepository.delete(module);
 

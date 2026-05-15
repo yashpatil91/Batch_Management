@@ -46,8 +46,13 @@ public class Module {
 
     // Topics inside module
     @JsonIgnore
-    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BatchTopic> topics;
+
+    // Trainer History
+    @JsonIgnore
+    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ModuleTrainerHistory> trainerHistories;
 
     // =========================
     // Constructors
@@ -131,5 +136,13 @@ public class Module {
 
     public void setTopics(List<BatchTopic> topics) {
         this.topics = topics;
+    }
+
+    public List<ModuleTrainerHistory> getTrainerHistories() {
+        return trainerHistories;
+    }
+
+    public void setTrainerHistories(List<ModuleTrainerHistory> trainerHistories) {
+        this.trainerHistories = trainerHistories;
     }
 }

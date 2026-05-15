@@ -2,6 +2,7 @@ com\batchmanagement\backend\repository\BatchTopicRepository.class
 com\batchmanagement\backend\dto\admin\CreateBatchRequest$ModuleRequest.class
 com\batchmanagement\backend\config\DataInitializer.class
 com\batchmanagement\backend\entity\User.class
+com\batchmanagement\backend\service\ModuleService.class
 com\batchmanagement\backend\security\SecurityConfig.class
 com\batchmanagement\backend\controller\TrainerController.class
 com\batchmanagement\backend\dto\common\BatchRequest.class
@@ -9,12 +10,17 @@ com\batchmanagement\backend\entity\BatchTopic.class
 com\batchmanagement\backend\entity\enums\BatchStatus.class
 com\batchmanagement\backend\repository\UserRepository.class
 com\batchmanagement\backend\dto\trainer\TopicCreateRequest.class
+com\batchmanagement\backend\service\EmailService.class
 com\batchmanagement\backend\exception\GlobalExceptionHandler.class
+com\batchmanagement\backend\service\ExcelSyllabusService.class
+com\batchmanagement\backend\entity\ModuleTrainerHistory.class
 com\batchmanagement\backend\dto\common\UserResponse.class
+com\batchmanagement\backend\repository\ModuleTrainerHistoryRepository.class
 com\batchmanagement\backend\controller\AdminController.class
 com\batchmanagement\backend\dto\auth\LoginResponse.class
 com\batchmanagement\backend\security\jwt\JwtService.class
 com\batchmanagement\backend\dto\common\UserUpdateRequest.class
+com\batchmanagement\backend\repository\ModuleRepository.class
 com\batchmanagement\backend\dto\admin\AssignBatchRequest.class
 com\batchmanagement\backend\dto\trainer\TopicResponse.class
 com\batchmanagement\backend\dto\common\UserCreateRequest.class
@@ -24,6 +30,7 @@ com\batchmanagement\backend\mapper\BatchMapper.class
 com\batchmanagement\backend\BackendApplication.class
 com\batchmanagement\backend\security\UserDetailsServiceImpl.class
 com\batchmanagement\backend\dto\trainer\ProgressUpdateRequest.class
+com\batchmanagement\backend\service\ModuleServiceImpl.class
 com\batchmanagement\backend\exception\BadRequestException.class
 com\batchmanagement\backend\service\AdminService.class
 com\batchmanagement\backend\mapper\UserMapper.class
@@ -32,6 +39,7 @@ com\batchmanagement\backend\dto\auth\LoginRequest.class
 com\batchmanagement\backend\service\AuthService.class
 com\batchmanagement\backend\service\TrainerService.class
 com\batchmanagement\backend\controller\AuthController.class
+com\batchmanagement\backend\entity\Module.class
 com\batchmanagement\backend\dto\common\BatchWithModulesResponse.class
 com\batchmanagement\backend\dto\admin\DashboardResponse.class
 com\batchmanagement\backend\entity\Batch.class
@@ -39,5 +47,6 @@ com\batchmanagement\backend\dto\common\ModuleResponse.class
 com\batchmanagement\backend\entity\enums\Role.class
 com\batchmanagement\backend\mapper\ModuleMapper.class
 com\batchmanagement\backend\dto\common\BatchResponse.class
+com\batchmanagement\backend\controller\ModuleController.class
 com\batchmanagement\backend\dto\admin\CreateBatchRequest.class
 com\batchmanagement\backend\dto\trainer\TopicStatusUpdateRequest.class

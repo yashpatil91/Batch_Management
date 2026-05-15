@@ -30,17 +30,20 @@ public class TrainerService {
     private final BatchRepository batchRepository;
     private final BatchTopicRepository batchTopicRepository;
     private final ModuleRepository moduleRepository;
+    private final ModuleService moduleService;
 
     public TrainerService(
             UserRepository userRepository,
             BatchRepository batchRepository,
             BatchTopicRepository batchTopicRepository,
-            ModuleRepository moduleRepository) {
+            ModuleRepository moduleRepository,
+            ModuleService moduleService) {
 
         this.userRepository = userRepository;
         this.batchRepository = batchRepository;
         this.batchTopicRepository = batchTopicRepository;
         this.moduleRepository = moduleRepository;
+        this.moduleService = moduleService;
     }
 
     // =========================
@@ -73,48 +76,49 @@ public class TrainerService {
                                     batch.getId()
                             );
 
-                    int totalProgress =
-                            batchModules.stream()
-                                    .mapToInt(module ->
-                                            module.getProgress() == null
-                                                    ? 0
-                                                    : module.getProgress()
-                                    )
-                                    .sum();
-
                     int avgProgress =
                             batchModules.isEmpty()
                                     ? 0
-                                    : totalProgress / batchModules.size();
-
-                    batch.setProgress(avgProgress);
-
-                    boolean allCompleted =
-                            !batchModules.isEmpty() &&
-                            batchModules.stream()
-                                    .allMatch(module ->
-                                            "COMPLETED"
-                                                    .equalsIgnoreCase(
-                                                            module.getStatus()
+                                    : (int) Math.round(
+                                            batchModules.stream()
+                                                    .mapToInt(module ->
+                                                            module.getProgress() == null
+                                                                    ? 0
+                                                                    : module.getProgress()
                                                     )
+                                                    .average()
+                                                    .orElse(0)
                                     );
 
-                    if (allCompleted) {
+                    boolean allModulesComplete =
+                            !batchModules.isEmpty() &&
+                                    batchModules.stream()
+                                            .allMatch(module ->
+                                                    module.getProgress() != null
+                                                            && module.getProgress() >= 100
+                                            );
 
-                        batch.setStatus(
+                    BatchResponse response =
+                            BatchMapper.toResponse(batch);
+
+                    response.setProgress(avgProgress);
+
+                    if (allModulesComplete) {
+
+                        response.setStatus(
                                 BatchStatus.COMPLETED
                         );
 
                     } else {
 
-                        batch.setStatus(
-                                BatchStatus.ONGOING
+                        response.setStatus(
+                                batch.getStatus() != null
+                                        ? batch.getStatus()
+                                        : BatchStatus.ONGOING
                         );
                     }
 
-                    batchRepository.save(batch);
-
-                    return BatchMapper.toResponse(batch);
+                    return response;
 
                 })
                 .toList();
@@ -306,13 +310,83 @@ public class TrainerService {
             String trainerEmail,
             Long batchId) {
 
-        Batch batch =
-                findTrainerBatch(
-                        trainerEmail,
-                        batchId
-                );
+        findTrainerBatch(
+                trainerEmail,
+                batchId
+        );
 
-        return BatchMapper.toResponse(batch);
+        List<Module> modules =
+                moduleRepository.findByBatchId(batchId);
+
+        for (Module module : modules) {
+
+            moduleService.updateModuleProgress(
+                    module.getId()
+            );
+        }
+
+        List<Module> refreshed =
+                moduleRepository.findByBatchId(batchId);
+
+        if (refreshed.isEmpty()) {
+
+            throw new BadRequestException(
+                    "Batch has no modules"
+            );
+        }
+
+        boolean allAt100 =
+                refreshed.stream()
+                        .allMatch(module ->
+                                module.getProgress() != null
+                                        && module.getProgress() >= 100
+                        );
+
+        if (!allAt100) {
+
+            StringBuilder detail =
+                    new StringBuilder(
+                            "Cannot complete this batch until every module is at 100%. Still in progress: "
+                    );
+
+            refreshed.stream()
+                    .filter(module ->
+                            module.getProgress() == null
+                                    || module.getProgress() < 100
+                    )
+                    .forEach(module ->
+                            detail.append(module.getName())
+                                    .append(" (")
+                                    .append(
+                                            module.getProgress() == null
+                                                    ? 0
+                                                    : module.getProgress()
+                                    )
+                                    .append("%), ")
+                    );
+
+            throw new BadRequestException(
+                    detail.toString()
+            );
+        }
+
+        Batch batch =
+                batchRepository.findById(batchId)
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Batch not found"
+                                )
+                        );
+
+        batch.setProgress(100);
+
+        batch.setStatus(
+                BatchStatus.COMPLETED
+        );
+
+        return BatchMapper.toResponse(
+                batchRepository.save(batch)
+        );
     }
 
     // =========================
