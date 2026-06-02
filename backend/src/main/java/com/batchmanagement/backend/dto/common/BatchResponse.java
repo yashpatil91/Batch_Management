@@ -16,10 +16,19 @@ public class BatchResponse {
     private String time;
     private String labNo;
     private Integer noOfStudents;
+    private String meetLink;
+    
+    
 
     // GETTERS & SETTERS
 
-    public Long getId() { return id; }
+    public String getMeetLink() {
+		return meetLink;
+	}
+	public void setMeetLink(String meetLink) {
+		this.meetLink = meetLink;
+	}
+	public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
     public String getDomainName() { return domainName; }

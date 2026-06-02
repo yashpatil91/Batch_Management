@@ -145,9 +145,13 @@
 
   <!-- ===== SIDEBAR ===== -->
   <aside class="fixed left-0 top-0 bottom-0 z-40 flex flex-col h-screen w-64 bg-[#2d3133] shadow-xl shadow-black/10 font-['Inter'] text-sm font-medium">
-    <div class="p-8">
-      <h1 class="text-lg font-bold tracking-tighter text-[#f8f9fb]">PRECISION LEDGER</h1>
-    </div>
+	<div class="p-4 flex">
+			    <img 
+			        src="/images/fctlogo.png"
+			        alt="Fortune Cloud Logo"
+			        class="h-16 object-contain"
+			    />
+			</div>
     <nav class="flex-1 px-0">
       <a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all" href="/dashboard.html">
         <span class="material-symbols-outlined">dashboard</span>Dashboard
@@ -165,16 +169,7 @@
         <span class="material-symbols-outlined">history</span>History
       </a>
     </nav>
-    <div class="p-6 mt-auto bg-[#3f484a]/20">
-      <div class="flex items-center gap-3">
-        <img class="w-10 h-10 rounded-full object-cover"
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpmhAnvMerJrMPWPd8DCzd0yvcNpBt9GhKK92qTMcmQcXyAJ-vClCObmCFDCA4trCZLYuHsOFYLA0pn_D3_jQO-JYy5DD6TGUGwXf1sod6zy67yils_sAqt74fDEdfZd-yfxtCdWjXwq9ccZItEvEzViceUIlQXZ3s_t_x6GwQFjMaULs33j7_dj_mCfZoFPrLUtYWval97nQI-Bv94K9g85e7LuQLBz9zEy2ZpRss7ePXW4Gy2YL9IKWfPJr45MAODBkUZyXzjIQQ" />
-        <div class="overflow-hidden">
-          <p class="text-[#9df0f4] truncate font-semibold">Lead Administrator</p>
-          <p class="text-[#bfc8cb] text-xs truncate">System Controller</p>
-        </div>
-      </div>
-    </div>
+    
   </aside>
 
   <!-- ===== MAIN ===== -->
@@ -238,8 +233,18 @@
               <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">Assign Trainer</label>
               <select id="trainerSelectInput"
                 class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium text-on-surface px-4 py-3">
-                <option value="">Loading trainers…</option>
+                <option value="">No batch owner (module-based)</option>
               </select>
+            </div>
+
+            <div class="field-group space-y-3">
+              <div class="flex items-center justify-between">
+                <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">Modules</label>
+                <button type="button" id="addModuleBtn"
+                  class="bg-secondary text-white px-3 py-1.5 rounded text-xs font-semibold">Add Module</button>
+              </div>
+              <div id="moduleRows" class="space-y-2"></div>
+              <p class="text-xs text-on-surface-variant">Add module name and optional trainer assignment for each module.</p>
             </div>
 
             <!-- No. of Students -->
@@ -281,6 +286,15 @@
               </select>
             </div>
 
+			<div class="field-group space-y-1.5">
+			  <label class="text-[10px] uppercase tracking-widest font-bold text-outline font-label">
+			    Meet Link
+			  </label>
+			  <input id="batchMeetLink"
+			    class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium text-on-surface px-4 py-3"
+			    placeholder="https://meet.google.com/xyz-abc" 
+			    type="url" />
+			</div>
             <!-- Divider -->
             <div class="border-t border-outline-variant/30"></div>
 
@@ -317,6 +331,7 @@
 
   <script>
     const API_BASE_URL = "http://localhost:8080";
+    let allTrainerOptions = [];
 
     function authHeaders() {
       return {
@@ -402,6 +417,18 @@
       return hours * 60 + minutes;
     }
 
+	function isWithinAllowedHours(startTime, endTime) {
+	    const [startH] = startTime.split(":").map(Number);
+	    const [endH, endM] = endTime.split(":").map(Number);
+
+	    const startMinutes = startH * 60;
+	    const endMinutes   = endH * 60 + endM;
+
+	    const allowedStart = 7 * 60;  // 7:00 AM = 420 mins
+	    const allowedEnd   = 19 * 60; // 7:00 PM = 1140 mins
+
+	    return startMinutes >= allowedStart && endMinutes <= allowedEnd;
+	}
     /* ===== LOAD TRAINERS ===== */
     async function loadTrainerOptions() {
       try {
@@ -412,9 +439,10 @@
         if (!res.ok) throw new Error("Failed to load trainers");
 
         const trainers = await res.json();
+        allTrainerOptions = trainers;
         const select = document.getElementById("trainerSelectInput");
 
-        select.innerHTML = `<option value="">Select trainer…</option>`;
+        select.innerHTML = `<option value="">No batch owner (module-based)</option>`;
 
         trainers.forEach(trainer => {
           select.insertAdjacentHTML(
@@ -424,6 +452,7 @@
             </option>`
           );
         });
+        refreshModuleTrainerOptions();
 
       } catch (e) {
         console.error("Trainer load error:", e);
@@ -433,25 +462,91 @@
       }
     }
 
+    function renderModuleRows() {
+      const container = document.getElementById("moduleRows");
+      if (!container.children.length) addModuleRow();
+    }
+
+    function addModuleRow() {
+      const container = document.getElementById("moduleRows");
+      const options = allTrainerOptions.map(trainer => `
+        <option value="${trainer.id}">${trainer.name} (${trainer.email})</option>
+      `).join("");
+      container.insertAdjacentHTML("beforeend", `
+        <div class="grid grid-cols-12 gap-2 items-center module-row">
+          <input class="col-span-6 bg-surface-container-low border-none rounded-lg text-sm px-3 py-2 module-name"
+            placeholder="Module name (e.g. SQL)" type="text" />
+          <select class="col-span-5 bg-surface-container-low border-none rounded-lg text-sm px-3 py-2 module-trainer">
+            <option value="">Unassigned</option>
+            ${options}
+          </select>
+          <button type="button" class="col-span-1 text-error font-bold text-sm" onclick="removeModuleRow(this)">X</button>
+        </div>
+      `);
+    }
+
+    function removeModuleRow(button) {
+      const row = button.closest(".module-row");
+      if (!row) return;
+      row.remove();
+      if (!document.querySelector("#moduleRows .module-row")) {
+        addModuleRow();
+      }
+    }
+
+    function collectModulesPayload() {
+      const rows = document.querySelectorAll("#moduleRows .module-row");
+      return Array.from(rows)
+        .map(row => {
+          const name = row.querySelector(".module-name").value.trim();
+          const trainerIdRaw = row.querySelector(".module-trainer").value;
+          return {
+            name,
+            trainerId: trainerIdRaw ? Number(trainerIdRaw) : null
+          };
+        })
+        .filter(module => module.name.length > 0);
+    }
+
+    function refreshModuleTrainerOptions() {
+      document.querySelectorAll(".module-trainer").forEach(select => {
+        const currentValue = select.value;
+        select.innerHTML = `<option value="">Unassigned</option>` + allTrainerOptions.map(trainer =>
+          `<option value="${trainer.id}">${trainer.name} (${trainer.email})</option>`
+        ).join("");
+        if (currentValue) {
+          select.value = currentValue;
+        }
+      });
+    }
+
     /* ===== FORM SUBMIT ===== */
 	/* ===== FORM SUBMIT ===== */
 	document.getElementById("assignBatchForm").addEventListener("submit", async function(event) {
 	  event.preventDefault();
 
 	  const batchNameRaw = document.getElementById("batchNameInput").value.trim();
-	  const trainerId = Number(document.getElementById("trainerSelectInput").value);
+	  const trainerIdRaw = document.getElementById("trainerSelectInput").value;
+	  const trainerId = trainerIdRaw ? Number(trainerIdRaw) : null;
 	  const startDate = document.getElementById("batchStartDateInput").value;
 	  const endDate = document.getElementById("batchEndDateInput").value;
 	  const startTime = document.getElementById("batchStartTime").value;
 	  const endTime = document.getElementById("batchEndTime").value;
 	  const noOfStudents = parseInt(document.getElementById("noOfStudents").value, 10);
 	  const labNo = document.getElementById("batchLabInput").value;
+	  const meetLink= document.getElementById("batchMeetLink").value;
 
 	  /* ===== VALIDATION ===== */
-	  if (!batchNameRaw || !trainerId || !startDate || !endDate || !startTime || !endTime || !labNo || !noOfStudents) {
+	  if (!batchNameRaw || !startDate || !endDate || !startTime || !endTime || !labNo || !noOfStudents || !meetLink) {
 	    showToast("Please fill all required fields.", "error");
 	    return;
 	  }
+
+      const modules = collectModulesPayload();
+      if (!modules.length) {
+        showToast("Add at least one module.", "error");
+        return;
+      }
 
 	  if (startDate > endDate) {
 	    showToast("End date must be after start date.", "error");
@@ -461,6 +556,10 @@
 	  if (startTime >= endTime) {
 	    showToast("End time must be later than start time.", "error");
 	    return;
+	  }
+	  if (!isWithinAllowedHours(startTime, endTime)) {
+	      showToast("Batches can only be scheduled between 7:00 AM and 7:00 PM.", "error");
+	      return;
 	  }
 
 	  setLoading(true);
@@ -543,7 +642,7 @@
 	      if (!timeConflict) continue;
 
 	      /* ===== TRAINER CONFLICT ===== */
-	      if (Number(batch.trainerId) === trainerId) {
+	      if (trainerId && Number(batch.trainerId) === trainerId) {
 	        showToast(
 	          `Trainer already has batch: ${batch.domainName} during this time.`,
 	          "error"
@@ -575,7 +674,9 @@
 	      labNo: labNo,
 	      noOfStudents: noOfStudents,
 	      progress: 0,
-	      trainerId: trainerId
+	      trainerId: trainerId,
+		  meetLink: meetLink,
+          modules: modules
 	    };
 
 	    console.log("Creating Batch:", batchData);
@@ -613,6 +714,8 @@
 
     /* ===== INITIALIZE ===== */
     loadTrainerOptions();
+    renderModuleRows();
+    document.getElementById("addModuleBtn").addEventListener("click", addModuleRow);
   </script>
 </body>
 </html>

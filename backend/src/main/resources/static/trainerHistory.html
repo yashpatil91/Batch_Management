@@ -220,17 +220,14 @@
 	<!-- Navigation Drawer (SideNav) -->
 	<aside
 			class="fixed left-0 top-0 bottom-0 z-40 flex flex-col docked h-screen w-64 bg-[#2d3133] shadow-xl shadow-black/10 font-['Inter'] text-sm font-medium">
-			<div class="p-8 flex items-center gap-4 border-b border-[#3f484a]/30">
-				<div class="h-10 w-10 rounded-xl overflow-hidden">
-					<img alt="Admin User Avatar" class="w-full h-full object-cover"
-						data-alt="Professional portrait of a middle-aged male administrator in a clean office setting with soft natural light"
-						src="https://lh3.googleusercontent.com/aida-public/AB6AXuAW-LOtZm_nSqbnM0xTdTrkaCiee-hw8kJAEiYMGdAQ4meZOLVE6F4wEAmysloFULpiZp3v8Is_xa2DIIDjFEZKCV72pdA9nsp4cKBAXXInvVaSiarRsZaD_Al_l2bqjcbme_DFQr54OtpIzgvah84RKmPxSxLW-kYSEWeOW4UdXjFekrhAiZjEVqNX8Ta3AD-tVXuMsol-QFMmtZbudDC1znQp-nw53LTP4CaLQj6aiWjc4eFpxuxFrJs6bZisCnZtsXsjNAbj9BgA" />
-				</div>
-				<div>
-					<h3 class="text-[#9df0f4] font-semibold text-xs leading-tight">Lead Administrator</h3>
-					<p class="text-[#bfc8cb] text-[10px] uppercase tracking-wider">System Controller</p>
-				</div>
-			</div>
+			
+			<div class="p-4 flex">
+					    <img 
+					        src="/images/fctlogo.png"
+					        alt="Fortune Cloud Logo"
+					        class="h-16 object-contain"
+					    />
+					</div>
 			<nav class="flex-1 py-6">
 				<a class="border-l-4 border-[#9df0f4] bg-[#3f484a] text-[#9df0f4] py-3 px-6 flex items-center gap-3 transition-all"
 					href="/Trainerdashboard.html">
@@ -359,13 +356,32 @@
 
 			</div>
 		</section>
+		<!-- Completed modules (trainer) -->
+		<section class="px-8 pb-12">
+			<h3 class="font-headline text-xl font-bold text-on-surface mb-2">Completed modules</h3>
+			<p class="text-sm text-on-surface-variant mb-4 max-w-2xl">Modules you marked complete (100%). Includes modules from batches that are still running for others.</p>
+			<div class="bg-surface-container-lowest rounded-xl p-6 glow-card overflow-x-auto">
+				<table class="w-full text-left border-collapse min-w-[640px]">
+					<thead class="bg-surface-container-high">
+						<tr>
+							<th class="px-6 py-4 font-label text-[11px] font-bold text-outline uppercase tracking-[0.1em]">Module</th>
+							<th class="px-6 py-4 font-label text-[11px] font-bold text-outline uppercase tracking-[0.1em]">Batch</th>
+							<th class="px-6 py-4 font-label text-[11px] font-bold text-outline uppercase tracking-[0.1em] text-right">Progress</th>
+							<th class="px-6 py-4 font-label text-[11px] font-bold text-outline uppercase tracking-[0.1em] text-right">Batch status</th>
+						</tr>
+					</thead>
+					<tbody id="historyModulesBody" class="font-body text-sm divide-y divide-surface-container-low">
+					</tbody>
+				</table>
+			</div>
+		</section>
 		<!-- Insights Summary (Bento-style Cards) -->
 
 	</main>
 	<!-- Contextual FAB (Hidden on history list as per suppression rule, but included logic for placement awareness) -->
 	<!-- Suppression Logic: Suppress on Detail/History screens as focus is on reading. -->
 	<script>
-		const API_BASE_URL = "http://localhost:8080";
+		const API_BASE_URL = "";
 		const token = localStorage.getItem("token");
 		const role = localStorage.getItem("role");
 
@@ -423,14 +439,54 @@
 
 				const data = await res.json();
 
-				// store all data
 				allBatches = data;
 
-				applyFilters(); // render initially
+				applyFilters();
+
+				const modRes = await fetch(`${API_BASE_URL}/api/modules/my`, {
+					headers: {Authorization: `Bearer ${token}`}
+				});
+
+				if (modRes.ok) {
+					const modules = await modRes.json();
+					renderCompletedModules(modules);
+				} else {
+					renderCompletedModules([]);
+				}
 
 			} catch (err) {
 				console.error("Error:", err);
 			}
+		}
+
+		function renderCompletedModules(modules) {
+			const body = document.getElementById("historyModulesBody");
+			if (!body) return;
+
+			const done = (modules || []).filter(m =>
+				String(m.status || "").toUpperCase() === "COMPLETED"
+			);
+
+			if (!done.length) {
+				body.innerHTML = `
+					<tr>
+						<td colspan="4" class="text-center py-10 text-on-surface-variant text-sm">No completed modules yet.</td>
+					</tr>`;
+				return;
+			}
+
+			body.innerHTML = done.map(m => `
+				<tr class="hover:bg-secondary-container/30 transition-colors">
+					<td class="px-6 py-4 font-semibold">${m.name || "—"}</td>
+					<td class="px-6 py-4">${m.batchName || "—"}</td>
+					<td class="px-6 py-4 text-right font-bold text-primary">${m.progress ?? 0}%</td>
+					<td class="px-6 py-4 text-right">
+						<span class="text-xs font-bold px-2 py-1 rounded bg-surface-container-high text-on-surface">
+							${(m.batchStatus || "ONGOING").toString()}
+						</span>
+					</td>
+				</tr>
+			`).join("");
 		}
 
 		/////////////////////////////////////////////////////////

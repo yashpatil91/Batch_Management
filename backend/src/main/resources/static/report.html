@@ -88,76 +88,100 @@
 		}
 	</script>
 	<style>
-	/* 🔥 AUTO GLOW BORDER (always animated) */
-	.glow-card {
-	  position: relative;
-	  border-radius: 0.75rem;
-	  overflow: hidden;
-	  z-index: 0;
-	}
+		/* 🔥 AUTO GLOW BORDER (always animated) */
+		.glow-card {
+			position: relative;
+			border-radius: 0.75rem;
+			overflow: hidden;
+			z-index: 0;
+		}
 
-	.glow-card::before {
-	  content: "";
-	  position: absolute;
-	  inset: -1px;
-	  border-radius: inherit;
-	  background: linear-gradient(
-	    120deg,
-	    #0d7377,
-	    #9df0f4,
-	    #0d7377,
-	    #0d7377
-	  );
-	  background-size: 300% 300%;
-	  animation: borderMove 4s linear infinite;
-	  z-index: -1;
-	}
+		.glow-card::before {
+			content: "";
+			position: absolute;
+			inset: -1px;
+			border-radius: inherit;
+			background: linear-gradient(120deg,
+					#0d7377,
+					#9df0f4,
+					#0d7377,
+					#0d7377);
+			background-size: 300% 300%;
+			animation: borderMove 4s linear infinite;
+			z-index: -1;
+		}
 
-	/* Inner background fix */
-	.glow-card::after {
-	  content: "";
-	  position: absolute;
-	  inset: 1px;
-	  background: #ffffff;
-	  border-radius: inherit;
-	  z-index: -1;
-	}
+		/* Inner background fix */
+		.glow-card::after {
+			content: "";
+			position: absolute;
+			inset: 1px;
+			background: #ffffff;
+			border-radius: inherit;
+			z-index: -1;
+		}
 
-	/* 🎬 Border animation */
-	@keyframes borderMove {
-	  0% { background-position: 0% 50%; }
-	  100% { background-position: 300% 50%; }
-	}
+		/* 🎬 Border animation */
+		@keyframes borderMove {
+			0% {
+				background-position: 0% 50%;
+			}
 
-	/* ✨ Floating animation (subtle auto movement) */
-	.auto-float {
-	  animation: floatCard 4s ease-in-out infinite;
-	}
+			100% {
+				background-position: 300% 50%;
+			}
+		}
 
-	@keyframes floatCard {
-	  0%, 100% { transform: translateY(0px); }
-	  50% { transform: translateY(-6px); }
-	}
+		/* ✨ Floating animation (subtle auto movement) */
+		.auto-float {
+			animation: floatCard 4s ease-in-out infinite;
+		}
 
-	/* ✨ Fade on load */
-	.fade-in {
-	  animation: fadeIn 0.6s ease forwards;
-	}
+		@keyframes floatCard {
 
-	@keyframes fadeIn {
-	  from { opacity: 0; transform: translateY(10px);}
-	  to { opacity: 1; transform: translateY(0);}
-	}
+			0%,
+			100% {
+				transform: translateY(0px);
+			}
 
-	/* 🔥 Table row subtle animation (no hover needed) */
-	.table-row {
-	  animation: rowFade 0.5s ease forwards;
-	}
+			50% {
+				transform: translateY(-6px);
+			}
+		}
 
-	@keyframes rowFade {
-	  from { opacity: 0; transform: translateX(-10px); }
-	  to { opacity: 1; transform: translateX(0); }
-	}
+		/* ✨ Fade on load */
+		.fade-in {
+			animation: fadeIn 0.6s ease forwards;
+		}
+
+		@keyframes fadeIn {
+			from {
+				opacity: 0;
+				transform: translateY(10px);
+			}
+
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		/* 🔥 Table row subtle animation (no hover needed) */
+		.table-row {
+			animation: rowFade 0.5s ease forwards;
+		}
+
+		@keyframes rowFade {
+			from {
+				opacity: 0;
+				transform: translateX(-10px);
+			}
+
+			to {
+				opacity: 1;
+				transform: translateX(0);
+			}
+		}
 	</style>
 </head>
 
@@ -167,11 +191,13 @@
 	<aside
 		class="fixed left-0 top-0 bottom-0 z-40 flex flex-col h-screen w-64 bg-[#2d3133] shadow-xl shadow-black/10 font-['Inter'] text-sm font-medium">
 
-		<div class="p-8">
-			<h1 class="text-lg font-bold tracking-tighter text-[#f8f9fb]">
-				PRECISION LEDGER
-			</h1>
-		</div>
+		<div class="p-4 flex">
+				    <img 
+				        src="/images/fctlogo.png"
+				        alt="Fortune Cloud Logo"
+				        class="h-16 object-contain"
+				    />
+				</div>
 
 		<nav class="flex-1 px-0">
 
@@ -213,17 +239,7 @@
 		</nav>
 
 		<!-- User Section -->
-		<div class="p-6 mt-auto bg-[#3f484a]/20">
-			<div class="flex items-center gap-3">
-				<img class="w-10 h-10 rounded-full object-cover"
-					src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpmhAnvMerJrMPWPd8DCzd0yvcNpBt9GhKK92qTMcmQcXyAJ-vClCObmCFDCA4trCZLYuHsOFYLA0pn_D3_jQO-JYy5DD6TGUGwXf1sod6zy67yils_sAqt74fDEdfZd-yfxtCdWjXwq9ccZItEvEzViceUIlQXZ3s_t_x6GwQFjMaULs33j7_dj_mCfZoFPrLUtYWval97nQI-Bv94K9g85e7LuQLBz9zEy2ZpRss7ePXW4Gy2YL9IKWfPJr45MAODBkUZyXzjIQQ" />
 
-				<div class="overflow-hidden">
-					<p class="text-[#9df0f4] truncate font-semibold">Lead Administrator</p>
-					<p class="text-[#bfc8cb] text-xs truncate">System Controller</p>
-				</div>
-			</div>
-		</div>
 
 	</aside>
 	<!-- Main Content Canvas -->
@@ -232,23 +248,23 @@
 		<header
 			class="bg-slate-50/80 backdrop-blur-xl sticky top-0 z-40 flex justify-between items-center w-full px-8 py-4 shadow-sm">
 			<div class="flex items-center gap-4">
-				<h2 class="text-xl font-headline font-bold text-slate-900 tracking-tight">SYSTEM REPORTS</h2>
+				<h2 class="text-xl font-headline font-bold text-slate-900 tracking-tight">BATCH REPORTS</h2>
 			</div>
 			<div class="flex items-center gap-6">
 				<!-- Date Range Picker Mock -->
-				
+
 				<div class="flex items-center gap-6">
-								
-								<button onclick="logout()"
-									class="text-[#0d7377] font-bold hover:bg-[#c9e9ea] px-4 py-2 rounded transition-colors uppercase">Logout</button>
-							
-							</div>
+
+					<button onclick="logout()"
+						class="text-[#0d7377] font-bold hover:bg-[#c9e9ea] px-4 py-2 rounded transition-colors uppercase">Logout</button>
+
+				</div>
 			</div>
 		</header>
-		
+
 		<div class="p-8 space-y-8 max-w-[1600px] mx-auto">
 			<!-- Quick Actions & Generation -->
-		
+
 			<!-- Analytics Cards (KPIs) -->
 			<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 				<!-- KPI 1 -->
@@ -257,8 +273,8 @@
 						<div class="p-2 bg-primary/10 rounded-lg text-primary">
 							<span class="material-symbols-outlined" data-icon="task_alt">task_alt</span>
 						</div>
-						
-						</div>
+
+					</div>
 					<p class="text-xs font-label uppercase tracking-widest text-on-surface-variant mb-1">Total Batches
 						Completed</p>
 					<h4 id="totalBatches" class="text-3xl font-display font-extrabold text-on-surface">0</h4>
@@ -269,7 +285,7 @@
 						<div class="p-2 bg-secondary/10 rounded-lg text-secondary">
 							<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
 						</div>
-						
+
 					</div>
 					<p class="text-xs font-label uppercase tracking-widest text-on-surface-variant mb-1">Average
 						Completion Rate</p>
@@ -286,7 +302,7 @@
 					<p class="text-xs font-label uppercase tracking-widest text-on-surface-variant mb-1">Top Performing
 						Trainer</p>
 					<div class="flex items-center gap-3 mt-1">
-						
+
 						<div>
 							<h4 id="topTrainer" class="text-lg font-headline font-bold text-on-surface">N/A</h4>
 						</div>
@@ -309,7 +325,8 @@
 			<section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
 				<!-- Monthly Enrollment Trends (Line Chart Mockup) -->
-				<div class="lg:col-span-2 bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10 glow-card hover-lift fade-in">
+				<div
+					class="lg:col-span-2 bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10 glow-card hover-lift fade-in">
 					<div class="flex justify-between items-end mb-10">
 						<div>
 							<h3>Monthly Enrollment Trends</h3>
@@ -318,7 +335,7 @@
 							<p class="text-sm text-on-surface-variant">User registration volume for current fiscal year
 							</p>
 						</div>
-						
+
 					</div>
 					<!-- Chart Mockup -->
 					<div style="height:420px; display:flex; justify-content:center; align-items:center;">
@@ -329,7 +346,8 @@
 
 				</div>
 				<!-- Batch Success Rate (Bar Chart Mockup) -->
-				<div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10 glow-card hover-lift fade-in">
+				<div
+					class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10 glow-card hover-lift fade-in">
 					<div class="mb-6">
 						<h3 class="text-xl font-headline font-bold text-on-surface">Batch Progress Overview</h3>
 						<p class="text-sm text-on-surface-variant">Live progress of all batches</p>
@@ -338,47 +356,31 @@
 
 					<div id="reportBatchProgress" class="space-y-4 max-h-[350px] overflow-y-auto custom-scrollbar">
 					</div>
+
 				</div>
 			</section>
 			<!-- Recent Reports Table -->
-			<section class="bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/10 shadow-sm glow-card fade-in">
-				<div class="p-6 border-b border-outline-variant/10 flex justify-between items-center">
-					<h3 class="text-lg font-headline font-bold text-on-surface">Recent Reports</h3>
-					<div onclick="window.location.href='HistoryPage.html'"
-						class="flex items-center gap-2 text-primary cursor-pointer hover:underline text-sm font-bold">
+			</section>
 
-						View All History
-						<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+			<div class="bg-surface-container-lowest rounded-xl p-6 border border-outline-variant/10 glow-card fade-in">
+
+				<div class="flex justify-between items-center mb-6">
+					<div>
+						<h3 class="text-2xl font-bold text-on-surface">
+							Trainer Performance Analytics
+						</h3>
+
+						<p class="text-sm text-on-surface-variant">
+							Comparative trainer batch completion performance
+						</p>
 					</div>
 				</div>
-				<div class="overflow-x-auto">
-					<table class="w-full text-left border-collapse">
-						<thead class="bg-surface-container-low">
-							<tr class="table-row">
-								<th
-									class="px-6 py-4 text-[10px] font-label font-bold uppercase tracking-widest text-outline">
-									Report Name</th>
-								<th
-									class="px-6 py-4 text-[10px] font-label font-bold uppercase tracking-widest text-outline">
-									Type</th>
-								<th
-									class="px-6 py-4 text-[10px] font-label font-bold uppercase tracking-widest text-outline">
-									Date Generated</th>
-								<th
-									class="px-6 py-4 text-[10px] font-label font-bold uppercase tracking-widest text-outline">
-									Status</th>
-								<th
-									class="px-6 py-4 text-[10px] font-label font-bold uppercase tracking-widest text-outline text-right">
-									Actions</th>
-							</tr>
-						</thead>
-						<tbody id="reportHistoryTable" class="divide-y divide-outline-variant/10">
-						</tbody>
 
-						</tbody>
-					</table>
+				<div style="height:380px;">
+					<canvas id="trainerChart"></canvas>
 				</div>
-			</section>
+
+			</div>
 		</div>
 		<!-- Footer / Credits (Subtle) -->
 		<!--<footer class="p-8 border-t border-outline-variant/10 text-center">
@@ -523,8 +525,10 @@
 				.then(res => res.json())
 				.then(data => {
 
-					const names = data.map(t => t.name);
-					const values = data.map(t => t.batchCount);
+				    data.sort((a, b) => b.performance - a.performance);
+
+				    const names = data.map(t => t.trainerName);
+				    const values = data.map(t => t.performance);
 
 					const ctx = document.getElementById("trainerChart").getContext("2d");
 
@@ -535,12 +539,95 @@
 						data: {
 							labels: names,
 							datasets: [{
-								data: values,
-								backgroundColor: '#0d7377'
+							    data: values,
+
+							    backgroundColor: function(context) {
+
+							        const chart = context.chart;
+							        const {ctx, chartArea} = chart;
+
+							        if (!chartArea) {
+							            return '#0d7377';
+							        }
+
+							        const gradient = ctx.createLinearGradient(
+							            0,
+							            chartArea.bottom,
+							            0,
+							            chartArea.top
+							        );
+
+							        gradient.addColorStop(0, '#0d7377');
+							        gradient.addColorStop(1, '#4fd1c5');
+
+							        return gradient;
+							    },
+
+							    borderRadius: 14,
+							    borderSkipped: false,
+							    barThickness: 55,
+							    maxBarThickness: 60
 							}]
 						},
 						options: {
-							plugins: {legend: {display: false}}
+						    responsive: true,
+						    maintainAspectRatio: false,
+
+						    layout: {
+						        padding: {
+						            top: 20,
+						            right: 20,
+						            left: 10,
+						            bottom: 10
+						        }
+						    },
+
+						    plugins: {
+
+						        legend: {
+						            display: false
+						        },
+
+						        tooltip: {
+						            callbacks: {
+						                label: function(context) {
+						                    return context.raw + "%";
+						                }
+						            }
+						        }
+						    },
+
+						    scales: {
+
+						        x: {
+						            ticks: {
+						                color: '#444',
+						                font: {
+						                    size: 13,
+						                    weight: '600'
+						                }
+						            },
+
+						            grid: {
+						                display: false
+						            }
+						        },
+
+						        y: {
+						            beginAtZero: true,
+						            max: 100,
+
+						            ticks: {
+						                stepSize: 10,
+						                callback: value => value + "%",
+						                color: '#666'
+						            },
+
+						            grid: {
+						                color: 'rgba(0,0,0,0.06)'
+						            }
+						        }
+						    }
 						}
 					});
 				});

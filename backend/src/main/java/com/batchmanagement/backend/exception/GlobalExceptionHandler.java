@@ -11,6 +11,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -38,9 +39,21 @@ public class GlobalExceptionHandler {
         return build(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<Map<String, Object>> handleResponseStatus(ResponseStatusException ex) {
+        HttpStatus status = HttpStatus.valueOf(ex.getStatusCode().value());
+        return build(status, ex.getReason());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGeneric(Exception ex) {
-        return build(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error occurred");
+        // Log for debugging; message returned is still safe/minimal.
+        ex.printStackTrace();
+        String msg = ex.getMessage();
+        if (msg == null || msg.trim().isEmpty()) {
+            msg = "Unexpected error occurred";
+        }
+        return build(HttpStatus.INTERNAL_SERVER_ERROR, msg);
     }
 
     private ResponseEntity<Map<String, Object>> build(HttpStatus status, String message) {

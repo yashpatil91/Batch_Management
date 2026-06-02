@@ -185,9 +185,13 @@
 	<!-- Sidebar -->
 	<aside
 		class="fixed left-0 top-0 bottom-0 z-40 flex flex-col h-screen w-64 bg-[#2d3133] shadow-xl shadow-black/10 font-['Inter'] text-sm font-medium">
-		<div class="p-8">
-			<h1 class="text-lg font-bold tracking-tighter text-[#f8f9fb]">PRECISION LEDGER</h1>
-		</div>
+		<div class="p-4 flex">
+				    <img 
+				        src="/images/fctlogo.png"
+				        alt="Fortune Cloud Logo"
+				        class="h-16 object-contain"
+				    />
+				</div>
 		<nav class="flex-1 px-0">
 			<a class="text-[#bfc8cb] py-3 px-6 flex items-center gap-3 hover:bg-[#3f484a] hover:text-white transition-all"
 				href="/dashboard.html">
@@ -210,25 +214,16 @@
 				<span class="material-symbols-outlined">history</span>History
 			</a>
 		</nav>
-		<div class="p-6 mt-auto bg-[#3f484a]/20">
-			<div class="flex items-center gap-3">
-				<img class="w-10 h-10 rounded-full object-cover"
-					src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpmhAnvMerJrMPWPd8DCzd0yvcNpBt9GhKK92qTMcmQcXyAJ-vClCObmCFDCA4trCZLYuHsOFYLA0pn_D3_jQO-JYy5DD6TGUGwXf1sod6zy67yils_sAqt74fDEdfZd-yfxtCdWjXwq9ccZItEvEzViceUIlQXZ3s_t_x6GwQFjMaULs33j7_dj_mCfZoFPrLUtYWval97nQI-Bv94K9g85e7LuQLBz9zEy2ZpRss7ePXW4Gy2YL9IKWfPJr45MAODBkUZyXzjIQQ" />
-				<div class="overflow-hidden">
-					<p class="text-[#9df0f4] truncate font-semibold">Lead Administrator</p>
-					<p class="text-[#bfc8cb] text-xs truncate">System Controller</p>
-				</div>
-			</div>
-		</div>
+
 	</aside>
 
 	<!-- Main -->
 	<main class="ml-64 min-h-screen">
 		<header class="flex justify-between items-center w-full px-8 py-4 bg-[#f8f9fb] top-0 sticky z-30">
 			<div class="flex items-center gap-4">
-				<span class="material-symbols-outlined text-[#0d7377]">menu</span>
-				<h1 class="font-['Manrope'] text-sm tracking-wide uppercase font-bold text-[#0d7377]">PRECISION LEDGER
-				</h1>
+
+				<h2 class="text-xl font-headline font-bold text-slate-900 tracking-tight">TRAINER DIRECTORY</h2>
+
 			</div>
 			<button onclick="logout()"
 				class="font-['Manrope'] text-sm tracking-wide uppercase font-bold text-[#191c1e] hover:bg-[#c9e9ea] transition-colors px-4 py-2 rounded-lg">Logout</button>
@@ -237,8 +232,6 @@
 		<div class="px-10 py-8 bg-surface-container-low min-h-[calc(100vh-72px)]">
 			<div class="flex justify-between items-end mb-10">
 				<div>
-					<h2 class="font-headline text-3xl font-extrabold tracking-tight text-on-surface mb-2">TRAINER
-						DIRECTORY</h2>
 					<p class="text-on-surface-variant font-medium">Manage and audit institutional educator accounts.</p>
 				</div>
 				<button id="openTrainerCreate"
@@ -296,13 +289,16 @@
 								<th
 									class="text-left py-4 px-8 font-label text-[10px] uppercase tracking-widest text-outline">
 									Contact Credentials</th>
+
+								<th
+									class="text-left py-4 px-8 font-label text-[10px] uppercase tracking-widest text-outline">
+									Mobile Number
+								</th>
+
 								<th
 									class="text-left py-4 px-8 font-label text-[10px] uppercase tracking-widest text-outline">
 									Primary Expertise</th>
-								<th
-									class="text-left py-4 px-8 font-label text-[10px] uppercase tracking-widest text-outline">
-									Batch Status</th>
-								<th
+								
 									class="text-right py-4 px-8 font-label text-[10px] uppercase tracking-widest text-outline">
 									Administrative Actions</th>
 							</tr>
@@ -361,7 +357,18 @@
 						Email</label>
 					<input id="trainerEmail"
 						class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container"
-						placeholder="name@ledger.edu" type="email" />
+						placeholder="name@gmail.edu" type="email" />
+				</div>
+
+				<div class="space-y-2">
+					<label class="block text-[11px] font-bold uppercase tracking-widest text-outline">
+						Mobile Number
+					</label>
+
+					<input id="trainerMobile"
+						class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container"
+						placeholder="Enter 10 Digit Mobile Number" type="tel" maxlength="10" pattern="[0-9]{10}"
+						inputmode="numeric" />
 				</div>
 				<div class="space-y-2">
 					<label class="block text-[11px] font-bold uppercase tracking-widest text-outline">Login
@@ -421,6 +428,17 @@
 					<input id="editTrainerEmail"
 						class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container"
 						placeholder="name@ledger.edu" type="email" />
+				</div>
+
+				<div class="space-y-2">
+					<label class="block text-[11px] font-bold uppercase tracking-widest text-outline">
+						Mobile Number
+					</label>
+
+					<input id="editTrainerMobile"
+						class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary-container"
+						placeholder="Enter 10 Digit Mobile Number" type="tel" maxlength="10" pattern="[0-9]{10}"
+						inputmode="numeric" />
 				</div>
 				<div class="space-y-2">
 					<label class="block text-[11px] font-bold uppercase tracking-widest text-outline">New Password <span
@@ -494,6 +512,7 @@
 			document.getElementById("editTrainerId").value = trainer.id;
 			document.getElementById("editTrainerName").value = trainer.name || "";
 			document.getElementById("editTrainerEmail").value = trainer.email || "";
+			document.getElementById("editTrainerMobile").value = trainer.mobile || "";
 			document.getElementById("editTrainerPassword").value = "";
 			document.getElementById("editTrainerExpertise").value = trainer.expertise || "";
 			toggleEditModal(true);
@@ -518,20 +537,23 @@
           <p class="font-bold text-on-surface">${trainer.name || "N/A"}</p>
           <p class="text-[11px] text-outline font-medium">ID: ${trainer.id}</p>
         </td>
-        <td class="py-5 px-8">
-          <p class="text-sm font-medium text-on-surface">${trainer.email || "N/A"}</p>
-        </td>
+		<td class="py-5 px-8">
+			<p class="text-sm font-medium text-on-surface">
+				${trainer.email || "N/A"}
+			</p>
+		</td>
+
+		<td class="py-5 px-8">
+			<p class="text-sm font-medium text-on-surface">
+				${trainer.mobile || "No Mobile"}
+			</p>
+		</td>
         <td class="py-5 px-8">
           <span class="bg-primary/10 text-primary text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
             ${trainer.expertise || "General"}
           </span>
         </td>
-        <td class="py-5 px-8">
-          <div class="flex items-center gap-2">
-            <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
-            <span class="text-sm font-semibold text-on-surface">Active</span>
-          </div>
-        </td>
+      
         <td class="py-5 px-8 text-right">
           <div class="flex items-center justify-end gap-2">
             <!-- Edit Button -->
@@ -577,9 +599,15 @@
 			const email = document.getElementById("trainerEmail").value.trim();
 			const password = document.getElementById("trainerPassword").value.trim();
 			const expertise = document.getElementById("trainerExpertise").value.trim();
+			const mobile = document.getElementById("trainerMobile").value.trim();
 
-			if (!name || !email || !password) {
+			if (!name || !email || !password || !mobile) {
 				showToast("Please fill all required fields.", "error");
+				return;
+			}
+
+			if (!/^[0-9]{10}$/.test(mobile)) {
+				showToast("Enter valid 10 digit mobile number.", "error");
 				return;
 			}
 
@@ -587,7 +615,13 @@
 				const res = await fetch(`${API_BASE_URL}/api/admin/trainers`, {
 					method: "POST",
 					headers: {Authorization: `Bearer ${token}`, "Content-Type": "application/json"},
-					body: JSON.stringify({name, email, password, expertise})
+					body: JSON.stringify({
+						name,
+						email,
+						mobile,
+						password,
+						expertise
+					})
 				});
 				if (!res.ok) {
 					const errorText = await res.text();
@@ -609,13 +643,18 @@
 			const email = document.getElementById("editTrainerEmail").value.trim();
 			const password = document.getElementById("editTrainerPassword").value.trim();
 			const expertise = document.getElementById("editTrainerExpertise").value.trim();
+			const mobile = document.getElementById("editTrainerMobile").value.trim();
 
-			if (!name || !email) {
-				showToast("Name and email are required.", "error");
+			if (!name || !email || !mobile) {
+				showToast("Please fill all required fields.", "error");
 				return;
 			}
 
-			const payload = {name, email, expertise};
+			if (!/^[0-9]{10}$/.test(mobile)) {
+				showToast("Enter valid 10 digit mobile number.", "error");
+				return;
+			}
+			const payload = {name, email, mobile, expertise};
 			if (password) payload.password = password; // only send if filled
 
 			try {

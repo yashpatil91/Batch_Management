@@ -5,12 +5,15 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public class UserCreateRequest {
+
     @NotBlank
     private String name;
 
     @Email
     @NotBlank
     private String email;
+
+    private String mobile;
 
     @NotBlank
     @Size(min = 6)
@@ -32,6 +35,14 @@ public class UserCreateRequest {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public String getPassword() {
